@@ -1,23 +1,47 @@
 {
   "name": "abc-waas-prebuiltui-sdk",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "version": "0.1.0",
+  "description": "Pre-built UI components for ABC WaaS SDK",
+  "main": "dist/index.cjs",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "exports": {
+    "import": "./dist/index.mjs",
+    "require": "./dist/index.cjs"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup src/index.ts --format cjs,esm --dts --clean --external react --external react-dom",
+    "dev": "tsup src/index.ts --format cjs,esm --dts --watch",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "abc",
+    "waas",
+    "sdk",
+    "ui",
+    "components",
+    "react",
+    "wallet",
+    "prebuilt"
+  ],
+  "author": "dev.pyoungwoo@gmail.com",
+  "license": "MIT",
+  "peerDependencies": {
+    "react": ">=18.0.0",
+    "react-dom": ">=18.0.0"
+  },
   "dependencies": {
-    "abc-waas-sdk": "^0.0.32",
-    "react": "^19.1.1",
-    "react-dom": "^19.1.1"
+    "abc-waas-sdk": "^0.0.30"
   },
   "devDependencies": {
-    "@types/react": "^19.1.10",
-    "@types/react-dom": "^19.1.7",
+    "@types/react": "^18.0.0",
+    "@types/react-dom": "^18.0.0",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
     "tsup": "^8.5.0",
-    "typescript": "^5.9.2"
+    "typescript": "^5.7.3"
   }
 }
