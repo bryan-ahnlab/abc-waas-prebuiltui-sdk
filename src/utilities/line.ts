@@ -1,4 +1,4 @@
-// src/components/oauth2/utilities/line.ts
+// src/utilities/line.ts
 
 export const getLineToken = async (
   code: string,

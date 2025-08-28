@@ -1,4 +1,4 @@
-// src/components/oauth2/utilities/google.ts
+// src/utilities/google.ts
 
 export const getGoogleToken = async (
   code: string,

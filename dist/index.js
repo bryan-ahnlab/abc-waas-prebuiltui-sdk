@@ -1,9 +1,9 @@
 'use strict';
 
-var react = require('react');
 var abcWaasCoreSdk = require('abc-waas-core-sdk');
-var jsxRuntime = require('react/jsx-runtime');
+var react = require('react');
 var jose = require('jose');
+var jsxRuntime = require('react/jsx-runtime');
 
 var __defProp = Object.defineProperty;
 var __defProps = Object.defineProperties;
@@ -24,48 +24,6 @@ var __spreadValues = (a, b) => {
   return a;
 };
 var __spreadProps = (a, b) => __defProps(a, __getOwnPropDescs(b));
-var AbcWaasContext = react.createContext(null);
-var AbcWaasProvider = ({ config, children }) => {
-  const [basicToken, setBasicToken] = react.useState(null);
-  const [email, setEmail] = react.useState(null);
-  const [token, setToken] = react.useState(null);
-  const [service, setService] = react.useState(null);
-  const [abcAuth, setAbcAuth] = react.useState(null);
-  const [abcWallet, setAbcWallet] = react.useState(null);
-  const [abcUser, setAbcUser] = react.useState(null);
-  const [secureChannel, setSecureChannel] = react.useState(null);
-  const coreConfig = {
-    API_WAAS_MYABCWALLET_URL: config.API_WAAS_MYABCWALLET_URL,
-    MW_MYABCWALLET_URL: config.MW_MYABCWALLET_URL,
-    CLIENT_ID: config.CLIENT_ID,
-    CLIENT_SECRET: config.CLIENT_SECRET
-  };
-  return /* @__PURE__ */ jsxRuntime.jsx(
-    AbcWaasContext.Provider,
-    {
-      value: {
-        config,
-        basicToken,
-        setBasicToken,
-        email,
-        setEmail,
-        token,
-        setToken,
-        service,
-        setService,
-        abcAuth,
-        setAbcAuth,
-        abcWallet,
-        setAbcWallet,
-        abcUser,
-        setAbcUser,
-        secureChannel,
-        setSecureChannel
-      },
-      children: /* @__PURE__ */ jsxRuntime.jsx(abcWaasCoreSdk.AbcWaasProvider, { config: coreConfig, children })
-    }
-  );
-};
 
 // src/assets/icons/providers/icon_google.svg
 var icon_google_default = 'data:image/svg+xml,<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">%0A<path d="M20.64 12.2062C20.64 11.5687 20.5837 10.9537 20.475 10.365H12V13.8487H16.845C16.6312 14.97 15.9937 15.9187 15.0375 16.5562V18.825H17.9587C19.6575 17.2537 20.64 14.9437 20.64 12.2062Z" fill="%234285F4"/>%0A<path d="M12.0001 20.9999C14.4301 20.9999 16.4663 20.1974 17.9551 18.8249L15.0338 16.5599C14.2313 17.0999 13.2076 17.4262 12.0001 17.4262C9.66011 17.4262 7.67261 15.8474 6.96011 13.7212H3.96387V16.0462C5.44511 18.9787 8.48261 20.9999 12.0001 20.9999Z" fill="%2334A853"/>%0A<path d="M6.95999 13.7101C6.77999 13.1701 6.67499 12.5963 6.67499 12.0001C6.67499 11.4038 6.77999 10.8301 6.95999 10.2901V7.96509H3.96375C3.3525 9.17634 3 10.5451 3 12.0001C3 13.4551 3.3525 14.8238 3.96375 16.0351L6.29624 14.2201C6.29624 14.2163 6.95999 13.7101 6.95999 13.7101Z" fill="%23FBBC05"/>%0A<path d="M12.0001 6.58499C13.3238 6.58499 14.5051 7.04249 15.4463 7.92749L18.0226 5.35125C16.4588 3.8925 14.4301 3 12.0001 3C8.48261 3 5.44511 5.02125 3.96387 7.96499L6.96011 10.29C7.67261 8.16374 9.66011 6.58499 12.0001 6.58499Z" fill="%23EA4335"/>%0A</svg>%0A';
@@ -404,13 +362,6 @@ var createAppleClientSecret = async (idToken, privateKey, teamId, keyId) => {
     throw error;
   }
 };
-function useAbcWaas() {
-  const context = react.useContext(AbcWaasContext);
-  if (!context) {
-    throw new Error("Must be used inside AbcWaasProvider");
-  }
-  return context;
-}
 var providers = [
   {
     type: "google",
@@ -810,7 +761,7 @@ function Login() {
       }
     }
   }, [location.search, location.hash]);
-  const { config: prebuiltUIAbcWaasConfig } = useAbcWaas();
+  const { config: prebuiltUIAbcWaasConfig } = abcWaasCoreSdk.useAbcWaas();
   const config = {
     API_WAAS_MYABCWALLET_URL: prebuiltUIAbcWaasConfig.API_WAAS_MYABCWALLET_URL,
     MW_MYABCWALLET_URL: prebuiltUIAbcWaasConfig.MW_MYABCWALLET_URL,
@@ -873,7 +824,14 @@ function Login() {
   ] }) });
 }
 
-exports.AbcWaasProvider = AbcWaasProvider;
+Object.defineProperty(exports, "AbcWaasProvider", {
+  enumerable: true,
+  get: function () { return abcWaasCoreSdk.AbcWaasProvider; }
+});
+Object.defineProperty(exports, "useAbcWaas", {
+  enumerable: true,
+  get: function () { return abcWaasCoreSdk.useAbcWaas; }
+});
 exports.Login = Login;
 //# sourceMappingURL=index.js.map
 //# sourceMappingURL=index.js.map

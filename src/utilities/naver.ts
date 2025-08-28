@@ -1,4 +1,4 @@
-// src/components/oauth2/utilities/naver.ts
+// src/utilities/naver.ts
 
 export const getNaverToken = async (
   code: string,

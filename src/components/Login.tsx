@@ -25,7 +25,7 @@ import {
   getAppleToken,
   verifyAppleToken,
 } from "@/utilities/apple";
-import { useAbcWaas } from "@/hooks/useAbcWaas";
+import { useAbcWaas } from "abc-waas-core-sdk";
 
 type Providers = "google" | "apple" | "kakao" | "naver" | "line";
 

@@ -1,4 +1,4 @@
-// src/components/oauth2/utilities/apple.ts
+// src/utilities/apple.ts
 
 import { createRemoteJWKSet, jwtVerify, SignJWT } from "jose";
 

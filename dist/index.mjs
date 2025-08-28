@@ -1,7 +1,8 @@
-import { createContext, useState, useCallback, useEffect, useContext } from 'react';
-import { AbcWaasProvider as AbcWaasProvider$1, useLogin } from 'abc-waas-core-sdk';
-import { jsx, jsxs, Fragment } from 'react/jsx-runtime';
+import { useLogin, useAbcWaas, AbcWaasProvider } from 'abc-waas-core-sdk';
+export { AbcWaasProvider, useAbcWaas } from 'abc-waas-core-sdk';
+import { useState, useCallback, useEffect } from 'react';
 import { createRemoteJWKSet, jwtVerify, SignJWT } from 'jose';
+import { jsx, jsxs, Fragment } from 'react/jsx-runtime';
 
 var __defProp = Object.defineProperty;
 var __defProps = Object.defineProperties;
@@ -22,48 +23,6 @@ var __spreadValues = (a, b) => {
   return a;
 };
 var __spreadProps = (a, b) => __defProps(a, __getOwnPropDescs(b));
-var AbcWaasContext = createContext(null);
-var AbcWaasProvider = ({ config, children }) => {
-  const [basicToken, setBasicToken] = useState(null);
-  const [email, setEmail] = useState(null);
-  const [token, setToken] = useState(null);
-  const [service, setService] = useState(null);
-  const [abcAuth, setAbcAuth] = useState(null);
-  const [abcWallet, setAbcWallet] = useState(null);
-  const [abcUser, setAbcUser] = useState(null);
-  const [secureChannel, setSecureChannel] = useState(null);
-  const coreConfig = {
-    API_WAAS_MYABCWALLET_URL: config.API_WAAS_MYABCWALLET_URL,
-    MW_MYABCWALLET_URL: config.MW_MYABCWALLET_URL,
-    CLIENT_ID: config.CLIENT_ID,
-    CLIENT_SECRET: config.CLIENT_SECRET
-  };
-  return /* @__PURE__ */ jsx(
-    AbcWaasContext.Provider,
-    {
-      value: {
-        config,
-        basicToken,
-        setBasicToken,
-        email,
-        setEmail,
-        token,
-        setToken,
-        service,
-        setService,
-        abcAuth,
-        setAbcAuth,
-        abcWallet,
-        setAbcWallet,
-        abcUser,
-        setAbcUser,
-        secureChannel,
-        setSecureChannel
-      },
-      children: /* @__PURE__ */ jsx(AbcWaasProvider$1, { config: coreConfig, children })
-    }
-  );
-};
 
 // src/assets/icons/providers/icon_google.svg
 var icon_google_default = 'data:image/svg+xml,<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">%0A<path d="M20.64 12.2062C20.64 11.5687 20.5837 10.9537 20.475 10.365H12V13.8487H16.845C16.6312 14.97 15.9937 15.9187 15.0375 16.5562V18.825H17.9587C19.6575 17.2537 20.64 14.9437 20.64 12.2062Z" fill="%234285F4"/>%0A<path d="M12.0001 20.9999C14.4301 20.9999 16.4663 20.1974 17.9551 18.8249L15.0338 16.5599C14.2313 17.0999 13.2076 17.4262 12.0001 17.4262C9.66011 17.4262 7.67261 15.8474 6.96011 13.7212H3.96387V16.0462C5.44511 18.9787 8.48261 20.9999 12.0001 20.9999Z" fill="%2334A853"/>%0A<path d="M6.95999 13.7101C6.77999 13.1701 6.67499 12.5963 6.67499 12.0001C6.67499 11.4038 6.77999 10.8301 6.95999 10.2901V7.96509H3.96375C3.3525 9.17634 3 10.5451 3 12.0001C3 13.4551 3.3525 14.8238 3.96375 16.0351L6.29624 14.2201C6.29624 14.2163 6.95999 13.7101 6.95999 13.7101Z" fill="%23FBBC05"/>%0A<path d="M12.0001 6.58499C13.3238 6.58499 14.5051 7.04249 15.4463 7.92749L18.0226 5.35125C16.4588 3.8925 14.4301 3 12.0001 3C8.48261 3 5.44511 5.02125 3.96387 7.96499L6.96011 10.29C7.67261 8.16374 9.66011 6.58499 12.0001 6.58499Z" fill="%23EA4335"/>%0A</svg>%0A';
@@ -402,13 +361,6 @@ var createAppleClientSecret = async (idToken, privateKey, teamId, keyId) => {
     throw error;
   }
 };
-function useAbcWaas() {
-  const context = useContext(AbcWaasContext);
-  if (!context) {
-    throw new Error("Must be used inside AbcWaasProvider");
-  }
-  return context;
-}
 var providers = [
   {
     type: "google",
@@ -815,7 +767,7 @@ function Login() {
     CLIENT_ID: prebuiltUIAbcWaasConfig.CLIENT_ID,
     CLIENT_SECRET: prebuiltUIAbcWaasConfig.CLIENT_SECRET
   };
-  return /* @__PURE__ */ jsx(AbcWaasProvider$1, { config, children: /* @__PURE__ */ jsxs("div", { style: containerStyle, children: [
+  return /* @__PURE__ */ jsx(AbcWaasProvider, { config, children: /* @__PURE__ */ jsxs("div", { style: containerStyle, children: [
     /* @__PURE__ */ jsx("div", { style: titleContainerStyle, children: /* @__PURE__ */ jsx("h2", { style: { textAlign: "center", marginBottom: "24px" }, children: "ABC WaaS Prebuilt UI Login" }) }),
     /* @__PURE__ */ jsxs("div", { style: contentContainerStyle, children: [
       providers.map((item) => /* @__PURE__ */ jsx(
@@ -871,6 +823,6 @@ function Login() {
   ] }) });
 }
 
-export { AbcWaasProvider, Login };
+export { Login };
 //# sourceMappingURL=index.mjs.map
 //# sourceMappingURL=index.mjs.map

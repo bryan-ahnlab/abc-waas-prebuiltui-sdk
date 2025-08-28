@@ -1,4 +1,4 @@
-// src/components/oauth2/utilities/kakao.ts
+// src/utilities/kakao.ts
 
 import { createRemoteJWKSet, jwtVerify } from "jose";
 
