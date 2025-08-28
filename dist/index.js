@@ -409,7 +409,6 @@ var providers = [
     border: "1px solid #03C75A"
   }
 ];
-var RETURN_URL = "/";
 var containerStyle = {
   margin: "40px",
   padding: "20px",
@@ -453,11 +452,7 @@ function Login() {
   const location = {
     search: window.location.search,
     hash: window.location.hash};
-  const {
-    loginV2: snsLoginV2,
-    error: errorSnsLogin,
-    service: serviceSnsLogin
-  } = abcWaasCoreSdk.useLogin();
+  const { loginV2, error: loginError, service: loginService } = abcWaasCoreSdk.useLogin();
   const [error, setError] = react.useState(null);
   const [loading, setLoading] = react.useState(false);
   const handleRedirect = (provider) => {
@@ -574,12 +569,11 @@ function Login() {
           const getGoogleTokeninfoData = await getGoogleTokeninfo(
             getGoogleTokenData.id_token
           );
-          await snsLoginV2(
+          await loginV2(
             getGoogleTokeninfoData.email,
             getGoogleTokenData.id_token,
             provider
           );
-          navigate(RETURN_URL);
         } else if (provider === "apple") {
           if (!process.env.REACT_APP_APPLE_CLIENT_ID || !process.env.REACT_APP_APPLE_REDIRECT_URI || !process.env.REACT_APP_APPLE_TEAM_ID || !process.env.REACT_APP_APPLE_KEY_ID || !process.env.REACT_APP_APPLE_PRIVATE_KEY) {
             throw new Error(
@@ -610,12 +604,11 @@ function Login() {
             id_token,
             process.env.REACT_APP_APPLE_CLIENT_ID
           );
-          await snsLoginV2(
+          await loginV2(
             getAppleDecodedTokenData.email,
             getAppleTokenData.id_token,
             provider
           );
-          navigate(RETURN_URL);
         } else if (provider === "naver") {
           if (!process.env.REACT_APP_NAVER_CLIENT_ID || !process.env.REACT_APP_NAVER_CLIENT_SECRET || !process.env.REACT_APP_NAVER_REDIRECT_URI) {
             throw new Error(
@@ -632,12 +625,11 @@ function Login() {
           const getNaverTokeninfoData = await getNaverTokeninfo(
             getNaverTokenData.access_token
           );
-          await snsLoginV2(
+          await loginV2(
             getNaverTokeninfoData.response.email,
             getNaverTokenData.access_token,
             provider
           );
-          navigate(RETURN_URL);
         } else if (provider === "kakao") {
           if (!process.env.REACT_APP_KAKAO_REST_API_KEY || !process.env.REACT_APP_KAKAO_REDIRECT_URI) {
             throw new Error("Kakao client ID or redirect URI is not set.");
@@ -655,12 +647,11 @@ function Login() {
           const getKakaoTokeninfoData = await getKakaoTokeninfo(
             getKakaoTokenData.access_token
           );
-          await snsLoginV2(
+          await loginV2(
             getKakaoTokeninfoData.kakao_account.email,
             getKakaoTokenData.id_token,
             provider
           );
-          navigate(RETURN_URL);
         } else if (provider === "line") {
           if (!process.env.REACT_APP_LINE_CLIENT_ID || !process.env.REACT_APP_LINE_CLIENT_SECRET || !process.env.REACT_APP_LINE_REDIRECT_URI) {
             throw new Error(
@@ -678,18 +669,17 @@ function Login() {
             getLineTokenData.id_token,
             process.env.REACT_APP_LINE_CLIENT_ID
           );
-          await snsLoginV2(
+          await loginV2(
             getLineTokeninfoData.email,
             getLineTokenData.id_token,
             provider
           );
-          navigate(RETURN_URL);
         } else {
           throw new Error("Invalid provider.");
         }
       } catch (error2) {
-        if (errorSnsLogin) {
-          setError(errorSnsLogin);
+        if (loginError) {
+          setError(loginError);
         }
         if (error2) {
           setError(error2);
@@ -698,7 +688,7 @@ function Login() {
         setLoading(false);
       }
     },
-    [snsLoginV2, errorSnsLogin, navigate]
+    [loginV2, loginError, navigate]
   );
   react.useEffect(() => {
     const provider = localStorage.getItem("provider");
@@ -783,7 +773,7 @@ function Login() {
           }),
           onMouseEnter: (event) => event.currentTarget.style.backgroundColor = item.hoverColor,
           onMouseLeave: (event) => event.currentTarget.style.backgroundColor = item.backgroundColor,
-          children: loading && serviceSnsLogin === item.type ? /* @__PURE__ */ jsxRuntime.jsx(
+          children: loading && loginService === item.type ? /* @__PURE__ */ jsxRuntime.jsx(
             "img",
             {
               src: animation_loading_default,

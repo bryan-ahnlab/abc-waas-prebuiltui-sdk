@@ -85,8 +85,6 @@ const providers: {
   },
 ];
 
-const RETURN_URL = "/";
-
 const containerStyle = {
   margin: "40px",
   padding: "20px",
@@ -138,11 +136,7 @@ export default function Login() {
     pathname: window.location.pathname,
   };
 
-  const {
-    loginV2: snsLoginV2,
-    error: errorSnsLogin,
-    service: serviceSnsLogin,
-  } = useLogin();
+  const { loginV2, error: loginError, service: loginService } = useLogin();
 
   const [error, setError] = useState<Error | null>(null);
   const [loading, setLoading] = useState(false);
@@ -301,13 +295,11 @@ export default function Login() {
             getGoogleTokenData.id_token
           );
 
-          await snsLoginV2(
+          await loginV2(
             getGoogleTokeninfoData.email,
             getGoogleTokenData.id_token,
             provider
           );
-
-          navigate(RETURN_URL);
         } else if (provider === "apple") {
           if (
             !process.env.REACT_APP_APPLE_CLIENT_ID ||
@@ -351,13 +343,11 @@ export default function Login() {
             process.env.REACT_APP_APPLE_CLIENT_ID
           );
 
-          await snsLoginV2(
+          await loginV2(
             getAppleDecodedTokenData.email,
             getAppleTokenData.id_token,
             provider
           );
-
-          navigate(RETURN_URL);
         } else if (provider === "naver") {
           if (
             !process.env.REACT_APP_NAVER_CLIENT_ID ||
@@ -382,13 +372,11 @@ export default function Login() {
             getNaverTokenData.access_token
           );
 
-          await snsLoginV2(
+          await loginV2(
             getNaverTokeninfoData.response.email,
             getNaverTokenData.access_token,
             provider
           );
-
-          navigate(RETURN_URL);
         } else if (provider === "kakao") {
           if (
             !process.env.REACT_APP_KAKAO_REST_API_KEY ||
@@ -414,13 +402,11 @@ export default function Login() {
             getKakaoTokenData.access_token
           );
 
-          await snsLoginV2(
+          await loginV2(
             getKakaoTokeninfoData.kakao_account.email,
             getKakaoTokenData.id_token,
             provider
           );
-
-          navigate(RETURN_URL);
         } else if (provider === "line") {
           if (
             !process.env.REACT_APP_LINE_CLIENT_ID ||
@@ -446,19 +432,17 @@ export default function Login() {
             process.env.REACT_APP_LINE_CLIENT_ID
           );
 
-          await snsLoginV2(
+          await loginV2(
             getLineTokeninfoData.email,
             getLineTokenData.id_token,
             provider
           );
-
-          navigate(RETURN_URL);
         } else {
           throw new Error("Invalid provider.");
         }
       } catch (error: any) {
-        if (errorSnsLogin) {
-          setError(errorSnsLogin);
+        if (loginError) {
+          setError(loginError);
         }
         if (error) {
           setError(error);
@@ -467,7 +451,7 @@ export default function Login() {
         setLoading(false);
       }
     },
-    [snsLoginV2, errorSnsLogin, navigate]
+    [loginV2, loginError, navigate]
   );
 
   useEffect(() => {
@@ -591,7 +575,7 @@ export default function Login() {
                   item.backgroundColor)
               }
             >
-              {loading && serviceSnsLogin === item.type ? (
+              {loading && loginService === item.type ? (
                 <img
                   src={LoadingAnimation}
                   alt="loading"
