@@ -9,7 +9,7 @@ export default defineConfig({
     resolve: true, // 타입 정의(d.ts)를 자동 생성하면서 외부 타입도 포함
   },
   clean: true, // 빌드 전에 dist 폴더 정리
-  external: ["react", "react-dom", "react-router-dom"], // 번들에 포함하지 않음 (peerDependency 처리)
+  external: ["react", "react-dom"],
   treeshake: true,
   sourcemap: true,
   // SVG 파일을 URL로 처리

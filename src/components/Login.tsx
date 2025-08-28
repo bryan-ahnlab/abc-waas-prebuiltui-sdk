@@ -1,9 +1,8 @@
 // src/components/Login.tsx
 
 import { useCallback, useEffect, useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
 
-import { useSnsLogin } from "abc-waas-sdk";
+import { AbcWaasProvider, useSnsLogin } from "abc-waas-sdk";
 
 import GoogleIcon from "@/assets/icons/providers/icon_google.svg";
 import AppleIcon from "@/assets/icons/providers/icon_apple.svg";
@@ -26,6 +25,7 @@ import {
   getAppleToken,
   verifyAppleToken,
 } from "@/utilities/apple";
+import { useAbcWaas } from "@/hooks/useAbcWaas";
 
 type Providers = "google" | "apple" | "kakao" | "naver" | "line";
 
@@ -128,8 +128,15 @@ const buttonBaseStyle = {
 } as const;
 
 export default function Login() {
-  const navigate = useNavigate();
-  const location = useLocation();
+  const navigate = (path: string) => {
+    window.location.href = path;
+  };
+
+  const location = {
+    search: window.location.search,
+    hash: window.location.hash,
+    pathname: window.location.pathname,
+  };
 
   const {
     snsLoginV2,
@@ -544,72 +551,84 @@ export default function Login() {
         handleCallback(provider, data);
       }
     }
-  }, [handleCallback, location.search, location.hash]);
+  }, [location.search, location.hash]);
+
+  const { config: prebuiltUIAbcWaasConfig } = useAbcWaas();
+
+  const config = {
+    API_WAAS_MYABCWALLET_URL: prebuiltUIAbcWaasConfig.API_WAAS_MYABCWALLET_URL,
+    MW_MYABCWALLET_URL: prebuiltUIAbcWaasConfig.MW_MYABCWALLET_URL,
+    CLIENT_ID: prebuiltUIAbcWaasConfig.CLIENT_ID,
+    CLIENT_SECRET: prebuiltUIAbcWaasConfig.CLIENT_SECRET,
+  };
 
   return (
-    <div style={containerStyle}>
-      <div style={titleContainerStyle}>
-        <h2 style={{ textAlign: "center", marginBottom: "24px" }}>
-          OAuth2 Login
-        </h2>
-      </div>
+    <AbcWaasProvider config={config}>
+      <div style={containerStyle}>
+        <div style={titleContainerStyle}>
+          <h2 style={{ textAlign: "center", marginBottom: "24px" }}>
+            ABC WaaS Prebuilt UI Login
+          </h2>
+        </div>
 
-      <div style={contentContainerStyle}>
-        {providers.map((item) => (
-          <button
-            key={item.type}
-            onClick={() => handleRedirect(item.type)}
-            disabled={loading}
-            style={{
-              ...buttonBaseStyle,
-              backgroundColor: item.backgroundColor,
-              color: item.textColor,
-              border: item.border,
-            }}
-            onMouseEnter={(event) =>
-              (event.currentTarget.style.backgroundColor = item.hoverColor)
-            }
-            onMouseLeave={(event) =>
-              (event.currentTarget.style.backgroundColor = item.backgroundColor)
-            }
-          >
-            {loading && serviceSnsLogin === item.type ? (
-              <img
-                src={LoadingAnimation}
-                alt="loading"
-                style={{ width: "24px", height: "24px" }}
-              />
-            ) : (
-              <>
+        <div style={contentContainerStyle}>
+          {providers.map((item) => (
+            <button
+              key={item.type}
+              onClick={() => handleRedirect(item.type)}
+              disabled={loading}
+              style={{
+                ...buttonBaseStyle,
+                backgroundColor: item.backgroundColor,
+                color: item.textColor,
+                border: item.border,
+              }}
+              onMouseEnter={(event) =>
+                (event.currentTarget.style.backgroundColor = item.hoverColor)
+              }
+              onMouseLeave={(event) =>
+                (event.currentTarget.style.backgroundColor =
+                  item.backgroundColor)
+              }
+            >
+              {loading && serviceSnsLogin === item.type ? (
                 <img
-                  src={item.icon}
-                  alt={`${item.type} icon`}
-                  style={{
-                    width: "24px",
-                    height: "24px",
-                    marginRight: "12px",
-                  }}
+                  src={LoadingAnimation}
+                  alt="loading"
+                  style={{ width: "24px", height: "24px" }}
                 />
-                {item.label}
-              </>
-            )}
-          </button>
-        ))}
+              ) : (
+                <>
+                  <img
+                    src={item.icon}
+                    alt={`${item.type} icon`}
+                    style={{
+                      width: "24px",
+                      height: "24px",
+                      marginRight: "12px",
+                    }}
+                  />
+                  {item.label}
+                </>
+              )}
+            </button>
+          ))}
 
-        {error?.message && (
-          <span
-            style={{
-              color: "red",
-              textAlign: "center",
-              display: "block",
-              width: "100%",
-            }}
-          >
-            {error.message}
-          </span>
-        )}
+          {error?.message && (
+            <span
+              style={{
+                color: "red",
+                textAlign: "center",
+                display: "block",
+                width: "100%",
+              }}
+            >
+              {error.message}
+            </span>
+          )}
+        </div>
       </div>
-    </div>
+    </AbcWaasProvider>
   );
 }
 
