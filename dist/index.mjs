@@ -1,5 +1,5 @@
 import { createContext, useState, useCallback, useEffect, useContext } from 'react';
-import { AbcWaasProvider as AbcWaasProvider$1, useSnsLogin } from 'abc-waas-sdk';
+import { AbcWaasProvider as AbcWaasProvider$1, useLogin } from 'abc-waas-core-sdk';
 import { jsx, jsxs, Fragment } from 'react/jsx-runtime';
 import { createRemoteJWKSet, jwtVerify, SignJWT } from 'jose';
 
@@ -32,7 +32,7 @@ var AbcWaasProvider = ({ config, children }) => {
   const [abcWallet, setAbcWallet] = useState(null);
   const [abcUser, setAbcUser] = useState(null);
   const [secureChannel, setSecureChannel] = useState(null);
-  const abcWaasSDKConfig = {
+  const coreConfig = {
     API_WAAS_MYABCWALLET_URL: config.API_WAAS_MYABCWALLET_URL,
     MW_MYABCWALLET_URL: config.MW_MYABCWALLET_URL,
     CLIENT_ID: config.CLIENT_ID,
@@ -60,7 +60,7 @@ var AbcWaasProvider = ({ config, children }) => {
         secureChannel,
         setSecureChannel
       },
-      children: /* @__PURE__ */ jsx(AbcWaasProvider$1, { config: abcWaasSDKConfig, children })
+      children: /* @__PURE__ */ jsx(AbcWaasProvider$1, { config: coreConfig, children })
     }
   );
 };
@@ -501,10 +501,10 @@ function Login() {
     search: window.location.search,
     hash: window.location.hash};
   const {
-    snsLoginV2,
+    loginV2: snsLoginV2,
     error: errorSnsLogin,
     service: serviceSnsLogin
-  } = useSnsLogin();
+  } = useLogin();
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const handleRedirect = (provider) => {

@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 
-import { AbcWaasProvider, useSnsLogin } from "abc-waas-sdk";
+import { AbcWaasProvider, useLogin } from "abc-waas-core-sdk";
 
 import GoogleIcon from "@/assets/icons/providers/icon_google.svg";
 import AppleIcon from "@/assets/icons/providers/icon_apple.svg";
@@ -139,10 +139,10 @@ export default function Login() {
   };
 
   const {
-    snsLoginV2,
+    loginV2: snsLoginV2,
     error: errorSnsLogin,
     service: serviceSnsLogin,
-  } = useSnsLogin();
+  } = useLogin();
 
   const [error, setError] = useState<Error | null>(null);
   const [loading, setLoading] = useState(false);

@@ -1,6 +1,6 @@
 // src/types/config.ts
 
-export interface AbcWaasConfig {
+export interface AbcWaasConfigType {
   API_WAAS_MYABCWALLET_URL: string;
   MW_MYABCWALLET_URL: string;
   CLIENT_ID: string;

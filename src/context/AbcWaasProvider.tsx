@@ -1,13 +1,13 @@
 // src/context/AbcWaasProvider.tsx
 
-import React, { useState } from "react";
+import React, { ReactNode, useState } from "react";
 import { AbcWaasContext } from "@/context/AbcWaasContext";
-import type { AbcWaasConfig } from "@/types/config";
-import { AbcWaasProvider as AbcWaasSDKProvider } from "abc-waas-sdk";
+import type { AbcWaasConfigType } from "@/types/config";
+import { AbcWaasProvider as AbcWaasSDKProvider } from "abc-waas-core-sdk";
 
 interface Props {
-  config: AbcWaasConfig;
-  children: React.ReactNode;
+  config: AbcWaasConfigType;
+  children: ReactNode;
 }
 
 export const AbcWaasProvider = ({ config, children }: Props) => {
@@ -22,8 +22,7 @@ export const AbcWaasProvider = ({ config, children }: Props) => {
   const [abcUser, setAbcUser] = useState<any>(null);
   const [secureChannel, setSecureChannel] = useState<any>(null);
 
-  // abc-waas-sdk config로 변환
-  const abcWaasSDKConfig = {
+  const coreConfig = {
     API_WAAS_MYABCWALLET_URL: config.API_WAAS_MYABCWALLET_URL,
     MW_MYABCWALLET_URL: config.MW_MYABCWALLET_URL,
     CLIENT_ID: config.CLIENT_ID,
@@ -55,9 +54,7 @@ export const AbcWaasProvider = ({ config, children }: Props) => {
         setSecureChannel,
       }}
     >
-      <AbcWaasSDKProvider config={abcWaasSDKConfig}>
-        {children}
-      </AbcWaasSDKProvider>
+      <AbcWaasSDKProvider config={coreConfig}>{children}</AbcWaasSDKProvider>
     </AbcWaasContext.Provider>
   );
 };

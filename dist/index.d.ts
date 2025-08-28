@@ -1,7 +1,7 @@
 import * as react_jsx_runtime from 'react/jsx-runtime';
-import React from 'react';
+import { ReactNode } from 'react';
 
-interface AbcWaasConfig {
+interface AbcWaasConfigType {
     API_WAAS_MYABCWALLET_URL: string;
     MW_MYABCWALLET_URL: string;
     CLIENT_ID: string;
@@ -9,11 +9,11 @@ interface AbcWaasConfig {
 }
 
 interface Props {
-    config: AbcWaasConfig;
-    children: React.ReactNode;
+    config: AbcWaasConfigType;
+    children: ReactNode;
 }
 declare const AbcWaasProvider: ({ config, children }: Props) => react_jsx_runtime.JSX.Element;
 
 declare function Login(): react_jsx_runtime.JSX.Element;
 
-export { type AbcWaasConfig, AbcWaasProvider, Login };
+export { type AbcWaasConfigType, AbcWaasProvider, Login };

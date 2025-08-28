@@ -4,24 +4,15 @@
   "compilerOptions": {
     "target": "ES2017",
     "module": "ESNext",
-
     "jsx": "react-jsx",
-
     "strict": true,
-
     "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-
+    "moduleResolution": "node",
     "skipLibCheck": true,
-
     "forceConsistentCasingInFileNames": true,
     "declaration": true,
-
-    "moduleResolution": "node",
-
     "outDir": "./dist",
     "rootDir": "./src",
-
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"]

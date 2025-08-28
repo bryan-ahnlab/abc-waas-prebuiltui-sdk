@@ -1,7 +1,7 @@
 'use strict';
 
 var react = require('react');
-var abcWaasSdk = require('abc-waas-sdk');
+var abcWaasCoreSdk = require('abc-waas-core-sdk');
 var jsxRuntime = require('react/jsx-runtime');
 var jose = require('jose');
 
@@ -34,7 +34,7 @@ var AbcWaasProvider = ({ config, children }) => {
   const [abcWallet, setAbcWallet] = react.useState(null);
   const [abcUser, setAbcUser] = react.useState(null);
   const [secureChannel, setSecureChannel] = react.useState(null);
-  const abcWaasSDKConfig = {
+  const coreConfig = {
     API_WAAS_MYABCWALLET_URL: config.API_WAAS_MYABCWALLET_URL,
     MW_MYABCWALLET_URL: config.MW_MYABCWALLET_URL,
     CLIENT_ID: config.CLIENT_ID,
@@ -62,7 +62,7 @@ var AbcWaasProvider = ({ config, children }) => {
         secureChannel,
         setSecureChannel
       },
-      children: /* @__PURE__ */ jsxRuntime.jsx(abcWaasSdk.AbcWaasProvider, { config: abcWaasSDKConfig, children })
+      children: /* @__PURE__ */ jsxRuntime.jsx(abcWaasCoreSdk.AbcWaasProvider, { config: coreConfig, children })
     }
   );
 };
@@ -503,10 +503,10 @@ function Login() {
     search: window.location.search,
     hash: window.location.hash};
   const {
-    snsLoginV2,
+    loginV2: snsLoginV2,
     error: errorSnsLogin,
     service: serviceSnsLogin
-  } = abcWaasSdk.useSnsLogin();
+  } = abcWaasCoreSdk.useLogin();
   const [error, setError] = react.useState(null);
   const [loading, setLoading] = react.useState(false);
   const handleRedirect = (provider) => {
@@ -817,7 +817,7 @@ function Login() {
     CLIENT_ID: prebuiltUIAbcWaasConfig.CLIENT_ID,
     CLIENT_SECRET: prebuiltUIAbcWaasConfig.CLIENT_SECRET
   };
-  return /* @__PURE__ */ jsxRuntime.jsx(abcWaasSdk.AbcWaasProvider, { config, children: /* @__PURE__ */ jsxRuntime.jsxs("div", { style: containerStyle, children: [
+  return /* @__PURE__ */ jsxRuntime.jsx(abcWaasCoreSdk.AbcWaasProvider, { config, children: /* @__PURE__ */ jsxRuntime.jsxs("div", { style: containerStyle, children: [
     /* @__PURE__ */ jsxRuntime.jsx("div", { style: titleContainerStyle, children: /* @__PURE__ */ jsxRuntime.jsx("h2", { style: { textAlign: "center", marginBottom: "24px" }, children: "ABC WaaS Prebuilt UI Login" }) }),
     /* @__PURE__ */ jsxRuntime.jsxs("div", { style: contentContainerStyle, children: [
       providers.map((item) => /* @__PURE__ */ jsxRuntime.jsx(

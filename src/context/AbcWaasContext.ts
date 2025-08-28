@@ -1,10 +1,10 @@
 // src/context/AbcWaasContext.ts
 
 import { createContext } from "react";
-import type { AbcWaasConfig } from "@/types/config";
+import type { AbcWaasConfigType } from "@/types/config";
 
 export interface AbcWaasContextType {
-  config: AbcWaasConfig;
+  config: AbcWaasConfigType;
 
   basicToken: string | null;
   setBasicToken: (basicToken: string | null) => void;
