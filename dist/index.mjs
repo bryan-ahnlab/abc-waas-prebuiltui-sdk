@@ -408,15 +408,26 @@ var providers = [
     border: "1px solid #03C75A"
   }
 ];
+var metaContainerStyle = {
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  justifyContent: "center",
+  width: "100%",
+  height: "100vh",
+  backgroundColor: "#f5f5f5"
+};
 var containerStyle = {
-  margin: "40px",
-  padding: "20px",
-  borderRadius: "12px",
-  border: "1px solid #dadce0",
+  width: "100%",
+  maxWidth: "360px",
+  boxSizing: "border-box",
+  padding: "40px 30px",
+  borderRadius: "30px",
   color: "#333",
   boxShadow: "0 4px 12px rgba(0, 0, 0, 0.05)",
   whiteSpace: "pre-wrap",
-  wordBreak: "break-all"
+  wordBreak: "break-all",
+  backgroundColor: "#ffffff"
 };
 var titleContainerStyle = {
   display: "flex",
@@ -436,13 +447,14 @@ var buttonBaseStyle = {
   justifyContent: "center",
   padding: "12px 16px",
   fontSize: "16px",
-  fontWeight: "bold",
-  borderRadius: "8px",
+  borderRadius: "30px",
   width: "100%",
   marginBottom: "12px",
   cursor: "pointer",
   transition: "all 0.2s ease-in-out",
-  wordBreak: "break-all"
+  wordBreak: "break-all",
+  flexWrap: "wrap",
+  gap: "12px"
 };
 function Login() {
   const navigate = (path) => {
@@ -750,15 +762,21 @@ function Login() {
       }
     }
   }, [location.search, location.hash]);
-  const { config: prebuiltUIAbcWaasConfig } = useAbcWaas();
-  const config = {
-    API_WAAS_MYABCWALLET_URL: prebuiltUIAbcWaasConfig.API_WAAS_MYABCWALLET_URL,
-    MW_MYABCWALLET_URL: prebuiltUIAbcWaasConfig.MW_MYABCWALLET_URL,
-    CLIENT_ID: prebuiltUIAbcWaasConfig.CLIENT_ID,
-    CLIENT_SECRET: prebuiltUIAbcWaasConfig.CLIENT_SECRET
-  };
-  return /* @__PURE__ */ jsx(AbcWaasProvider, { config, children: /* @__PURE__ */ jsxs("div", { style: containerStyle, children: [
-    /* @__PURE__ */ jsx("div", { style: titleContainerStyle, children: /* @__PURE__ */ jsx("h2", { style: { textAlign: "center", marginBottom: "24px" }, children: "ABC WaaS Prebuilt UI Login" }) }),
+  const { config } = useAbcWaas();
+  return /* @__PURE__ */ jsx(AbcWaasProvider, { config, children: /* @__PURE__ */ jsx("div", { style: metaContainerStyle, children: /* @__PURE__ */ jsxs("div", { style: containerStyle, children: [
+    /* @__PURE__ */ jsx("div", { style: titleContainerStyle, children: /* @__PURE__ */ jsx(
+      "span",
+      {
+        style: {
+          textAlign: "center",
+          marginBottom: "24px",
+          fontSize: "20px",
+          fontWeight: "bold",
+          color: "#333333"
+        },
+        children: "ABC WaaS Login"
+      }
+    ) }),
     /* @__PURE__ */ jsxs("div", { style: contentContainerStyle, children: [
       providers.map((item) => /* @__PURE__ */ jsx(
         "button",
@@ -787,8 +805,7 @@ function Login() {
                 alt: `${item.type} icon`,
                 style: {
                   width: "24px",
-                  height: "24px",
-                  marginRight: "12px"
+                  height: "24px"
                 }
               }
             ),
@@ -797,20 +814,57 @@ function Login() {
         },
         item.type
       )),
-      (error == null ? void 0 : error.message) && /* @__PURE__ */ jsx(
-        "span",
+      /* @__PURE__ */ jsx(
+        "div",
         {
           style: {
-            color: "red",
-            textAlign: "center",
-            display: "block",
-            width: "100%"
+            width: "100%",
+            minHeight: "31px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center"
           },
-          children: error.message
+          children: (error == null ? void 0 : error.message) && /* @__PURE__ */ jsx(
+            "span",
+            {
+              style: {
+                color: "red",
+                textAlign: "center",
+                display: "block",
+                width: "100%",
+                marginBottom: "12px"
+              },
+              children: error.message
+            }
+          )
+        }
+      ),
+      /* @__PURE__ */ jsx(
+        "div",
+        {
+          style: {
+            width: "100%",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center"
+          },
+          children: /* @__PURE__ */ jsx(
+            "span",
+            {
+              style: {
+                color: "#666666",
+                textAlign: "center",
+                display: "block",
+                width: "100%",
+                fontSize: "10px"
+              },
+              children: "\xA9 AhnLab Blockchain Company. All rights reserved."
+            }
+          )
         }
       )
     ] })
-  ] }) });
+  ] }) }) });
 }
 
 export { Login };

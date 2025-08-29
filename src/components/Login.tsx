@@ -85,15 +85,27 @@ const providers: {
   },
 ];
 
+const metaContainerStyle = {
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  justifyContent: "center",
+  width: "100%",
+  height: "100vh",
+  backgroundColor: "#f5f5f5",
+} as const;
+
 const containerStyle = {
-  margin: "40px",
-  padding: "20px",
-  borderRadius: "12px",
-  border: "1px solid #dadce0",
+  width: "100%",
+  maxWidth: "360px",
+  boxSizing: "border-box",
+  padding: "40px 30px",
+  borderRadius: "30px",
   color: "#333",
   boxShadow: "0 4px 12px rgba(0, 0, 0, 0.05)",
   whiteSpace: "pre-wrap",
   wordBreak: "break-all",
+  backgroundColor: "#ffffff",
 } as const;
 
 const titleContainerStyle = {
@@ -116,13 +128,14 @@ const buttonBaseStyle = {
   justifyContent: "center",
   padding: "12px 16px",
   fontSize: "16px",
-  fontWeight: "bold",
-  borderRadius: "8px",
+  borderRadius: "30px",
   width: "100%",
   marginBottom: "12px",
   cursor: "pointer",
   transition: "all 0.2s ease-in-out",
   wordBreak: "break-all",
+  flexWrap: "wrap",
+  gap: "12px",
 } as const;
 
 export default function Login() {
@@ -537,79 +550,116 @@ export default function Login() {
     }
   }, [location.search, location.hash]);
 
-  const { config: prebuiltUIAbcWaasConfig } = useAbcWaas();
-
-  const config = {
-    API_WAAS_MYABCWALLET_URL: prebuiltUIAbcWaasConfig.API_WAAS_MYABCWALLET_URL,
-    MW_MYABCWALLET_URL: prebuiltUIAbcWaasConfig.MW_MYABCWALLET_URL,
-    CLIENT_ID: prebuiltUIAbcWaasConfig.CLIENT_ID,
-    CLIENT_SECRET: prebuiltUIAbcWaasConfig.CLIENT_SECRET,
-  };
+  const { config } = useAbcWaas();
 
   return (
     <AbcWaasProvider config={config}>
-      <div style={containerStyle}>
-        <div style={titleContainerStyle}>
-          <h2 style={{ textAlign: "center", marginBottom: "24px" }}>
-            ABC WaaS Prebuilt UI Login
-          </h2>
-        </div>
-
-        <div style={contentContainerStyle}>
-          {providers.map((item) => (
-            <button
-              key={item.type}
-              onClick={() => handleRedirect(item.type)}
-              disabled={loading}
-              style={{
-                ...buttonBaseStyle,
-                backgroundColor: item.backgroundColor,
-                color: item.textColor,
-                border: item.border,
-              }}
-              onMouseEnter={(event) =>
-                (event.currentTarget.style.backgroundColor = item.hoverColor)
-              }
-              onMouseLeave={(event) =>
-                (event.currentTarget.style.backgroundColor =
-                  item.backgroundColor)
-              }
-            >
-              {loading && loginService === item.type ? (
-                <img
-                  src={LoadingAnimation}
-                  alt="loading"
-                  style={{ width: "24px", height: "24px" }}
-                />
-              ) : (
-                <>
-                  <img
-                    src={item.icon}
-                    alt={`${item.type} icon`}
-                    style={{
-                      width: "24px",
-                      height: "24px",
-                      marginRight: "12px",
-                    }}
-                  />
-                  {item.label}
-                </>
-              )}
-            </button>
-          ))}
-
-          {error?.message && (
+      <div style={metaContainerStyle}>
+        <div style={containerStyle}>
+          <div style={titleContainerStyle}>
             <span
               style={{
-                color: "red",
                 textAlign: "center",
-                display: "block",
-                width: "100%",
+                marginBottom: "24px",
+                fontSize: "20px",
+                fontWeight: "bold",
+                color: "#333333",
               }}
             >
-              {error.message}
+              ABC WaaS Login
             </span>
-          )}
+          </div>
+
+          <div style={contentContainerStyle}>
+            {providers.map((item) => (
+              <button
+                key={item.type}
+                onClick={() => handleRedirect(item.type)}
+                disabled={loading}
+                style={{
+                  ...buttonBaseStyle,
+                  backgroundColor: item.backgroundColor,
+                  color: item.textColor,
+                  border: item.border,
+                }}
+                onMouseEnter={(event) =>
+                  (event.currentTarget.style.backgroundColor = item.hoverColor)
+                }
+                onMouseLeave={(event) =>
+                  (event.currentTarget.style.backgroundColor =
+                    item.backgroundColor)
+                }
+              >
+                {loading && loginService === item.type ? (
+                  <img
+                    src={LoadingAnimation}
+                    alt="loading"
+                    style={{ width: "24px", height: "24px" }}
+                  />
+                ) : (
+                  <>
+                    <img
+                      src={item.icon}
+                      alt={`${item.type} icon`}
+                      style={{
+                        width: "24px",
+                        height: "24px",
+                      }}
+                    />
+                    {item.label}
+                  </>
+                )}
+              </button>
+            ))}
+
+            {/* Error Message */}
+            <div
+              style={{
+                width: "100%",
+                minHeight: "31px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              {error?.message && (
+                <span
+                  style={{
+                    color: "red",
+                    textAlign: "center",
+                    display: "block",
+                    width: "100%",
+                    marginBottom: "12px",
+                  }}
+                >
+                  {error.message}
+                </span>
+              )}
+            </div>
+            {/*  */}
+
+            {/* Copyright */}
+            <div
+              style={{
+                width: "100%",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <span
+                style={{
+                  color: "#666666",
+                  textAlign: "center",
+                  display: "block",
+                  width: "100%",
+                  fontSize: "10px",
+                }}
+              >
+                © AhnLab Blockchain Company. All rights reserved.
+              </span>
+            </div>
+          </div>
         </div>
       </div>
     </AbcWaasProvider>
