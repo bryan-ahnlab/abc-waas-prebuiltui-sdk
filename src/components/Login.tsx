@@ -157,9 +157,6 @@ export default function Login() {
     service: coreService,
   } = useLogin();
 
-  console.log("coreLoading", coreLoading);
-  console.log("coreError", coreError);
-
   const handleRedirect = (provider: Providers) => {
     localStorage.setItem("provider", provider);
 
