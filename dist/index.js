@@ -880,10 +880,6 @@ Object.defineProperty(exports, "useAbcWaas", {
   enumerable: true,
   get: function () { return abcWaasCoreSdk.useAbcWaas; }
 });
-Object.defineProperty(exports, "useLogin", {
-  enumerable: true,
-  get: function () { return abcWaasCoreSdk.useLogin; }
-});
 exports.Login = Login;
 //# sourceMappingURL=index.js.map
 //# sourceMappingURL=index.js.map

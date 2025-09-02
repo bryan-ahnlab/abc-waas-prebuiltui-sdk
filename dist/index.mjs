@@ -1,5 +1,5 @@
 import { useLogin } from 'abc-waas-core-sdk';
-export { AbcWaasProvider, useAbcWaas, useLogin } from 'abc-waas-core-sdk';
+export { AbcWaasProvider, useAbcWaas } from 'abc-waas-core-sdk';
 import { useState, useCallback, useEffect } from 'react';
 import { createRemoteJWKSet, jwtVerify, SignJWT } from 'jose';
 import { jsx, jsxs, Fragment } from 'react/jsx-runtime';
