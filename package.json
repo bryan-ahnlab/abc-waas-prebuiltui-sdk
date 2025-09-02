@@ -1,6 +1,6 @@
 {
   "name": "abc-waas-prebuiltui-sdk",
-  "version": "0.1.9",
+  "version": "0.2.0",
   "description": "ABC WaaS Prebuilt UI SDK for React/Next.js",
   "main": "dist/index.cjs",
   "module": "dist/index.mjs",
@@ -40,7 +40,7 @@
     "react-dom": ">=18.0.0"
   },
   "dependencies": {
-    "abc-waas-core-sdk": "^0.1.8",
+    "abc-waas-core-sdk": "^0.2.0",
     "jose": "^6.0.13"
   }
 }
