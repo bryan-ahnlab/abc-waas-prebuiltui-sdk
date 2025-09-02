@@ -466,12 +466,14 @@ function Login() {
     hash: window.location.hash};
   const {
     loginV2,
-    error: coreError,
     loading: coreLoading,
     setLoading: setCoreLoading,
+    error: coreError,
+    setError: setCoreError,
     service: coreService
   } = abcWaasCoreSdk.useLogin();
-  const [error, setError] = react.useState(null);
+  console.log("coreLoading", coreLoading);
+  console.log("coreError", coreError);
   const handleRedirect = (provider) => {
     localStorage.setItem("provider", provider);
     if (provider === "google") {
@@ -569,7 +571,7 @@ function Login() {
       var _a;
       try {
         setCoreLoading(true);
-        setError(null);
+        setCoreError(null);
         if (provider === "google") {
           if (!process.env.REACT_APP_GOOGLE_CLIENT_ID || !process.env.REACT_APP_GOOGLE_CLIENT_SECRET || !process.env.REACT_APP_GOOGLE_REDIRECT_URI) {
             throw new Error(
@@ -694,12 +696,12 @@ function Login() {
         } else {
           throw new Error("Invalid provider.");
         }
-      } catch (error2) {
-        if (coreError) {
-          setError(coreError);
+      } catch (error) {
+        if (error) {
+          setCoreError(error);
         }
-        if (error2) {
-          setError(error2);
+        if (coreError) {
+          setCoreError(coreError);
         }
       } finally {
         setCoreLoading(false);
@@ -829,7 +831,7 @@ function Login() {
             alignItems: "center",
             justifyContent: "center"
           },
-          children: (error == null ? void 0 : error.message) && /* @__PURE__ */ jsxRuntime.jsx(
+          children: (coreError == null ? void 0 : coreError.message) && /* @__PURE__ */ jsxRuntime.jsx(
             "span",
             {
               style: {
@@ -839,7 +841,7 @@ function Login() {
                 width: "100%",
                 marginBottom: "12px"
               },
-              children: error.message
+              children: coreError.message
             }
           )
         }
@@ -879,6 +881,10 @@ Object.defineProperty(exports, "AbcWaasProvider", {
 Object.defineProperty(exports, "useAbcWaas", {
   enumerable: true,
   get: function () { return abcWaasCoreSdk.useAbcWaas; }
+});
+Object.defineProperty(exports, "useLogin", {
+  enumerable: true,
+  get: function () { return abcWaasCoreSdk.useLogin; }
 });
 exports.Login = Login;
 //# sourceMappingURL=index.js.map

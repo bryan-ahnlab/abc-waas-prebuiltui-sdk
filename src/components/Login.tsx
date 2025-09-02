@@ -150,13 +150,15 @@ export default function Login() {
 
   const {
     loginV2,
-    error: coreError,
     loading: coreLoading,
     setLoading: setCoreLoading,
+    error: coreError,
+    setError: setCoreError,
     service: coreService,
   } = useLogin();
 
-  const [error, setError] = useState<Error | null>(null);
+  console.log("coreLoading", coreLoading);
+  console.log("coreError", coreError);
 
   const handleRedirect = (provider: Providers) => {
     localStorage.setItem("provider", provider);
@@ -286,7 +288,7 @@ export default function Login() {
     async (provider: string, data: any) => {
       try {
         setCoreLoading(true);
-        setError(null);
+        setCoreError(null);
 
         if (provider === "google") {
           if (
@@ -458,11 +460,11 @@ export default function Login() {
           throw new Error("Invalid provider.");
         }
       } catch (error: any) {
-        if (coreError) {
-          setError(coreError);
-        }
         if (error) {
-          setError(error);
+          setCoreError(error);
+        }
+        if (coreError) {
+          setCoreError(coreError);
         }
       } finally {
         setCoreLoading(false);
@@ -623,7 +625,7 @@ export default function Login() {
               justifyContent: "center",
             }}
           >
-            {error?.message && (
+            {coreError?.message && (
               <span
                 style={{
                   color: "red",
@@ -633,7 +635,7 @@ export default function Login() {
                   marginBottom: "12px",
                 }}
               >
-                {error.message}
+                {coreError.message}
               </span>
             )}
           </div>

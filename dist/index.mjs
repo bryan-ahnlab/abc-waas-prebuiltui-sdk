@@ -1,6 +1,6 @@
 import { useLogin } from 'abc-waas-core-sdk';
-export { AbcWaasProvider, useAbcWaas } from 'abc-waas-core-sdk';
-import { useState, useCallback, useEffect } from 'react';
+export { AbcWaasProvider, useAbcWaas, useLogin } from 'abc-waas-core-sdk';
+import { useCallback, useEffect } from 'react';
 import { createRemoteJWKSet, jwtVerify, SignJWT } from 'jose';
 import { jsx, jsxs, Fragment } from 'react/jsx-runtime';
 
@@ -465,12 +465,14 @@ function Login() {
     hash: window.location.hash};
   const {
     loginV2,
-    error: coreError,
     loading: coreLoading,
     setLoading: setCoreLoading,
+    error: coreError,
+    setError: setCoreError,
     service: coreService
   } = useLogin();
-  const [error, setError] = useState(null);
+  console.log("coreLoading", coreLoading);
+  console.log("coreError", coreError);
   const handleRedirect = (provider) => {
     localStorage.setItem("provider", provider);
     if (provider === "google") {
@@ -568,7 +570,7 @@ function Login() {
       var _a;
       try {
         setCoreLoading(true);
-        setError(null);
+        setCoreError(null);
         if (provider === "google") {
           if (!process.env.REACT_APP_GOOGLE_CLIENT_ID || !process.env.REACT_APP_GOOGLE_CLIENT_SECRET || !process.env.REACT_APP_GOOGLE_REDIRECT_URI) {
             throw new Error(
@@ -693,12 +695,12 @@ function Login() {
         } else {
           throw new Error("Invalid provider.");
         }
-      } catch (error2) {
-        if (coreError) {
-          setError(coreError);
+      } catch (error) {
+        if (error) {
+          setCoreError(error);
         }
-        if (error2) {
-          setError(error2);
+        if (coreError) {
+          setCoreError(coreError);
         }
       } finally {
         setCoreLoading(false);
@@ -828,7 +830,7 @@ function Login() {
             alignItems: "center",
             justifyContent: "center"
           },
-          children: (error == null ? void 0 : error.message) && /* @__PURE__ */ jsx(
+          children: (coreError == null ? void 0 : coreError.message) && /* @__PURE__ */ jsx(
             "span",
             {
               style: {
@@ -838,7 +840,7 @@ function Login() {
                 width: "100%",
                 marginBottom: "12px"
               },
-              children: error.message
+              children: coreError.message
             }
           )
         }
