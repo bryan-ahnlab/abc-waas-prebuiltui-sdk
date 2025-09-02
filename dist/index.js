@@ -464,9 +464,14 @@ function Login() {
   const location = {
     search: window.location.search,
     hash: window.location.hash};
-  const { loginV2, error: loginError, service: loginService } = abcWaasCoreSdk.useLogin();
+  const {
+    loginV2,
+    error: coreError,
+    loading: coreLoading,
+    setLoading: setCoreLoading,
+    service: coreService
+  } = abcWaasCoreSdk.useLogin();
   const [error, setError] = react.useState(null);
-  const [loading, setLoading] = react.useState(false);
   const handleRedirect = (provider) => {
     localStorage.setItem("provider", provider);
     if (provider === "google") {
@@ -563,7 +568,7 @@ function Login() {
     async (provider, data) => {
       var _a;
       try {
-        setLoading(true);
+        setCoreLoading(true);
         setError(null);
         if (provider === "google") {
           if (!process.env.REACT_APP_GOOGLE_CLIENT_ID || !process.env.REACT_APP_GOOGLE_CLIENT_SECRET || !process.env.REACT_APP_GOOGLE_REDIRECT_URI) {
@@ -690,17 +695,17 @@ function Login() {
           throw new Error("Invalid provider.");
         }
       } catch (error2) {
-        if (loginError) {
-          setError(loginError);
+        if (coreError) {
+          setError(coreError);
         }
         if (error2) {
           setError(error2);
         }
       } finally {
-        setLoading(false);
+        setCoreLoading(false);
       }
     },
-    [loginV2, loginError, navigate]
+    [loginV2, coreError, navigate]
   );
   react.useEffect(() => {
     const provider = localStorage.getItem("provider");
@@ -763,8 +768,7 @@ function Login() {
       }
     }
   }, [location.search, location.hash]);
-  const { config } = abcWaasCoreSdk.useAbcWaas();
-  return /* @__PURE__ */ jsxRuntime.jsx(abcWaasCoreSdk.AbcWaasProvider, { config, children: /* @__PURE__ */ jsxRuntime.jsx("div", { style: metaContainerStyle, children: /* @__PURE__ */ jsxRuntime.jsxs("div", { style: containerStyle, children: [
+  return /* @__PURE__ */ jsxRuntime.jsx("div", { style: metaContainerStyle, children: /* @__PURE__ */ jsxRuntime.jsxs("div", { style: containerStyle, children: [
     /* @__PURE__ */ jsxRuntime.jsx("div", { style: titleContainerStyle, children: /* @__PURE__ */ jsxRuntime.jsx(
       "span",
       {
@@ -783,7 +787,7 @@ function Login() {
         "button",
         {
           onClick: () => handleRedirect(item.type),
-          disabled: loading,
+          disabled: coreLoading,
           style: __spreadProps(__spreadValues({}, buttonBaseStyle), {
             backgroundColor: item.backgroundColor,
             color: item.textColor,
@@ -791,7 +795,7 @@ function Login() {
           }),
           onMouseEnter: (event) => event.currentTarget.style.backgroundColor = item.hoverColor,
           onMouseLeave: (event) => event.currentTarget.style.backgroundColor = item.backgroundColor,
-          children: loading && loginService === item.type ? /* @__PURE__ */ jsxRuntime.jsx(
+          children: coreLoading && coreService === item.type ? /* @__PURE__ */ jsxRuntime.jsx(
             "img",
             {
               src: animation_loading_default,
@@ -865,7 +869,7 @@ function Login() {
         }
       )
     ] })
-  ] }) }) });
+  ] }) });
 }
 
 Object.defineProperty(exports, "AbcWaasProvider", {
@@ -875,6 +879,10 @@ Object.defineProperty(exports, "AbcWaasProvider", {
 Object.defineProperty(exports, "useAbcWaas", {
   enumerable: true,
   get: function () { return abcWaasCoreSdk.useAbcWaas; }
+});
+Object.defineProperty(exports, "useLogin", {
+  enumerable: true,
+  get: function () { return abcWaasCoreSdk.useLogin; }
 });
 exports.Login = Login;
 //# sourceMappingURL=index.js.map

@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 
-import { AbcWaasProvider, useLogin } from "abc-waas-core-sdk";
+import { useLogin } from "abc-waas-core-sdk";
 
 import GoogleIcon from "@/assets/icons/providers/icon_google.svg";
 import AppleIcon from "@/assets/icons/providers/icon_apple.svg";
@@ -25,7 +25,6 @@ import {
   getAppleToken,
   verifyAppleToken,
 } from "@/utilities/apple";
-import { useAbcWaas } from "abc-waas-core-sdk";
 
 type Providers = "google" | "apple" | "kakao" | "naver" | "line";
 
@@ -149,10 +148,15 @@ export default function Login() {
     pathname: window.location.pathname,
   };
 
-  const { loginV2, error: loginError, service: loginService } = useLogin();
+  const {
+    loginV2,
+    error: coreError,
+    loading: coreLoading,
+    setLoading: setCoreLoading,
+    service: coreService,
+  } = useLogin();
 
   const [error, setError] = useState<Error | null>(null);
-  const [loading, setLoading] = useState(false);
 
   const handleRedirect = (provider: Providers) => {
     localStorage.setItem("provider", provider);
@@ -281,7 +285,7 @@ export default function Login() {
   const handleCallback = useCallback(
     async (provider: string, data: any) => {
       try {
-        setLoading(true);
+        setCoreLoading(true);
         setError(null);
 
         if (provider === "google") {
@@ -454,17 +458,17 @@ export default function Login() {
           throw new Error("Invalid provider.");
         }
       } catch (error: any) {
-        if (loginError) {
-          setError(loginError);
+        if (coreError) {
+          setError(coreError);
         }
         if (error) {
           setError(error);
         }
       } finally {
-        setLoading(false);
+        setCoreLoading(false);
       }
     },
-    [loginV2, loginError, navigate]
+    [loginV2, coreError, navigate]
   );
 
   useEffect(() => {
@@ -550,119 +554,115 @@ export default function Login() {
     }
   }, [location.search, location.hash]);
 
-  const { config } = useAbcWaas();
-
   return (
-    <AbcWaasProvider config={config}>
-      <div style={metaContainerStyle}>
-        <div style={containerStyle}>
-          <div style={titleContainerStyle}>
-            <span
-              style={{
-                textAlign: "center",
-                marginBottom: "24px",
-                fontSize: "20px",
-                fontWeight: "bold",
-                color: "#333333",
-              }}
-            >
-              ABC WaaS Login
-            </span>
-          </div>
+    <div style={metaContainerStyle}>
+      <div style={containerStyle}>
+        <div style={titleContainerStyle}>
+          <span
+            style={{
+              textAlign: "center",
+              marginBottom: "24px",
+              fontSize: "20px",
+              fontWeight: "bold",
+              color: "#333333",
+            }}
+          >
+            ABC WaaS Login
+          </span>
+        </div>
 
-          <div style={contentContainerStyle}>
-            {providers.map((item) => (
-              <button
-                key={item.type}
-                onClick={() => handleRedirect(item.type)}
-                disabled={loading}
-                style={{
-                  ...buttonBaseStyle,
-                  backgroundColor: item.backgroundColor,
-                  color: item.textColor,
-                  border: item.border,
-                }}
-                onMouseEnter={(event) =>
-                  (event.currentTarget.style.backgroundColor = item.hoverColor)
-                }
-                onMouseLeave={(event) =>
-                  (event.currentTarget.style.backgroundColor =
-                    item.backgroundColor)
-                }
-              >
-                {loading && loginService === item.type ? (
+        <div style={contentContainerStyle}>
+          {providers.map((item) => (
+            <button
+              key={item.type}
+              onClick={() => handleRedirect(item.type)}
+              disabled={coreLoading}
+              style={{
+                ...buttonBaseStyle,
+                backgroundColor: item.backgroundColor,
+                color: item.textColor,
+                border: item.border,
+              }}
+              onMouseEnter={(event) =>
+                (event.currentTarget.style.backgroundColor = item.hoverColor)
+              }
+              onMouseLeave={(event) =>
+                (event.currentTarget.style.backgroundColor =
+                  item.backgroundColor)
+              }
+            >
+              {coreLoading && coreService === item.type ? (
+                <img
+                  src={LoadingAnimation}
+                  alt="loading"
+                  style={{ width: "24px", height: "24px" }}
+                />
+              ) : (
+                <>
                   <img
-                    src={LoadingAnimation}
-                    alt="loading"
-                    style={{ width: "24px", height: "24px" }}
+                    src={item.icon}
+                    alt={`${item.type} icon`}
+                    style={{
+                      width: "24px",
+                      height: "24px",
+                    }}
                   />
-                ) : (
-                  <>
-                    <img
-                      src={item.icon}
-                      alt={`${item.type} icon`}
-                      style={{
-                        width: "24px",
-                        height: "24px",
-                      }}
-                    />
-                    {item.label}
-                  </>
-                )}
-              </button>
-            ))}
-
-            {/* Error Message */}
-            <div
-              style={{
-                width: "100%",
-                minHeight: "31px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              {error?.message && (
-                <span
-                  style={{
-                    color: "red",
-                    textAlign: "center",
-                    display: "block",
-                    width: "100%",
-                    marginBottom: "12px",
-                  }}
-                >
-                  {error.message}
-                </span>
+                  {item.label}
+                </>
               )}
-            </div>
-            {/*  */}
+            </button>
+          ))}
 
-            {/* Copyright */}
-            <div
-              style={{
-                width: "100%",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
+          {/* Error Message */}
+          <div
+            style={{
+              width: "100%",
+              minHeight: "31px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            {error?.message && (
               <span
                 style={{
-                  color: "#666666",
+                  color: "red",
                   textAlign: "center",
                   display: "block",
                   width: "100%",
-                  fontSize: "10px",
+                  marginBottom: "12px",
                 }}
               >
-                © AhnLab Blockchain Company. All rights reserved.
+                {error.message}
               </span>
-            </div>
+            )}
+          </div>
+          {/*  */}
+
+          {/* Copyright */}
+          <div
+            style={{
+              width: "100%",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <span
+              style={{
+                color: "#666666",
+                textAlign: "center",
+                display: "block",
+                width: "100%",
+                fontSize: "10px",
+              }}
+            >
+              © AhnLab Blockchain Company. All rights reserved.
+            </span>
           </div>
         </div>
       </div>
-    </AbcWaasProvider>
+    </div>
   );
 }
 

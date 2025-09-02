@@ -1,5 +1,5 @@
-import { useLogin, useAbcWaas, AbcWaasProvider } from 'abc-waas-core-sdk';
-export { AbcWaasProvider, useAbcWaas } from 'abc-waas-core-sdk';
+import { useLogin } from 'abc-waas-core-sdk';
+export { AbcWaasProvider, useAbcWaas, useLogin } from 'abc-waas-core-sdk';
 import { useState, useCallback, useEffect } from 'react';
 import { createRemoteJWKSet, jwtVerify, SignJWT } from 'jose';
 import { jsx, jsxs, Fragment } from 'react/jsx-runtime';
@@ -463,9 +463,14 @@ function Login() {
   const location = {
     search: window.location.search,
     hash: window.location.hash};
-  const { loginV2, error: loginError, service: loginService } = useLogin();
+  const {
+    loginV2,
+    error: coreError,
+    loading: coreLoading,
+    setLoading: setCoreLoading,
+    service: coreService
+  } = useLogin();
   const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(false);
   const handleRedirect = (provider) => {
     localStorage.setItem("provider", provider);
     if (provider === "google") {
@@ -562,7 +567,7 @@ function Login() {
     async (provider, data) => {
       var _a;
       try {
-        setLoading(true);
+        setCoreLoading(true);
         setError(null);
         if (provider === "google") {
           if (!process.env.REACT_APP_GOOGLE_CLIENT_ID || !process.env.REACT_APP_GOOGLE_CLIENT_SECRET || !process.env.REACT_APP_GOOGLE_REDIRECT_URI) {
@@ -689,17 +694,17 @@ function Login() {
           throw new Error("Invalid provider.");
         }
       } catch (error2) {
-        if (loginError) {
-          setError(loginError);
+        if (coreError) {
+          setError(coreError);
         }
         if (error2) {
           setError(error2);
         }
       } finally {
-        setLoading(false);
+        setCoreLoading(false);
       }
     },
-    [loginV2, loginError, navigate]
+    [loginV2, coreError, navigate]
   );
   useEffect(() => {
     const provider = localStorage.getItem("provider");
@@ -762,8 +767,7 @@ function Login() {
       }
     }
   }, [location.search, location.hash]);
-  const { config } = useAbcWaas();
-  return /* @__PURE__ */ jsx(AbcWaasProvider, { config, children: /* @__PURE__ */ jsx("div", { style: metaContainerStyle, children: /* @__PURE__ */ jsxs("div", { style: containerStyle, children: [
+  return /* @__PURE__ */ jsx("div", { style: metaContainerStyle, children: /* @__PURE__ */ jsxs("div", { style: containerStyle, children: [
     /* @__PURE__ */ jsx("div", { style: titleContainerStyle, children: /* @__PURE__ */ jsx(
       "span",
       {
@@ -782,7 +786,7 @@ function Login() {
         "button",
         {
           onClick: () => handleRedirect(item.type),
-          disabled: loading,
+          disabled: coreLoading,
           style: __spreadProps(__spreadValues({}, buttonBaseStyle), {
             backgroundColor: item.backgroundColor,
             color: item.textColor,
@@ -790,7 +794,7 @@ function Login() {
           }),
           onMouseEnter: (event) => event.currentTarget.style.backgroundColor = item.hoverColor,
           onMouseLeave: (event) => event.currentTarget.style.backgroundColor = item.backgroundColor,
-          children: loading && loginService === item.type ? /* @__PURE__ */ jsx(
+          children: coreLoading && coreService === item.type ? /* @__PURE__ */ jsx(
             "img",
             {
               src: animation_loading_default,
@@ -864,7 +868,7 @@ function Login() {
         }
       )
     ] })
-  ] }) }) });
+  ] }) });
 }
 
 export { Login };
