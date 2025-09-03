@@ -556,7 +556,18 @@ export default function Login() {
               color: "#333333",
             }}
           >
-            ABC WaaS Login
+            AhnLab Blockchain Company
+          </span>
+          <span
+            style={{
+              textAlign: "center",
+              marginBottom: "24px",
+              fontSize: "20px",
+              fontWeight: "bold",
+              color: "#333333",
+            }}
+          >
+            Wallet-as-a-Service
           </span>
         </div>
 

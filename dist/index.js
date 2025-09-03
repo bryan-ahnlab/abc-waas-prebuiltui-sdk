@@ -759,19 +759,34 @@ function Login() {
     }
   }, [location.search, location.hash]);
   return /* @__PURE__ */ jsxRuntime.jsx("div", { style: metaContainerStyle, children: /* @__PURE__ */ jsxRuntime.jsxs("div", { style: containerStyle, children: [
-    /* @__PURE__ */ jsxRuntime.jsx("div", { style: titleContainerStyle, children: /* @__PURE__ */ jsxRuntime.jsx(
-      "span",
-      {
-        style: {
-          textAlign: "center",
-          marginBottom: "24px",
-          fontSize: "20px",
-          fontWeight: "bold",
-          color: "#333333"
-        },
-        children: "ABC WaaS Login"
-      }
-    ) }),
+    /* @__PURE__ */ jsxRuntime.jsxs("div", { style: titleContainerStyle, children: [
+      /* @__PURE__ */ jsxRuntime.jsx(
+        "span",
+        {
+          style: {
+            textAlign: "center",
+            marginBottom: "24px",
+            fontSize: "20px",
+            fontWeight: "bold",
+            color: "#333333"
+          },
+          children: "AhnLab Blockchain Company"
+        }
+      ),
+      /* @__PURE__ */ jsxRuntime.jsx(
+        "span",
+        {
+          style: {
+            textAlign: "center",
+            marginBottom: "24px",
+            fontSize: "20px",
+            fontWeight: "bold",
+            color: "#333333"
+          },
+          children: "Wallet-as-a-Service"
+        }
+      )
+    ] }),
     /* @__PURE__ */ jsxRuntime.jsxs("div", { style: contentContainerStyle, children: [
       providers.map((item) => /* @__PURE__ */ jsxRuntime.jsx(
         "button",
