@@ -361,6 +361,25 @@ var createAppleClientSecret = async (idToken, privateKey, teamId, keyId) => {
     throw error;
   }
 };
+
+// src/utilities/common.ts
+var generateUUID = () => {
+  if (typeof crypto !== "undefined" && crypto.randomUUID) {
+    return crypto.randomUUID();
+  }
+  if (typeof crypto !== "undefined" && crypto.getRandomValues) {
+    const array = new Uint8Array(16);
+    crypto.getRandomValues(array);
+    array[6] = array[6] & 15 | 64;
+    array[8] = array[8] & 63 | 128;
+    return Array.from(array, (byte) => byte.toString(16).padStart(2, "0")).join("").replace(/(.{8})(.{4})(.{4})(.{4})(.{12})/, "$1-$2-$3-$4-$5");
+  }
+  return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function(c) {
+    const r = Math.random() * 16 | 0;
+    const v = c === "x" ? r : r & 3 | 8;
+    return v.toString(16);
+  });
+};
 var providers = [
   {
     type: "google",
@@ -419,7 +438,7 @@ var metaContainerStyle = {
 };
 var containerStyle = {
   width: "100%",
-  maxWidth: "360px",
+  maxWidth: "340px",
   boxSizing: "border-box",
   padding: "40px 30px",
   borderRadius: "30px",
@@ -449,7 +468,7 @@ var buttonBaseStyle = {
   fontSize: "16px",
   borderRadius: "30px",
   width: "100%",
-  marginBottom: "12px",
+  marginBottom: "16px",
   cursor: "pointer",
   transition: "all 0.2s ease-in-out",
   wordBreak: "break-all",
@@ -470,7 +489,7 @@ function Login() {
       if (!process.env.REACT_APP_GOOGLE_CLIENT_ID || !process.env.REACT_APP_GOOGLE_REDIRECT_URI) {
         throw new Error("Google client ID or redirect URI is not set.");
       }
-      const state = crypto.randomUUID();
+      const state = generateUUID();
       localStorage.setItem("google_oauth_state", state);
       const url = new URL("https://accounts.google.com/o/oauth2/v2/auth");
       url.searchParams.set("client_id", process.env.REACT_APP_GOOGLE_CLIENT_ID);
@@ -491,7 +510,7 @@ function Login() {
       if (!process.env.REACT_APP_APPLE_CLIENT_ID || !process.env.REACT_APP_APPLE_REDIRECT_URI) {
         throw new Error("Apple client ID or redirect URI is not set.");
       }
-      const state = crypto.randomUUID();
+      const state = generateUUID();
       localStorage.setItem("apple_oauth_state", state);
       const url = new URL("https://appleid.apple.com/auth/authorize");
       url.searchParams.set("client_id", process.env.REACT_APP_APPLE_CLIENT_ID);
@@ -508,7 +527,7 @@ function Login() {
       if (!process.env.REACT_APP_NAVER_CLIENT_ID || !process.env.REACT_APP_NAVER_REDIRECT_URI) {
         throw new Error("Naver client ID or redirect URI is not set.");
       }
-      const state = crypto.randomUUID();
+      const state = generateUUID();
       localStorage.setItem("naver_oauth_state", state);
       const url = new URL("https://nid.naver.com/oauth2.0/authorize");
       url.searchParams.set("client_id", process.env.REACT_APP_NAVER_CLIENT_ID);
@@ -523,7 +542,7 @@ function Login() {
       if (!process.env.REACT_APP_KAKAO_REST_API_KEY || !process.env.REACT_APP_KAKAO_REDIRECT_URI) {
         throw new Error("Kakao client ID or redirect URI is not set.");
       }
-      const state = crypto.randomUUID();
+      const state = generateUUID();
       localStorage.setItem("kakao_oauth_state", state);
       const url = new URL("https://kauth.kakao.com/oauth/authorize");
       url.searchParams.set(
@@ -542,7 +561,7 @@ function Login() {
       if (!process.env.REACT_APP_LINE_CLIENT_ID || !process.env.REACT_APP_LINE_REDIRECT_URI) {
         throw new Error("Line client ID or redirect URI is not set.");
       }
-      const state = crypto.randomUUID();
+      const state = generateUUID();
       localStorage.setItem("line_oauth_state", state);
       const url = new URL("https://access.line.me/oauth2/v2.1/authorize");
       url.searchParams.set("client_id", process.env.REACT_APP_LINE_CLIENT_ID);
@@ -763,7 +782,7 @@ function Login() {
       {
         style: {
           textAlign: "center",
-          marginBottom: "24px",
+          marginBottom: "36px",
           fontSize: "20px",
           fontWeight: "bold",
           color: "#333333",

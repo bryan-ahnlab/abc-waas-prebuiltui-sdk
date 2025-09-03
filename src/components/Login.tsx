@@ -25,6 +25,7 @@ import {
   getAppleToken,
   verifyAppleToken,
 } from "@/utilities/apple";
+import { generateUUID } from "@/utilities/common";
 
 type Providers = "google" | "apple" | "kakao" | "naver" | "line";
 
@@ -96,7 +97,7 @@ const metaContainerStyle = {
 
 const containerStyle = {
   width: "100%",
-  maxWidth: "360px",
+  maxWidth: "340px",
   boxSizing: "border-box",
   padding: "40px 30px",
   borderRadius: "30px",
@@ -129,7 +130,7 @@ const buttonBaseStyle = {
   fontSize: "16px",
   borderRadius: "30px",
   width: "100%",
-  marginBottom: "12px",
+  marginBottom: "16px",
   cursor: "pointer",
   transition: "all 0.2s ease-in-out",
   wordBreak: "break-all",
@@ -161,7 +162,7 @@ export default function Login() {
         throw new Error("Google client ID or redirect URI is not set.");
       }
 
-      const state = crypto.randomUUID();
+      const state = generateUUID();
       localStorage.setItem("google_oauth_state", state);
 
       const url = new URL("https://accounts.google.com/o/oauth2/v2/auth");
@@ -188,7 +189,7 @@ export default function Login() {
         throw new Error("Apple client ID or redirect URI is not set.");
       }
 
-      const state = crypto.randomUUID();
+      const state = generateUUID();
       localStorage.setItem("apple_oauth_state", state);
 
       const url = new URL("https://appleid.apple.com/auth/authorize");
@@ -211,7 +212,7 @@ export default function Login() {
         throw new Error("Naver client ID or redirect URI is not set.");
       }
 
-      const state = crypto.randomUUID();
+      const state = generateUUID();
       localStorage.setItem("naver_oauth_state", state);
 
       const url = new URL("https://nid.naver.com/oauth2.0/authorize");
@@ -232,7 +233,7 @@ export default function Login() {
         throw new Error("Kakao client ID or redirect URI is not set.");
       }
 
-      const state = crypto.randomUUID();
+      const state = generateUUID();
       localStorage.setItem("kakao_oauth_state", state);
 
       const url = new URL("https://kauth.kakao.com/oauth/authorize");
@@ -257,7 +258,7 @@ export default function Login() {
         throw new Error("Line client ID or redirect URI is not set.");
       }
 
-      const state = crypto.randomUUID();
+      const state = generateUUID();
       localStorage.setItem("line_oauth_state", state);
 
       const url = new URL("https://access.line.me/oauth2/v2.1/authorize");
@@ -550,7 +551,7 @@ export default function Login() {
           <span
             style={{
               textAlign: "center",
-              marginBottom: "24px",
+              marginBottom: "36px",
               fontSize: "20px",
               fontWeight: "bold",
               color: "#333333",
