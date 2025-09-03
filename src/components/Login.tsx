@@ -148,14 +148,7 @@ export default function Login() {
     pathname: window.location.pathname,
   };
 
-  const {
-    loginV2,
-    loading: coreLoading,
-    setLoading: setCoreLoading,
-    error: coreError,
-    setError: setCoreError,
-    service: coreService,
-  } = useLogin();
+  const { loginV2, loading, setLoading, error, setError, service } = useLogin();
 
   const handleRedirect = (provider: Providers) => {
     localStorage.setItem("provider", provider);
@@ -284,8 +277,8 @@ export default function Login() {
   const handleCallback = useCallback(
     async (provider: string, data: any) => {
       try {
-        setCoreLoading(true);
-        setCoreError(null);
+        setLoading(true);
+        setError(null);
 
         if (provider === "google") {
           if (
@@ -458,16 +451,13 @@ export default function Login() {
         }
       } catch (error: any) {
         if (error) {
-          setCoreError(error);
-        }
-        if (coreError) {
-          setCoreError(coreError);
+          setError(error);
         }
       } finally {
-        setCoreLoading(false);
+        setLoading(false);
       }
     },
-    [loginV2, coreError, navigate]
+    [loginV2, error, navigate]
   );
 
   useEffect(() => {
@@ -575,7 +565,7 @@ export default function Login() {
             <button
               key={item.type}
               onClick={() => handleRedirect(item.type)}
-              disabled={coreLoading}
+              disabled={loading}
               style={{
                 ...buttonBaseStyle,
                 backgroundColor: item.backgroundColor,
@@ -590,7 +580,7 @@ export default function Login() {
                   item.backgroundColor)
               }
             >
-              {coreLoading && coreService === item.type ? (
+              {loading && service === item.type ? (
                 <img
                   src={LoadingAnimation}
                   alt="loading"
@@ -622,7 +612,7 @@ export default function Login() {
               justifyContent: "center",
             }}
           >
-            {coreError?.message && (
+            {error?.message && (
               <span
                 style={{
                   color: "red",
@@ -632,7 +622,7 @@ export default function Login() {
                   marginBottom: "12px",
                 }}
               >
-                {coreError.message}
+                {error.message}
               </span>
             )}
           </div>

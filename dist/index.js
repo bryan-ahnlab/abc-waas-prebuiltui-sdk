@@ -464,16 +464,7 @@ function Login() {
   const location = {
     search: window.location.search,
     hash: window.location.hash};
-  const {
-    loginV2,
-    loading: coreLoading,
-    setLoading: setCoreLoading,
-    error: coreError,
-    setError: setCoreError,
-    service: coreService
-  } = abcWaasCoreSdk.useLogin();
-  console.log("coreLoading", coreLoading);
-  console.log("coreError", coreError);
+  const { loginV2, loading, setLoading, error, setError, service } = abcWaasCoreSdk.useLogin();
   const handleRedirect = (provider) => {
     localStorage.setItem("provider", provider);
     if (provider === "google") {
@@ -570,8 +561,8 @@ function Login() {
     async (provider, data) => {
       var _a;
       try {
-        setCoreLoading(true);
-        setCoreError(null);
+        setLoading(true);
+        setError(null);
         if (provider === "google") {
           if (!process.env.REACT_APP_GOOGLE_CLIENT_ID || !process.env.REACT_APP_GOOGLE_CLIENT_SECRET || !process.env.REACT_APP_GOOGLE_REDIRECT_URI) {
             throw new Error(
@@ -696,18 +687,15 @@ function Login() {
         } else {
           throw new Error("Invalid provider.");
         }
-      } catch (error) {
-        if (error) {
-          setCoreError(error);
-        }
-        if (coreError) {
-          setCoreError(coreError);
+      } catch (error2) {
+        if (error2) {
+          setError(error2);
         }
       } finally {
-        setCoreLoading(false);
+        setLoading(false);
       }
     },
-    [loginV2, coreError, navigate]
+    [loginV2, error, navigate]
   );
   react.useEffect(() => {
     const provider = localStorage.getItem("provider");
@@ -789,7 +777,7 @@ function Login() {
         "button",
         {
           onClick: () => handleRedirect(item.type),
-          disabled: coreLoading,
+          disabled: loading,
           style: __spreadProps(__spreadValues({}, buttonBaseStyle), {
             backgroundColor: item.backgroundColor,
             color: item.textColor,
@@ -797,7 +785,7 @@ function Login() {
           }),
           onMouseEnter: (event) => event.currentTarget.style.backgroundColor = item.hoverColor,
           onMouseLeave: (event) => event.currentTarget.style.backgroundColor = item.backgroundColor,
-          children: coreLoading && coreService === item.type ? /* @__PURE__ */ jsxRuntime.jsx(
+          children: loading && service === item.type ? /* @__PURE__ */ jsxRuntime.jsx(
             "img",
             {
               src: animation_loading_default,
@@ -831,7 +819,7 @@ function Login() {
             alignItems: "center",
             justifyContent: "center"
           },
-          children: (coreError == null ? void 0 : coreError.message) && /* @__PURE__ */ jsxRuntime.jsx(
+          children: (error == null ? void 0 : error.message) && /* @__PURE__ */ jsxRuntime.jsx(
             "span",
             {
               style: {
@@ -841,7 +829,7 @@ function Login() {
                 width: "100%",
                 marginBottom: "12px"
               },
-              children: coreError.message
+              children: error.message
             }
           )
         }
