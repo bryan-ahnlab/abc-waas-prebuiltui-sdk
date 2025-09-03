@@ -431,7 +431,7 @@ var containerStyle = {
 };
 var titleContainerStyle = {
   display: "flex",
-  flexDirection: "row",
+  flexDirection: "column",
   alignItems: "center",
   justifyContent: "center"
 };
@@ -758,34 +758,21 @@ function Login() {
     }
   }, [location.search, location.hash]);
   return /* @__PURE__ */ jsx("div", { style: metaContainerStyle, children: /* @__PURE__ */ jsxs("div", { style: containerStyle, children: [
-    /* @__PURE__ */ jsxs("div", { style: titleContainerStyle, children: [
-      /* @__PURE__ */ jsx(
-        "span",
-        {
-          style: {
-            textAlign: "center",
-            marginBottom: "24px",
-            fontSize: "20px",
-            fontWeight: "bold",
-            color: "#333333"
-          },
-          children: "AhnLab Blockchain Company"
-        }
-      ),
-      /* @__PURE__ */ jsx(
-        "span",
-        {
-          style: {
-            textAlign: "center",
-            marginBottom: "24px",
-            fontSize: "20px",
-            fontWeight: "bold",
-            color: "#333333"
-          },
-          children: "Wallet-as-a-Service"
-        }
-      )
-    ] }),
+    /* @__PURE__ */ jsx("div", { style: titleContainerStyle, children: /* @__PURE__ */ jsx(
+      "span",
+      {
+        style: {
+          textAlign: "center",
+          marginBottom: "24px",
+          fontSize: "20px",
+          fontWeight: "bold",
+          color: "#333333",
+          whiteSpace: "pre-line",
+          lineHeight: "1.5"
+        },
+        children: "AhnLab Blockchain Company\nWallet-as-a-Service"
+      }
+    ) }),
     /* @__PURE__ */ jsxs("div", { style: contentContainerStyle, children: [
       providers.map((item) => /* @__PURE__ */ jsx(
         "button",

@@ -109,7 +109,7 @@ const containerStyle = {
 
 const titleContainerStyle = {
   display: "flex",
-  flexDirection: "row",
+  flexDirection: "column",
   alignItems: "center",
   justifyContent: "center",
 } as const;
@@ -554,20 +554,11 @@ export default function Login() {
               fontSize: "20px",
               fontWeight: "bold",
               color: "#333333",
+              whiteSpace: "pre-line",
+              lineHeight: "1.5",
             }}
           >
-            AhnLab Blockchain Company
-          </span>
-          <span
-            style={{
-              textAlign: "center",
-              marginBottom: "24px",
-              fontSize: "20px",
-              fontWeight: "bold",
-              color: "#333333",
-            }}
-          >
-            Wallet-as-a-Service
+            {"AhnLab Blockchain Company\nWallet-as-a-Service"}
           </span>
         </div>
 
