@@ -90,9 +90,9 @@ const metaContainerStyle = {
   flexDirection: "column",
   alignItems: "center",
   justifyContent: "center",
-  width: "100%",
-  height: "100vh",
+  minHeight: "100vh",
   backgroundColor: "#f5f5f5",
+  padding: "20px",
 } as const;
 
 const containerStyle = {
@@ -552,7 +552,7 @@ export default function Login() {
             style={{
               textAlign: "center",
               marginBottom: "36px",
-              fontSize: "20px",
+              fontSize: "18px",
               fontWeight: "bold",
               color: "#333333",
               whiteSpace: "pre-line",
@@ -609,7 +609,7 @@ export default function Login() {
           <div
             style={{
               width: "100%",
-              minHeight: "31px",
+              minHeight: "48px",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
@@ -622,7 +622,8 @@ export default function Login() {
                   textAlign: "center",
                   display: "block",
                   width: "100%",
-                  marginBottom: "12px",
+                  marginBottom: "24px",
+                  fontSize: "12px",
                 }}
               >
                 {error.message}
