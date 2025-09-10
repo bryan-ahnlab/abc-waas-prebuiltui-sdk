@@ -127,7 +127,7 @@ const buttonBaseStyle = {
   alignItems: "center",
   justifyContent: "center",
   padding: "12px 16px",
-  fontSize: "16px",
+  fontSize: "0.9rem",
   borderRadius: "30px",
   width: "100%",
   marginBottom: "16px",
@@ -542,7 +542,7 @@ export default function Login() {
             style={{
               textAlign: "center",
               marginBottom: "36px",
-              fontSize: "18px",
+              fontSize: "1rem",
               fontWeight: "bold",
               color: "#333333",
               whiteSpace: "pre-line",
@@ -613,7 +613,7 @@ export default function Login() {
                   display: "block",
                   width: "100%",
                   marginBottom: "24px",
-                  fontSize: "12px",
+                  fontSize: "0.8rem",
                 }}
               >
                 {loginInfo.error.message}
@@ -637,7 +637,7 @@ export default function Login() {
                 textAlign: "center",
                 display: "block",
                 width: "100%",
-                fontSize: "10px",
+                fontSize: "0.6rem",
               }}
             >
               © AhnLab Blockchain Company. All rights reserved.
