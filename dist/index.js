@@ -381,10 +381,40 @@ var generateUUID = () => {
     return v.toString(16);
   });
 };
+var LOGIN_BUTTON_TEXT = {
+  google: {
+    ko: "Google\uB85C \uACC4\uC18D\uD558\uAE30",
+    en: "Continue with Google"
+  },
+  apple: {
+    ko: "Apple\uB85C \uACC4\uC18D\uD558\uAE30",
+    en: "Continue with Apple"
+  },
+  naver: {
+    ko: "\uB124\uC774\uBC84\uB85C \uACC4\uC18D\uD558\uAE30",
+    en: "Continue with Naver"
+  },
+  kakao: {
+    ko: "\uCE74\uCE74\uC624\uB85C \uACC4\uC18D\uD558\uAE30",
+    en: "Continue with Kakao"
+  },
+  line: {
+    ko: "LINE\uC73C\uB85C \uACC4\uC18D\uD558\uAE30",
+    en: "Continue with LINE"
+  }
+};
+var LOGIN_TITLE_TEXT = {
+  ko: "AhnLab Blockchain Company\nWallet-as-a-Service",
+  en: "AhnLab Blockchain Company\nWallet-as-a-Service"
+};
+var LOGIN_COPYRIGHT_TEXT = {
+  ko: "\xA9 AhnLab Blockchain Company. All rights reserved.",
+  en: "\xA9 AhnLab Blockchain Company. All rights reserved."
+};
 var providers = [
   {
     type: "google",
-    label: "Google\uB85C \uACC4\uC18D\uD558\uAE30",
+    label: LOGIN_BUTTON_TEXT.google,
     icon: icon_google_default,
     backgroundColor: "#ffffff",
     textColor: "#000000",
@@ -393,7 +423,7 @@ var providers = [
   },
   {
     type: "apple",
-    label: "Apple\uB85C \uACC4\uC18D\uD558\uAE30",
+    label: LOGIN_BUTTON_TEXT.apple,
     icon: icon_apple_default,
     backgroundColor: "#ffffff",
     textColor: "#000000",
@@ -402,7 +432,7 @@ var providers = [
   },
   {
     type: "naver",
-    label: "\uB124\uC774\uBC84\uB85C \uACC4\uC18D\uD558\uAE30",
+    label: LOGIN_BUTTON_TEXT.naver,
     icon: icon_naver_default,
     backgroundColor: "#ffffff",
     textColor: "#000000",
@@ -411,7 +441,7 @@ var providers = [
   },
   {
     type: "kakao",
-    label: "\uCE74\uCE74\uC624\uB85C \uACC4\uC18D\uD558\uAE30",
+    label: LOGIN_BUTTON_TEXT.kakao,
     icon: icon_kakao_default,
     backgroundColor: "#FEE500",
     textColor: "#000000",
@@ -420,7 +450,7 @@ var providers = [
   },
   {
     type: "line",
-    label: "LINE\uC73C\uB85C \uACC4\uC18D\uD558\uAE30",
+    label: LOGIN_BUTTON_TEXT.line,
     icon: icon_line_default,
     backgroundColor: "#03C75A",
     textColor: "#ffffff",
@@ -466,7 +496,7 @@ var buttonBaseStyle = {
   alignItems: "center",
   justifyContent: "center",
   padding: "12px 16px",
-  fontSize: "16px",
+  fontSize: "0.9rem",
   borderRadius: "30px",
   width: "100%",
   marginBottom: "16px",
@@ -476,8 +506,33 @@ var buttonBaseStyle = {
   flexWrap: "wrap",
   gap: "12px"
 };
+var languageSwitchStyle = {
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  marginBottom: "24px",
+  gap: "8px"
+};
+var languageButtonBaseStyle = {
+  padding: "6px 12px",
+  fontSize: "0.8rem",
+  borderRadius: "20px",
+  cursor: "pointer",
+  transition: "all 0.2s ease-in-out"
+};
+var activeLanguageButtonStyle = __spreadProps(__spreadValues({}, languageButtonBaseStyle), {
+  backgroundColor: "#4285f4",
+  color: "#ffffff",
+  border: "1px solid #4285f4"
+});
+var inactiveLanguageButtonStyle = __spreadProps(__spreadValues({}, languageButtonBaseStyle), {
+  backgroundColor: "#ffffff",
+  color: "#666666",
+  border: "1px solid #dadce0"
+});
 function Login() {
   var _a;
+  const [language, setLanguage] = react.useState("ko");
   const location = {
     search: window.location.search,
     hash: window.location.hash};
@@ -770,19 +825,57 @@ function Login() {
     }
   }, [location.search, location.hash]);
   return /* @__PURE__ */ jsxRuntime.jsx("div", { style: metaContainerStyle, children: /* @__PURE__ */ jsxRuntime.jsxs("div", { style: containerStyle, children: [
+    /* @__PURE__ */ jsxRuntime.jsxs("div", { style: languageSwitchStyle, children: [
+      /* @__PURE__ */ jsxRuntime.jsx(
+        "button",
+        {
+          onClick: () => setLanguage("ko"),
+          style: language === "ko" ? activeLanguageButtonStyle : inactiveLanguageButtonStyle,
+          onMouseEnter: (event) => {
+            if (language !== "ko") {
+              event.currentTarget.style.backgroundColor = "#f7f7f7";
+            }
+          },
+          onMouseLeave: (event) => {
+            if (language !== "ko") {
+              event.currentTarget.style.backgroundColor = "#ffffff";
+            }
+          },
+          children: "\uD55C\uAD6D\uC5B4"
+        }
+      ),
+      /* @__PURE__ */ jsxRuntime.jsx(
+        "button",
+        {
+          onClick: () => setLanguage("en"),
+          style: language === "en" ? activeLanguageButtonStyle : inactiveLanguageButtonStyle,
+          onMouseEnter: (event) => {
+            if (language !== "en") {
+              event.currentTarget.style.backgroundColor = "#f7f7f7";
+            }
+          },
+          onMouseLeave: (event) => {
+            if (language !== "en") {
+              event.currentTarget.style.backgroundColor = "#ffffff";
+            }
+          },
+          children: "English"
+        }
+      )
+    ] }),
     /* @__PURE__ */ jsxRuntime.jsx("div", { style: titleContainerStyle, children: /* @__PURE__ */ jsxRuntime.jsx(
       "span",
       {
         style: {
           textAlign: "center",
           marginBottom: "36px",
-          fontSize: "18px",
+          fontSize: "1rem",
           fontWeight: "bold",
           color: "#333333",
           whiteSpace: "pre-line",
           lineHeight: "1.5"
         },
-        children: "AhnLab Blockchain Company\nWallet-as-a-Service"
+        children: LOGIN_TITLE_TEXT[language]
       }
     ) }),
     /* @__PURE__ */ jsxRuntime.jsxs("div", { style: contentContainerStyle, children: [
@@ -817,7 +910,7 @@ function Login() {
                 }
               }
             ),
-            item.label
+            item.label[language]
           ] })
         },
         item.type
@@ -841,7 +934,7 @@ function Login() {
                 display: "block",
                 width: "100%",
                 marginBottom: "24px",
-                fontSize: "12px"
+                fontSize: "0.8rem"
               },
               children: loginInfo.error.message
             }
@@ -865,9 +958,9 @@ function Login() {
                 textAlign: "center",
                 display: "block",
                 width: "100%",
-                fontSize: "10px"
+                fontSize: "0.6rem"
               },
-              children: "\xA9 AhnLab Blockchain Company. All rights reserved."
+              children: LOGIN_COPYRIGHT_TEXT[language]
             }
           )
         }
@@ -875,47 +968,12 @@ function Login() {
     ] })
   ] }) });
 }
-var metaContainerStyle2 = {
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "center",
-  justifyContent: "flex-start",
-  width: "100%",
-  minHeight: "100vh",
-  backgroundColor: "#f5f5f5",
-  padding: "20px 0",
-  boxSizing: "border-box"
-};
-var containerStyle2 = {
-  width: "100%",
-  maxWidth: "340px",
-  boxSizing: "border-box",
-  padding: "40px 30px",
-  borderRadius: "30px",
-  color: "#333",
-  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.05)",
-  whiteSpace: "pre-wrap",
-  wordBreak: "break-all",
-  backgroundColor: "#ffffff"
-};
-var titleContainerStyle2 = {
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "center",
-  justifyContent: "center"
-};
-var contentContainerStyle2 = {
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "center",
-  justifyContent: "center"
-};
 var buttonBaseStyle2 = {
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
   padding: "12px 16px",
-  fontSize: "16px",
+  fontSize: "0.9rem",
   borderRadius: "30px",
   width: "100%",
   marginBottom: "16px",
@@ -926,26 +984,21 @@ var buttonBaseStyle2 = {
   gap: "12px",
   border: "1px solid #dadce0"
 };
-var logoutButtonStyle = __spreadProps(__spreadValues({}, buttonBaseStyle2), {
+var activeButtonStyle = __spreadProps(__spreadValues({}, buttonBaseStyle2), {
   backgroundColor: "#ffffff",
   color: "#000000"
 });
-var confirmButtonStyle = __spreadProps(__spreadValues({}, buttonBaseStyle2), {
-  backgroundColor: "#dc3545",
-  color: "#ffffff",
-  border: "1px solid #dc3545"
-});
-var cancelButtonStyle = __spreadProps(__spreadValues({}, buttonBaseStyle2), {
-  backgroundColor: "#6c757d",
-  color: "#ffffff",
-  border: "1px solid #6c757d"
+var inactiveButtonStyle = __spreadProps(__spreadValues({}, buttonBaseStyle2), {
+  backgroundColor: "#f5f5f5",
+  color: "#999999",
+  cursor: "not-allowed",
+  border: "1px solid #e0e0e0"
 });
 function Logout() {
-  var _a;
   const { logoutV2, logoutInfo, setLogoutInfo } = abcWaasCoreSdk.useLogout();
   const { loginInfo } = abcWaasCoreSdk.useLogin();
-  const [showConfirm, setShowConfirm] = react.useState(false);
   const handleLogout = async () => {
+    if (loginInfo.status !== "SUCCESS" || logoutInfo.loading) return;
     try {
       setLogoutInfo({
         loading: true,
@@ -953,7 +1006,6 @@ function Logout() {
         status: logoutInfo.status
       });
       await logoutV2();
-      setShowConfirm(false);
     } catch (error) {
       setLogoutInfo({
         loading: false,
@@ -962,224 +1014,33 @@ function Logout() {
       });
     }
   };
-  const handleLogoutClick = () => {
-    setShowConfirm(true);
-  };
-  const handleCancel = () => {
-    setShowConfirm(false);
-  };
-  if (loginInfo.status !== "SUCCESS") {
-    return /* @__PURE__ */ jsxRuntime.jsx("div", { style: metaContainerStyle2, children: /* @__PURE__ */ jsxRuntime.jsxs("div", { style: containerStyle2, children: [
-      /* @__PURE__ */ jsxRuntime.jsx("div", { style: titleContainerStyle2, children: /* @__PURE__ */ jsxRuntime.jsx(
-        "span",
-        {
-          style: {
-            textAlign: "center",
-            marginBottom: "36px",
-            fontSize: "20px",
-            fontWeight: "bold",
-            color: "#333333",
-            whiteSpace: "pre-line",
-            lineHeight: "1.5"
-          },
-          children: "AhnLab Blockchain Company\nWallet-as-a-Service"
+  const LOGOUT_BUTTON_TEXT = "\uB85C\uADF8\uC544\uC6C3";
+  return /* @__PURE__ */ jsxRuntime.jsx(
+    "button",
+    {
+      onClick: handleLogout,
+      disabled: loginInfo.status !== "SUCCESS" || logoutInfo.loading,
+      style: loginInfo.status === "SUCCESS" ? activeButtonStyle : inactiveButtonStyle,
+      onMouseEnter: (event) => {
+        if (loginInfo.status === "SUCCESS" && !logoutInfo.loading) {
+          event.currentTarget.style.backgroundColor = "#f7f7f7";
         }
-      ) }),
-      /* @__PURE__ */ jsxRuntime.jsxs("div", { style: contentContainerStyle2, children: [
-        /* @__PURE__ */ jsxRuntime.jsx(
-          "div",
-          {
-            style: {
-              textAlign: "center",
-              marginBottom: "24px",
-              fontSize: "16px",
-              color: "#666666"
-            },
-            children: "\uB85C\uADF8\uC778\uB418\uC9C0 \uC54A\uC740 \uC0C1\uD0DC\uC785\uB2C8\uB2E4."
-          }
-        ),
-        /* @__PURE__ */ jsxRuntime.jsx(
-          "div",
-          {
-            style: {
-              width: "100%",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              marginTop: "24px"
-            },
-            children: /* @__PURE__ */ jsxRuntime.jsx(
-              "span",
-              {
-                style: {
-                  color: "#666666",
-                  textAlign: "center",
-                  display: "block",
-                  width: "100%",
-                  fontSize: "10px"
-                },
-                children: "\xA9 AhnLab Blockchain Company. All rights reserved."
-              }
-            )
-          }
-        )
-      ] })
-    ] }) });
-  }
-  return /* @__PURE__ */ jsxRuntime.jsx("div", { style: metaContainerStyle2, children: /* @__PURE__ */ jsxRuntime.jsxs("div", { style: containerStyle2, children: [
-    /* @__PURE__ */ jsxRuntime.jsx("div", { style: titleContainerStyle2, children: /* @__PURE__ */ jsxRuntime.jsx(
-      "span",
-      {
-        style: {
-          textAlign: "center",
-          marginBottom: "36px",
-          fontSize: "20px",
-          fontWeight: "bold",
-          color: "#333333",
-          whiteSpace: "pre-line",
-          lineHeight: "1.5"
-        },
-        children: "AhnLab Blockchain Company\nWallet-as-a-Service"
-      }
-    ) }),
-    /* @__PURE__ */ jsxRuntime.jsxs("div", { style: contentContainerStyle2, children: [
-      /* @__PURE__ */ jsxRuntime.jsxs(
-        "div",
-        {
-          style: {
-            width: "100%",
-            textAlign: "center",
-            marginBottom: "24px",
-            padding: "16px",
-            backgroundColor: "#f8f9fa",
-            borderRadius: "12px",
-            fontSize: "14px",
-            color: "#333333"
-          },
-          children: [
-            /* @__PURE__ */ jsxRuntime.jsx("div", { style: { marginBottom: "8px", fontWeight: "bold" }, children: "\uB85C\uADF8\uC778\uB41C \uACC4\uC815" }),
-            /* @__PURE__ */ jsxRuntime.jsx("div", { style: { marginBottom: "4px" }, children: "\uB85C\uADF8\uC544\uC6C3\uC744 \uC9C4\uD589\uD558\uC2DC\uACA0\uC2B5\uB2C8\uAE4C?" })
-          ]
+      },
+      onMouseLeave: (event) => {
+        if (loginInfo.status === "SUCCESS" && !logoutInfo.loading) {
+          event.currentTarget.style.backgroundColor = "#ffffff";
         }
-      ),
-      !showConfirm ? (
-        // Logout Button
-        /* @__PURE__ */ jsxRuntime.jsx(
-          "button",
-          {
-            onClick: handleLogoutClick,
-            disabled: logoutInfo.loading,
-            style: logoutButtonStyle,
-            onMouseEnter: (event) => event.currentTarget.style.backgroundColor = "#f7f7f7",
-            onMouseLeave: (event) => event.currentTarget.style.backgroundColor = "#ffffff",
-            children: logoutInfo.loading ? /* @__PURE__ */ jsxRuntime.jsx(
-              "img",
-              {
-                src: animation_loading_default,
-                alt: "loading",
-                style: { width: "24px", height: "24px" }
-              }
-            ) : "\uB85C\uADF8\uC544\uC6C3"
-          }
-        )
-      ) : (
-        // Confirmation Buttons
-        /* @__PURE__ */ jsxRuntime.jsxs(jsxRuntime.Fragment, { children: [
-          /* @__PURE__ */ jsxRuntime.jsx(
-            "div",
-            {
-              style: {
-                textAlign: "center",
-                marginBottom: "24px",
-                fontSize: "16px",
-                color: "#333333"
-              },
-              children: "\uC815\uB9D0 \uB85C\uADF8\uC544\uC6C3\uD558\uC2DC\uACA0\uC2B5\uB2C8\uAE4C?"
-            }
-          ),
-          /* @__PURE__ */ jsxRuntime.jsx(
-            "button",
-            {
-              onClick: handleLogout,
-              disabled: logoutInfo.loading,
-              style: confirmButtonStyle,
-              onMouseEnter: (event) => event.currentTarget.style.backgroundColor = "#bb2d3b",
-              onMouseLeave: (event) => event.currentTarget.style.backgroundColor = "#dc3545",
-              children: logoutInfo.loading ? /* @__PURE__ */ jsxRuntime.jsx(
-                "img",
-                {
-                  src: animation_loading_default,
-                  alt: "loading",
-                  style: { width: "24px", height: "24px" }
-                }
-              ) : "\uD655\uC778"
-            }
-          ),
-          /* @__PURE__ */ jsxRuntime.jsx(
-            "button",
-            {
-              onClick: handleCancel,
-              disabled: logoutInfo.loading,
-              style: cancelButtonStyle,
-              onMouseEnter: (event) => event.currentTarget.style.backgroundColor = "#5c636a",
-              onMouseLeave: (event) => event.currentTarget.style.backgroundColor = "#6c757d",
-              children: "\uCDE8\uC18C"
-            }
-          )
-        ] })
-      ),
-      /* @__PURE__ */ jsxRuntime.jsx(
-        "div",
+      },
+      children: logoutInfo.loading ? /* @__PURE__ */ jsxRuntime.jsx(
+        "img",
         {
-          style: {
-            width: "100%",
-            minHeight: "31px",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center"
-          },
-          children: ((_a = logoutInfo.error) == null ? void 0 : _a.message) && /* @__PURE__ */ jsxRuntime.jsx(
-            "span",
-            {
-              style: {
-                color: "red",
-                textAlign: "center",
-                display: "block",
-                width: "100%",
-                marginBottom: "12px",
-                fontSize: "12px"
-              },
-              children: logoutInfo.error.message
-            }
-          )
+          src: animation_loading_default,
+          alt: "loading",
+          style: { width: "24px", height: "24px" }
         }
-      ),
-      /* @__PURE__ */ jsxRuntime.jsx(
-        "div",
-        {
-          style: {
-            width: "100%",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center"
-          },
-          children: /* @__PURE__ */ jsxRuntime.jsx(
-            "span",
-            {
-              style: {
-                color: "#666666",
-                textAlign: "center",
-                display: "block",
-                width: "100%",
-                fontSize: "10px"
-              },
-              children: "\xA9 AhnLab Blockchain Company. All rights reserved."
-            }
-          )
-        }
-      )
-    ] })
-  ] }) });
+      ) : LOGOUT_BUTTON_TEXT
+    }
+  );
 }
 
 Object.defineProperty(exports, "AbcWaasProvider", {

@@ -1,6 +1,6 @@
 // src/components/Login.tsx
 
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import { useLogin } from "abc-waas-core-sdk";
 
@@ -28,10 +28,44 @@ import {
 import { generateUUID } from "@/utilities/common";
 
 type Providers = "google" | "apple" | "kakao" | "naver" | "line";
+type Language = "ko" | "en";
+
+const LOGIN_BUTTON_TEXT = {
+  google: {
+    ko: "Google로 계속하기",
+    en: "Continue with Google",
+  },
+  apple: {
+    ko: "Apple로 계속하기",
+    en: "Continue with Apple",
+  },
+  naver: {
+    ko: "네이버로 계속하기",
+    en: "Continue with Naver",
+  },
+  kakao: {
+    ko: "카카오로 계속하기",
+    en: "Continue with Kakao",
+  },
+  line: {
+    ko: "LINE으로 계속하기",
+    en: "Continue with LINE",
+  },
+};
+
+const LOGIN_TITLE_TEXT = {
+  ko: "AhnLab Blockchain Company\nWallet-as-a-Service",
+  en: "AhnLab Blockchain Company\nWallet-as-a-Service",
+};
+
+const LOGIN_COPYRIGHT_TEXT = {
+  ko: "© AhnLab Blockchain Company. All rights reserved.",
+  en: "© AhnLab Blockchain Company. All rights reserved.",
+};
 
 const providers: {
   type: Providers;
-  label: string;
+  label: any;
   icon: string;
   backgroundColor: string;
   textColor: string;
@@ -40,7 +74,7 @@ const providers: {
 }[] = [
   {
     type: "google",
-    label: "Google로 계속하기",
+    label: LOGIN_BUTTON_TEXT.google,
     icon: GoogleIcon,
     backgroundColor: "#ffffff",
     textColor: "#000000",
@@ -49,7 +83,7 @@ const providers: {
   },
   {
     type: "apple",
-    label: "Apple로 계속하기",
+    label: LOGIN_BUTTON_TEXT.apple,
     icon: AppleIcon,
     backgroundColor: "#ffffff",
     textColor: "#000000",
@@ -58,7 +92,7 @@ const providers: {
   },
   {
     type: "naver",
-    label: "네이버로 계속하기",
+    label: LOGIN_BUTTON_TEXT.naver,
     icon: NaverIcon,
     backgroundColor: "#ffffff",
     textColor: "#000000",
@@ -67,7 +101,7 @@ const providers: {
   },
   {
     type: "kakao",
-    label: "카카오로 계속하기",
+    label: LOGIN_BUTTON_TEXT.kakao,
     icon: KakaoIcon,
     backgroundColor: "#FEE500",
     textColor: "#000000",
@@ -76,7 +110,7 @@ const providers: {
   },
   {
     type: "line",
-    label: "LINE으로 계속하기",
+    label: LOGIN_BUTTON_TEXT.line,
     icon: LineIcon,
     backgroundColor: "#03C75A",
     textColor: "#ffffff",
@@ -138,7 +172,39 @@ const buttonBaseStyle = {
   gap: "12px",
 } as const;
 
+const languageSwitchStyle = {
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  marginBottom: "24px",
+  gap: "8px",
+} as const;
+
+const languageButtonBaseStyle = {
+  padding: "6px 12px",
+  fontSize: "0.8rem",
+  borderRadius: "20px",
+  cursor: "pointer",
+  transition: "all 0.2s ease-in-out",
+} as const;
+
+const activeLanguageButtonStyle = {
+  ...languageButtonBaseStyle,
+  backgroundColor: "#4285f4",
+  color: "#ffffff",
+  border: "1px solid #4285f4",
+} as const;
+
+const inactiveLanguageButtonStyle = {
+  ...languageButtonBaseStyle,
+  backgroundColor: "#ffffff",
+  color: "#666666",
+  border: "1px solid #dadce0",
+} as const;
+
 export default function Login() {
+  const [language, setLanguage] = useState<Language>("ko");
+
   const location = {
     search: window.location.search,
     hash: window.location.hash,
@@ -537,6 +603,50 @@ export default function Login() {
   return (
     <div style={metaContainerStyle}>
       <div style={containerStyle}>
+        {/* Language Switch */}
+        <div style={languageSwitchStyle}>
+          <button
+            onClick={() => setLanguage("ko")}
+            style={
+              language === "ko"
+                ? activeLanguageButtonStyle
+                : inactiveLanguageButtonStyle
+            }
+            onMouseEnter={(event) => {
+              if (language !== "ko") {
+                event.currentTarget.style.backgroundColor = "#f7f7f7";
+              }
+            }}
+            onMouseLeave={(event) => {
+              if (language !== "ko") {
+                event.currentTarget.style.backgroundColor = "#ffffff";
+              }
+            }}
+          >
+            한국어
+          </button>
+          <button
+            onClick={() => setLanguage("en")}
+            style={
+              language === "en"
+                ? activeLanguageButtonStyle
+                : inactiveLanguageButtonStyle
+            }
+            onMouseEnter={(event) => {
+              if (language !== "en") {
+                event.currentTarget.style.backgroundColor = "#f7f7f7";
+              }
+            }}
+            onMouseLeave={(event) => {
+              if (language !== "en") {
+                event.currentTarget.style.backgroundColor = "#ffffff";
+              }
+            }}
+          >
+            English
+          </button>
+        </div>
+        {/*  */}
         <div style={titleContainerStyle}>
           <span
             style={{
@@ -549,7 +659,7 @@ export default function Login() {
               lineHeight: "1.5",
             }}
           >
-            {"AhnLab Blockchain Company\nWallet-as-a-Service"}
+            {LOGIN_TITLE_TEXT[language]}
           </span>
         </div>
 
@@ -589,7 +699,7 @@ export default function Login() {
                       height: "24px",
                     }}
                   />
-                  {item.label}
+                  {item.label[language]}
                 </>
               )}
             </button>
@@ -640,7 +750,7 @@ export default function Login() {
                 fontSize: "0.6rem",
               }}
             >
-              © AhnLab Blockchain Company. All rights reserved.
+              {LOGIN_COPYRIGHT_TEXT[language]}
             </span>
           </div>
         </div>

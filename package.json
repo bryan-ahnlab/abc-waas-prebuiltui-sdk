@@ -1,6 +1,6 @@
 {
   "name": "abc-waas-prebuiltui-sdk",
-  "version": "0.2.11",
+  "version": "0.2.12",
   "description": "ABC WaaS Prebuilt UI SDK for React/Next.js",
   "main": "dist/index.cjs",
   "module": "dist/index.mjs",
