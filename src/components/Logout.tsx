@@ -83,19 +83,8 @@ const cancelButtonStyle = {
 } as const;
 
 export default function Logout() {
-  const {
-    logoutV2,
-    loading: logoutLoading,
-    setLoading: setLogoutLoading,
-    error: logoutError,
-    setError: setLogoutError,
-    status: logoutStatus,
-  } = useLogout();
-  const {
-    loading: loginLoading,
-    error: loginError,
-    status: loginStatus,
-  } = useLogin();
+  const { logoutV2, logoutInfo, setLogoutInfo } = useLogout();
+  const { loginInfo } = useLogin();
 
   const [showConfirm, setShowConfirm] = useState(false);
 
@@ -117,7 +106,7 @@ export default function Logout() {
   };
 
   // If user is not logged in, show message
-  if (loginStatus !== "SUCCESS") {
+  if (loginInfo.status !== "SUCCESS") {
     return (
       <div style={metaContainerStyle}>
         <div style={containerStyle}>
@@ -222,7 +211,7 @@ export default function Logout() {
             // Logout Button
             <button
               onClick={handleLogoutClick}
-              disabled={logoutLoading}
+              disabled={logoutInfo.loading}
               style={logoutButtonStyle}
               onMouseEnter={(event) =>
                 (event.currentTarget.style.backgroundColor = "#f7f7f7")
@@ -231,7 +220,7 @@ export default function Logout() {
                 (event.currentTarget.style.backgroundColor = "#ffffff")
               }
             >
-              {logoutLoading ? (
+              {logoutInfo.loading ? (
                 <img
                   src={LoadingAnimation}
                   alt="loading"
@@ -257,7 +246,7 @@ export default function Logout() {
 
               <button
                 onClick={handleLogout}
-                disabled={logoutLoading}
+                disabled={logoutInfo.loading}
                 style={confirmButtonStyle}
                 onMouseEnter={(event) =>
                   (event.currentTarget.style.backgroundColor = "#bb2d3b")
@@ -266,7 +255,7 @@ export default function Logout() {
                   (event.currentTarget.style.backgroundColor = "#dc3545")
                 }
               >
-                {logoutLoading ? (
+                {logoutInfo.loading ? (
                   <img
                     src={LoadingAnimation}
                     alt="loading"
@@ -279,7 +268,7 @@ export default function Logout() {
 
               <button
                 onClick={handleCancel}
-                disabled={logoutLoading}
+                disabled={logoutInfo.loading}
                 style={cancelButtonStyle}
                 onMouseEnter={(event) =>
                   (event.currentTarget.style.backgroundColor = "#5c636a")
@@ -303,7 +292,7 @@ export default function Logout() {
               justifyContent: "center",
             }}
           >
-            {logoutError?.message && (
+            {logoutInfo.error?.message && (
               <span
                 style={{
                   color: "red",
@@ -314,7 +303,7 @@ export default function Logout() {
                   fontSize: "12px",
                 }}
               >
-                {logoutError.message}
+                {logoutInfo.error.message}
               </span>
             )}
           </div>

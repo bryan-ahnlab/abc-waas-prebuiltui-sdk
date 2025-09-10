@@ -477,10 +477,11 @@ var buttonBaseStyle = {
   gap: "12px"
 };
 function Login() {
+  var _a;
   const location = {
     search: window.location.search,
     hash: window.location.hash};
-  const { loginV2, loading, setLoading, error, setError, service } = abcWaasCoreSdk.useLogin();
+  const { loginV2, loginInfo, setLoginInfo, service } = abcWaasCoreSdk.useLogin();
   const handleRedirect = react.useCallback((provider) => {
     localStorage.setItem("provider", provider);
     if (provider === "google") {
@@ -575,10 +576,9 @@ function Login() {
   }, []);
   const handleCallback = react.useCallback(
     async (provider, data) => {
-      var _a;
+      var _a2;
       try {
-        setLoading(true);
-        setError(null);
+        setLoginInfo({ loading: true, error: null, status: null });
         if (provider === "google") {
           if (!process.env.REACT_APP_GOOGLE_CLIENT_ID || !process.env.REACT_APP_GOOGLE_CLIENT_SECRET || !process.env.REACT_APP_GOOGLE_REDIRECT_URI) {
             throw new Error(
@@ -624,7 +624,7 @@ function Login() {
             process.env.REACT_APP_APPLE_REDIRECT_URI
           );
           const getAppleDecodedTokenData = JSON.parse(
-            atob((_a = getAppleTokenData == null ? void 0 : getAppleTokenData.id_token) == null ? void 0 : _a.split(".")[1])
+            atob((_a2 = getAppleTokenData == null ? void 0 : getAppleTokenData.id_token) == null ? void 0 : _a2.split(".")[1])
           );
           await verifyAppleToken(
             id_token,
@@ -703,15 +703,15 @@ function Login() {
         } else {
           throw new Error("Invalid provider.");
         }
-      } catch (error2) {
-        if (error2) {
-          setError(error2);
+      } catch (error) {
+        if (error) {
+          setLoginInfo({ loading: false, error, status: null });
         }
       } finally {
-        setLoading(false);
+        setLoginInfo({ loading: false, error: null, status: null });
       }
     },
-    [loginV2, error]
+    [loginV2, setLoginInfo]
   );
   react.useEffect(() => {
     const provider = localStorage.getItem("provider");
@@ -795,7 +795,7 @@ function Login() {
         "button",
         {
           onClick: () => handleRedirect(item.type),
-          disabled: loading,
+          disabled: loginInfo.loading,
           style: __spreadProps(__spreadValues({}, buttonBaseStyle), {
             backgroundColor: item.backgroundColor,
             color: item.textColor,
@@ -803,7 +803,7 @@ function Login() {
           }),
           onMouseEnter: (event) => event.currentTarget.style.backgroundColor = item.hoverColor,
           onMouseLeave: (event) => event.currentTarget.style.backgroundColor = item.backgroundColor,
-          children: loading && service === item.type ? /* @__PURE__ */ jsxRuntime.jsx(
+          children: loginInfo.loading && service === item.type ? /* @__PURE__ */ jsxRuntime.jsx(
             "img",
             {
               src: animation_loading_default,
@@ -837,7 +837,7 @@ function Login() {
             alignItems: "center",
             justifyContent: "center"
           },
-          children: (error == null ? void 0 : error.message) && /* @__PURE__ */ jsxRuntime.jsx(
+          children: ((_a = loginInfo.error) == null ? void 0 : _a.message) && /* @__PURE__ */ jsxRuntime.jsx(
             "span",
             {
               style: {
@@ -848,7 +848,7 @@ function Login() {
                 marginBottom: "24px",
                 fontSize: "12px"
               },
-              children: error.message
+              children: loginInfo.error.message
             }
           )
         }
@@ -946,19 +946,9 @@ var cancelButtonStyle = __spreadProps(__spreadValues({}, buttonBaseStyle2), {
   border: "1px solid #6c757d"
 });
 function Logout() {
-  const {
-    logoutV2,
-    loading: logoutLoading,
-    setLoading: setLogoutLoading,
-    error: logoutError,
-    setError: setLogoutError,
-    status: logoutStatus
-  } = abcWaasCoreSdk.useLogout();
-  const {
-    loading: loginLoading,
-    error: loginError,
-    status: loginStatus
-  } = abcWaasCoreSdk.useLogin();
+  var _a;
+  const { logoutV2, logoutInfo, setLogoutInfo } = abcWaasCoreSdk.useLogout();
+  const { loginInfo } = abcWaasCoreSdk.useLogin();
   const [showConfirm, setShowConfirm] = react.useState(false);
   const handleLogout = async () => {
     try {
@@ -974,7 +964,7 @@ function Logout() {
   const handleCancel = () => {
     setShowConfirm(false);
   };
-  if (loginStatus !== "SUCCESS") {
+  if (loginInfo.status !== "SUCCESS") {
     return /* @__PURE__ */ jsxRuntime.jsx("div", { style: metaContainerStyle2, children: /* @__PURE__ */ jsxRuntime.jsxs("div", { style: containerStyle2, children: [
       /* @__PURE__ */ jsxRuntime.jsx("div", { style: titleContainerStyle2, children: /* @__PURE__ */ jsxRuntime.jsx(
         "span",
@@ -1074,11 +1064,11 @@ function Logout() {
           "button",
           {
             onClick: handleLogoutClick,
-            disabled: logoutLoading,
+            disabled: logoutInfo.loading,
             style: logoutButtonStyle,
             onMouseEnter: (event) => event.currentTarget.style.backgroundColor = "#f7f7f7",
             onMouseLeave: (event) => event.currentTarget.style.backgroundColor = "#ffffff",
-            children: logoutLoading ? /* @__PURE__ */ jsxRuntime.jsx(
+            children: logoutInfo.loading ? /* @__PURE__ */ jsxRuntime.jsx(
               "img",
               {
                 src: animation_loading_default,
@@ -1107,11 +1097,11 @@ function Logout() {
             "button",
             {
               onClick: handleLogout,
-              disabled: logoutLoading,
+              disabled: logoutInfo.loading,
               style: confirmButtonStyle,
               onMouseEnter: (event) => event.currentTarget.style.backgroundColor = "#bb2d3b",
               onMouseLeave: (event) => event.currentTarget.style.backgroundColor = "#dc3545",
-              children: logoutLoading ? /* @__PURE__ */ jsxRuntime.jsx(
+              children: logoutInfo.loading ? /* @__PURE__ */ jsxRuntime.jsx(
                 "img",
                 {
                   src: animation_loading_default,
@@ -1125,7 +1115,7 @@ function Logout() {
             "button",
             {
               onClick: handleCancel,
-              disabled: logoutLoading,
+              disabled: logoutInfo.loading,
               style: cancelButtonStyle,
               onMouseEnter: (event) => event.currentTarget.style.backgroundColor = "#5c636a",
               onMouseLeave: (event) => event.currentTarget.style.backgroundColor = "#6c757d",
@@ -1144,7 +1134,7 @@ function Logout() {
             alignItems: "center",
             justifyContent: "center"
           },
-          children: (logoutError == null ? void 0 : logoutError.message) && /* @__PURE__ */ jsxRuntime.jsx(
+          children: ((_a = logoutInfo.error) == null ? void 0 : _a.message) && /* @__PURE__ */ jsxRuntime.jsx(
             "span",
             {
               style: {
@@ -1155,7 +1145,7 @@ function Logout() {
                 marginBottom: "12px",
                 fontSize: "12px"
               },
-              children: logoutError.message
+              children: logoutInfo.error.message
             }
           )
         }

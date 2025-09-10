@@ -145,7 +145,7 @@ export default function Login() {
     pathname: window.location.pathname,
   };
 
-  const { loginV2, loading, setLoading, error, setError, service } = useLogin();
+  const { loginV2, loginInfo, setLoginInfo, service } = useLogin();
 
   const handleRedirect = useCallback((provider: Providers) => {
     localStorage.setItem("provider", provider);
@@ -274,8 +274,7 @@ export default function Login() {
   const handleCallback = useCallback(
     async (provider: string, data: any) => {
       try {
-        setLoading(true);
-        setError(null);
+        setLoginInfo({ loading: true, error: null, status: null });
 
         if (provider === "google") {
           if (
@@ -448,13 +447,13 @@ export default function Login() {
         }
       } catch (error: any) {
         if (error) {
-          setError(error);
+          setLoginInfo({ loading: false, error: error, status: null });
         }
       } finally {
-        setLoading(false);
+        setLoginInfo({ loading: false, error: null, status: null });
       }
     },
-    [loginV2, error]
+    [loginV2, setLoginInfo]
   );
 
   useEffect(() => {
@@ -564,7 +563,7 @@ export default function Login() {
             <button
               key={item.type}
               onClick={() => handleRedirect(item.type)}
-              disabled={loading}
+              disabled={loginInfo.loading}
               style={{
                 ...buttonBaseStyle,
                 backgroundColor: item.backgroundColor,
@@ -579,7 +578,7 @@ export default function Login() {
                   item.backgroundColor)
               }
             >
-              {loading && service === item.type ? (
+              {loginInfo.loading && service === item.type ? (
                 <img
                   src={LoadingAnimation}
                   alt="loading"
@@ -611,7 +610,7 @@ export default function Login() {
               justifyContent: "center",
             }}
           >
-            {error?.message && (
+            {loginInfo.error?.message && (
               <span
                 style={{
                   color: "red",
@@ -622,7 +621,7 @@ export default function Login() {
                   fontSize: "12px",
                 }}
               >
-                {error.message}
+                {loginInfo.error.message}
               </span>
             )}
           </div>
