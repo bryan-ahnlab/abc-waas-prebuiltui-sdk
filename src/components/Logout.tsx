@@ -90,10 +90,19 @@ export default function Logout() {
 
   const handleLogout = async () => {
     try {
+      setLogoutInfo({
+        loading: true,
+        error: logoutInfo.error,
+        status: logoutInfo.status,
+      });
       await logoutV2();
       setShowConfirm(false);
     } catch (error: any) {
-      console.error("Logout error:", error);
+      setLogoutInfo({
+        loading: false,
+        error: error,
+        status: "FAILURE",
+      });
     }
   };
 

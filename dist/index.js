@@ -574,145 +574,140 @@ function Login() {
       window.location.href = url.toString();
     }
   }, []);
-  const handleCallback = react.useCallback(
-    async (provider, data) => {
-      var _a2;
-      try {
-        setLoginInfo({ loading: true, error: null, status: null });
-        if (provider === "google") {
-          if (!process.env.REACT_APP_GOOGLE_CLIENT_ID || !process.env.REACT_APP_GOOGLE_CLIENT_SECRET || !process.env.REACT_APP_GOOGLE_REDIRECT_URI) {
-            throw new Error(
-              "Google client ID, client secret or redirect URI is not set."
-            );
-          }
-          const { code } = data;
-          const getGoogleTokenData = await getGoogleToken(
-            code,
-            process.env.REACT_APP_GOOGLE_CLIENT_ID,
-            process.env.REACT_APP_GOOGLE_CLIENT_SECRET,
-            process.env.REACT_APP_GOOGLE_REDIRECT_URI
+  const handleCallback = react.useCallback(async (provider, data) => {
+    var _a2;
+    try {
+      setLoginInfo({
+        loading: true,
+        error: loginInfo.error,
+        status: loginInfo.status
+      });
+      if (provider === "google") {
+        if (!process.env.REACT_APP_GOOGLE_CLIENT_ID || !process.env.REACT_APP_GOOGLE_CLIENT_SECRET || !process.env.REACT_APP_GOOGLE_REDIRECT_URI) {
+          throw new Error(
+            "Google client ID, client secret or redirect URI is not set."
           );
-          const getGoogleTokeninfoData = await getGoogleTokeninfo(
-            getGoogleTokenData.id_token
-          );
-          await loginV2(
-            getGoogleTokeninfoData.email,
-            getGoogleTokenData.id_token,
-            provider
-          );
-        } else if (provider === "apple") {
-          if (!process.env.REACT_APP_APPLE_CLIENT_ID || !process.env.REACT_APP_APPLE_REDIRECT_URI || !process.env.REACT_APP_APPLE_TEAM_ID || !process.env.REACT_APP_APPLE_KEY_ID || !process.env.REACT_APP_APPLE_PRIVATE_KEY) {
-            throw new Error(
-              "Apple client ID, redirect URI, team ID, key ID or private key is not set."
-            );
-          }
-          const { code, id_token } = data;
-          await verifyAppleToken(
-            id_token,
-            process.env.REACT_APP_APPLE_CLIENT_ID
-          );
-          const APPLE_CLIENT_SECRET = await createAppleClientSecret(
-            id_token,
-            process.env.REACT_APP_APPLE_PRIVATE_KEY,
-            process.env.REACT_APP_APPLE_TEAM_ID,
-            process.env.REACT_APP_APPLE_KEY_ID
-          );
-          const getAppleTokenData = await getAppleToken(
-            code,
-            process.env.REACT_APP_APPLE_CLIENT_ID,
-            APPLE_CLIENT_SECRET,
-            process.env.REACT_APP_APPLE_REDIRECT_URI
-          );
-          const getAppleDecodedTokenData = JSON.parse(
-            atob((_a2 = getAppleTokenData == null ? void 0 : getAppleTokenData.id_token) == null ? void 0 : _a2.split(".")[1])
-          );
-          await verifyAppleToken(
-            id_token,
-            process.env.REACT_APP_APPLE_CLIENT_ID
-          );
-          await loginV2(
-            getAppleDecodedTokenData.email,
-            getAppleTokenData.id_token,
-            provider
-          );
-        } else if (provider === "naver") {
-          if (!process.env.REACT_APP_NAVER_CLIENT_ID || !process.env.REACT_APP_NAVER_CLIENT_SECRET || !process.env.REACT_APP_NAVER_REDIRECT_URI) {
-            throw new Error(
-              "Naver client ID, client secret or redirect URI is not set."
-            );
-          }
-          const { code } = data;
-          const getNaverTokenData = await getNaverToken(
-            code,
-            process.env.REACT_APP_NAVER_CLIENT_ID,
-            process.env.REACT_APP_NAVER_CLIENT_SECRET,
-            process.env.REACT_APP_NAVER_REDIRECT_URI
-          );
-          const getNaverTokeninfoData = await getNaverTokeninfo(
-            getNaverTokenData.access_token
-          );
-          await loginV2(
-            getNaverTokeninfoData.response.email,
-            getNaverTokenData.access_token,
-            provider
-          );
-        } else if (provider === "kakao") {
-          if (!process.env.REACT_APP_KAKAO_REST_API_KEY || !process.env.REACT_APP_KAKAO_REDIRECT_URI) {
-            throw new Error("Kakao client ID or redirect URI is not set.");
-          }
-          const { code } = data;
-          const getKakaoTokenData = await getKakaoToken(
-            code,
-            process.env.REACT_APP_KAKAO_REST_API_KEY,
-            process.env.REACT_APP_KAKAO_REDIRECT_URI
-          );
-          await verifyKakaoToken(
-            getKakaoTokenData.id_token,
-            process.env.REACT_APP_KAKAO_REST_API_KEY
-          );
-          const getKakaoTokeninfoData = await getKakaoTokeninfo(
-            getKakaoTokenData.access_token
-          );
-          await loginV2(
-            getKakaoTokeninfoData.kakao_account.email,
-            getKakaoTokenData.id_token,
-            provider
-          );
-        } else if (provider === "line") {
-          if (!process.env.REACT_APP_LINE_CLIENT_ID || !process.env.REACT_APP_LINE_CLIENT_SECRET || !process.env.REACT_APP_LINE_REDIRECT_URI) {
-            throw new Error(
-              "Line client ID, client secret or redirect URI is not set."
-            );
-          }
-          const { code } = data;
-          const getLineTokenData = await getLineToken(
-            code,
-            process.env.REACT_APP_LINE_CLIENT_ID,
-            process.env.REACT_APP_LINE_CLIENT_SECRET,
-            process.env.REACT_APP_LINE_REDIRECT_URI
-          );
-          const getLineTokeninfoData = await getLineTokeninfo(
-            getLineTokenData.id_token,
-            process.env.REACT_APP_LINE_CLIENT_ID
-          );
-          await loginV2(
-            getLineTokeninfoData.email,
-            getLineTokenData.id_token,
-            provider
-          );
-        } else {
-          throw new Error("Invalid provider.");
         }
-      } catch (error) {
-        if (error) {
-          setLoginInfo({ loading: false, error, status: null });
+        const { code } = data;
+        const getGoogleTokenData = await getGoogleToken(
+          code,
+          process.env.REACT_APP_GOOGLE_CLIENT_ID,
+          process.env.REACT_APP_GOOGLE_CLIENT_SECRET,
+          process.env.REACT_APP_GOOGLE_REDIRECT_URI
+        );
+        const getGoogleTokeninfoData = await getGoogleTokeninfo(
+          getGoogleTokenData.id_token
+        );
+        await loginV2(
+          getGoogleTokeninfoData.email,
+          getGoogleTokenData.id_token,
+          provider
+        );
+      } else if (provider === "apple") {
+        if (!process.env.REACT_APP_APPLE_CLIENT_ID || !process.env.REACT_APP_APPLE_REDIRECT_URI || !process.env.REACT_APP_APPLE_TEAM_ID || !process.env.REACT_APP_APPLE_KEY_ID || !process.env.REACT_APP_APPLE_PRIVATE_KEY) {
+          throw new Error(
+            "Apple client ID, redirect URI, team ID, key ID or private key is not set."
+          );
         }
-      } finally {
-        setLoginInfo({ loading: false, error: null, status: null });
+        const { code, id_token } = data;
+        await verifyAppleToken(id_token, process.env.REACT_APP_APPLE_CLIENT_ID);
+        const APPLE_CLIENT_SECRET = await createAppleClientSecret(
+          id_token,
+          process.env.REACT_APP_APPLE_PRIVATE_KEY,
+          process.env.REACT_APP_APPLE_TEAM_ID,
+          process.env.REACT_APP_APPLE_KEY_ID
+        );
+        const getAppleTokenData = await getAppleToken(
+          code,
+          process.env.REACT_APP_APPLE_CLIENT_ID,
+          APPLE_CLIENT_SECRET,
+          process.env.REACT_APP_APPLE_REDIRECT_URI
+        );
+        const getAppleDecodedTokenData = JSON.parse(
+          atob((_a2 = getAppleTokenData == null ? void 0 : getAppleTokenData.id_token) == null ? void 0 : _a2.split(".")[1])
+        );
+        await verifyAppleToken(id_token, process.env.REACT_APP_APPLE_CLIENT_ID);
+        await loginV2(
+          getAppleDecodedTokenData.email,
+          getAppleTokenData.id_token,
+          provider
+        );
+      } else if (provider === "naver") {
+        if (!process.env.REACT_APP_NAVER_CLIENT_ID || !process.env.REACT_APP_NAVER_CLIENT_SECRET || !process.env.REACT_APP_NAVER_REDIRECT_URI) {
+          throw new Error(
+            "Naver client ID, client secret or redirect URI is not set."
+          );
+        }
+        const { code } = data;
+        const getNaverTokenData = await getNaverToken(
+          code,
+          process.env.REACT_APP_NAVER_CLIENT_ID,
+          process.env.REACT_APP_NAVER_CLIENT_SECRET,
+          process.env.REACT_APP_NAVER_REDIRECT_URI
+        );
+        const getNaverTokeninfoData = await getNaverTokeninfo(
+          getNaverTokenData.access_token
+        );
+        await loginV2(
+          getNaverTokeninfoData.response.email,
+          getNaverTokenData.access_token,
+          provider
+        );
+      } else if (provider === "kakao") {
+        if (!process.env.REACT_APP_KAKAO_REST_API_KEY || !process.env.REACT_APP_KAKAO_REDIRECT_URI) {
+          throw new Error("Kakao client ID or redirect URI is not set.");
+        }
+        const { code } = data;
+        const getKakaoTokenData = await getKakaoToken(
+          code,
+          process.env.REACT_APP_KAKAO_REST_API_KEY,
+          process.env.REACT_APP_KAKAO_REDIRECT_URI
+        );
+        await verifyKakaoToken(
+          getKakaoTokenData.id_token,
+          process.env.REACT_APP_KAKAO_REST_API_KEY
+        );
+        const getKakaoTokeninfoData = await getKakaoTokeninfo(
+          getKakaoTokenData.access_token
+        );
+        await loginV2(
+          getKakaoTokeninfoData.kakao_account.email,
+          getKakaoTokenData.id_token,
+          provider
+        );
+      } else if (provider === "line") {
+        if (!process.env.REACT_APP_LINE_CLIENT_ID || !process.env.REACT_APP_LINE_CLIENT_SECRET || !process.env.REACT_APP_LINE_REDIRECT_URI) {
+          throw new Error(
+            "Line client ID, client secret or redirect URI is not set."
+          );
+        }
+        const { code } = data;
+        const getLineTokenData = await getLineToken(
+          code,
+          process.env.REACT_APP_LINE_CLIENT_ID,
+          process.env.REACT_APP_LINE_CLIENT_SECRET,
+          process.env.REACT_APP_LINE_REDIRECT_URI
+        );
+        const getLineTokeninfoData = await getLineTokeninfo(
+          getLineTokenData.id_token,
+          process.env.REACT_APP_LINE_CLIENT_ID
+        );
+        await loginV2(
+          getLineTokeninfoData.email,
+          getLineTokenData.id_token,
+          provider
+        );
+      } else {
+        throw new Error("Invalid provider.");
       }
-    },
-    [loginV2, setLoginInfo]
-  );
+    } catch (error) {
+      setLoginInfo({
+        loading: false,
+        error,
+        status: "FAILURE"
+      });
+    }
+  }, []);
   react.useEffect(() => {
     const provider = localStorage.getItem("provider");
     if (provider === "google") {
@@ -952,10 +947,19 @@ function Logout() {
   const [showConfirm, setShowConfirm] = react.useState(false);
   const handleLogout = async () => {
     try {
+      setLogoutInfo({
+        loading: true,
+        error: logoutInfo.error,
+        status: logoutInfo.status
+      });
       await logoutV2();
       setShowConfirm(false);
     } catch (error) {
-      console.error("Logout error:", error);
+      setLogoutInfo({
+        loading: false,
+        error,
+        status: "FAILURE"
+      });
     }
   };
   const handleLogoutClick = () => {
