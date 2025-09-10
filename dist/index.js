@@ -477,14 +477,11 @@ var buttonBaseStyle = {
   gap: "12px"
 };
 function Login() {
-  const navigate = (path) => {
-    window.location.href = path;
-  };
   const location = {
     search: window.location.search,
     hash: window.location.hash};
   const { loginV2, loading, setLoading, error, setError, service } = abcWaasCoreSdk.useLogin();
-  const handleRedirect = (provider) => {
+  const handleRedirect = react.useCallback((provider) => {
     localStorage.setItem("provider", provider);
     if (provider === "google") {
       if (!process.env.REACT_APP_GOOGLE_CLIENT_ID || !process.env.REACT_APP_GOOGLE_REDIRECT_URI) {
@@ -575,7 +572,7 @@ function Login() {
       url.searchParams.set("state", state);
       window.location.href = url.toString();
     }
-  };
+  }, []);
   const handleCallback = react.useCallback(
     async (provider, data) => {
       var _a;
@@ -714,7 +711,7 @@ function Login() {
         setLoading(false);
       }
     },
-    [loginV2, error, navigate]
+    [loginV2, error]
   );
   react.useEffect(() => {
     const provider = localStorage.getItem("provider");
@@ -883,6 +880,313 @@ function Login() {
     ] })
   ] }) });
 }
+var metaContainerStyle2 = {
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  justifyContent: "flex-start",
+  width: "100%",
+  minHeight: "100vh",
+  backgroundColor: "#f5f5f5",
+  padding: "20px 0",
+  boxSizing: "border-box"
+};
+var containerStyle2 = {
+  width: "100%",
+  maxWidth: "340px",
+  boxSizing: "border-box",
+  padding: "40px 30px",
+  borderRadius: "30px",
+  color: "#333",
+  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.05)",
+  whiteSpace: "pre-wrap",
+  wordBreak: "break-all",
+  backgroundColor: "#ffffff"
+};
+var titleContainerStyle2 = {
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  justifyContent: "center"
+};
+var contentContainerStyle2 = {
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  justifyContent: "center"
+};
+var buttonBaseStyle2 = {
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  padding: "12px 16px",
+  fontSize: "16px",
+  borderRadius: "30px",
+  width: "100%",
+  marginBottom: "16px",
+  cursor: "pointer",
+  transition: "all 0.2s ease-in-out",
+  wordBreak: "break-all",
+  flexWrap: "wrap",
+  gap: "12px",
+  border: "1px solid #dadce0"
+};
+var logoutButtonStyle = __spreadProps(__spreadValues({}, buttonBaseStyle2), {
+  backgroundColor: "#ffffff",
+  color: "#000000"
+});
+var confirmButtonStyle = __spreadProps(__spreadValues({}, buttonBaseStyle2), {
+  backgroundColor: "#dc3545",
+  color: "#ffffff",
+  border: "1px solid #dc3545"
+});
+var cancelButtonStyle = __spreadProps(__spreadValues({}, buttonBaseStyle2), {
+  backgroundColor: "#6c757d",
+  color: "#ffffff",
+  border: "1px solid #6c757d"
+});
+function Logout() {
+  const {
+    logoutV2,
+    loading: logoutLoading,
+    setLoading: setLogoutLoading,
+    error: logoutError,
+    setError: setLogoutError,
+    status: logoutStatus
+  } = abcWaasCoreSdk.useLogout();
+  const {
+    loading: loginLoading,
+    error: loginError,
+    status: loginStatus
+  } = abcWaasCoreSdk.useLogin();
+  const [showConfirm, setShowConfirm] = react.useState(false);
+  const handleLogout = async () => {
+    try {
+      await logoutV2();
+      setShowConfirm(false);
+    } catch (error) {
+      console.error("Logout error:", error);
+    }
+  };
+  const handleLogoutClick = () => {
+    setShowConfirm(true);
+  };
+  const handleCancel = () => {
+    setShowConfirm(false);
+  };
+  if (loginStatus !== "SUCCESS") {
+    return /* @__PURE__ */ jsxRuntime.jsx("div", { style: metaContainerStyle2, children: /* @__PURE__ */ jsxRuntime.jsxs("div", { style: containerStyle2, children: [
+      /* @__PURE__ */ jsxRuntime.jsx("div", { style: titleContainerStyle2, children: /* @__PURE__ */ jsxRuntime.jsx(
+        "span",
+        {
+          style: {
+            textAlign: "center",
+            marginBottom: "36px",
+            fontSize: "20px",
+            fontWeight: "bold",
+            color: "#333333",
+            whiteSpace: "pre-line",
+            lineHeight: "1.5"
+          },
+          children: "AhnLab Blockchain Company\nWallet-as-a-Service"
+        }
+      ) }),
+      /* @__PURE__ */ jsxRuntime.jsxs("div", { style: contentContainerStyle2, children: [
+        /* @__PURE__ */ jsxRuntime.jsx(
+          "div",
+          {
+            style: {
+              textAlign: "center",
+              marginBottom: "24px",
+              fontSize: "16px",
+              color: "#666666"
+            },
+            children: "\uB85C\uADF8\uC778\uB418\uC9C0 \uC54A\uC740 \uC0C1\uD0DC\uC785\uB2C8\uB2E4."
+          }
+        ),
+        /* @__PURE__ */ jsxRuntime.jsx(
+          "div",
+          {
+            style: {
+              width: "100%",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              marginTop: "24px"
+            },
+            children: /* @__PURE__ */ jsxRuntime.jsx(
+              "span",
+              {
+                style: {
+                  color: "#666666",
+                  textAlign: "center",
+                  display: "block",
+                  width: "100%",
+                  fontSize: "10px"
+                },
+                children: "\xA9 AhnLab Blockchain Company. All rights reserved."
+              }
+            )
+          }
+        )
+      ] })
+    ] }) });
+  }
+  return /* @__PURE__ */ jsxRuntime.jsx("div", { style: metaContainerStyle2, children: /* @__PURE__ */ jsxRuntime.jsxs("div", { style: containerStyle2, children: [
+    /* @__PURE__ */ jsxRuntime.jsx("div", { style: titleContainerStyle2, children: /* @__PURE__ */ jsxRuntime.jsx(
+      "span",
+      {
+        style: {
+          textAlign: "center",
+          marginBottom: "36px",
+          fontSize: "20px",
+          fontWeight: "bold",
+          color: "#333333",
+          whiteSpace: "pre-line",
+          lineHeight: "1.5"
+        },
+        children: "AhnLab Blockchain Company\nWallet-as-a-Service"
+      }
+    ) }),
+    /* @__PURE__ */ jsxRuntime.jsxs("div", { style: contentContainerStyle2, children: [
+      /* @__PURE__ */ jsxRuntime.jsxs(
+        "div",
+        {
+          style: {
+            width: "100%",
+            textAlign: "center",
+            marginBottom: "24px",
+            padding: "16px",
+            backgroundColor: "#f8f9fa",
+            borderRadius: "12px",
+            fontSize: "14px",
+            color: "#333333"
+          },
+          children: [
+            /* @__PURE__ */ jsxRuntime.jsx("div", { style: { marginBottom: "8px", fontWeight: "bold" }, children: "\uB85C\uADF8\uC778\uB41C \uACC4\uC815" }),
+            /* @__PURE__ */ jsxRuntime.jsx("div", { style: { marginBottom: "4px" }, children: "\uB85C\uADF8\uC544\uC6C3\uC744 \uC9C4\uD589\uD558\uC2DC\uACA0\uC2B5\uB2C8\uAE4C?" })
+          ]
+        }
+      ),
+      !showConfirm ? (
+        // Logout Button
+        /* @__PURE__ */ jsxRuntime.jsx(
+          "button",
+          {
+            onClick: handleLogoutClick,
+            disabled: logoutLoading,
+            style: logoutButtonStyle,
+            onMouseEnter: (event) => event.currentTarget.style.backgroundColor = "#f7f7f7",
+            onMouseLeave: (event) => event.currentTarget.style.backgroundColor = "#ffffff",
+            children: logoutLoading ? /* @__PURE__ */ jsxRuntime.jsx(
+              "img",
+              {
+                src: animation_loading_default,
+                alt: "loading",
+                style: { width: "24px", height: "24px" }
+              }
+            ) : "\uB85C\uADF8\uC544\uC6C3"
+          }
+        )
+      ) : (
+        // Confirmation Buttons
+        /* @__PURE__ */ jsxRuntime.jsxs(jsxRuntime.Fragment, { children: [
+          /* @__PURE__ */ jsxRuntime.jsx(
+            "div",
+            {
+              style: {
+                textAlign: "center",
+                marginBottom: "24px",
+                fontSize: "16px",
+                color: "#333333"
+              },
+              children: "\uC815\uB9D0 \uB85C\uADF8\uC544\uC6C3\uD558\uC2DC\uACA0\uC2B5\uB2C8\uAE4C?"
+            }
+          ),
+          /* @__PURE__ */ jsxRuntime.jsx(
+            "button",
+            {
+              onClick: handleLogout,
+              disabled: logoutLoading,
+              style: confirmButtonStyle,
+              onMouseEnter: (event) => event.currentTarget.style.backgroundColor = "#bb2d3b",
+              onMouseLeave: (event) => event.currentTarget.style.backgroundColor = "#dc3545",
+              children: logoutLoading ? /* @__PURE__ */ jsxRuntime.jsx(
+                "img",
+                {
+                  src: animation_loading_default,
+                  alt: "loading",
+                  style: { width: "24px", height: "24px" }
+                }
+              ) : "\uD655\uC778"
+            }
+          ),
+          /* @__PURE__ */ jsxRuntime.jsx(
+            "button",
+            {
+              onClick: handleCancel,
+              disabled: logoutLoading,
+              style: cancelButtonStyle,
+              onMouseEnter: (event) => event.currentTarget.style.backgroundColor = "#5c636a",
+              onMouseLeave: (event) => event.currentTarget.style.backgroundColor = "#6c757d",
+              children: "\uCDE8\uC18C"
+            }
+          )
+        ] })
+      ),
+      /* @__PURE__ */ jsxRuntime.jsx(
+        "div",
+        {
+          style: {
+            width: "100%",
+            minHeight: "31px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center"
+          },
+          children: (logoutError == null ? void 0 : logoutError.message) && /* @__PURE__ */ jsxRuntime.jsx(
+            "span",
+            {
+              style: {
+                color: "red",
+                textAlign: "center",
+                display: "block",
+                width: "100%",
+                marginBottom: "12px",
+                fontSize: "12px"
+              },
+              children: logoutError.message
+            }
+          )
+        }
+      ),
+      /* @__PURE__ */ jsxRuntime.jsx(
+        "div",
+        {
+          style: {
+            width: "100%",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center"
+          },
+          children: /* @__PURE__ */ jsxRuntime.jsx(
+            "span",
+            {
+              style: {
+                color: "#666666",
+                textAlign: "center",
+                display: "block",
+                width: "100%",
+                fontSize: "10px"
+              },
+              children: "\xA9 AhnLab Blockchain Company. All rights reserved."
+            }
+          )
+        }
+      )
+    ] })
+  ] }) });
+}
 
 Object.defineProperty(exports, "AbcWaasProvider", {
   enumerable: true,
@@ -896,6 +1200,11 @@ Object.defineProperty(exports, "useLogin", {
   enumerable: true,
   get: function () { return abcWaasCoreSdk.useLogin; }
 });
+Object.defineProperty(exports, "useLogout", {
+  enumerable: true,
+  get: function () { return abcWaasCoreSdk.useLogout; }
+});
 exports.Login = Login;
+exports.Logout = Logout;
 //# sourceMappingURL=index.js.map
 //# sourceMappingURL=index.js.map
