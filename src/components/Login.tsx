@@ -41,7 +41,7 @@ const LOGIN_BUTTON_TEXT = {
   },
   naver: {
     ko: "네이버로 계속하기",
-    en: "Continue with Naver",
+    en: "Continue with NAVER",
   },
   kakao: {
     ko: "카카오로 계속하기",
@@ -54,7 +54,7 @@ const LOGIN_BUTTON_TEXT = {
 };
 
 const LOGIN_TITLE_TEXT = {
-  ko: "AhnLab Blockchain Company\nWallet-as-a-Service",
+  ko: "안랩 블록체인 컴퍼니\nWallet-as-a-Service",
   en: "AhnLab Blockchain Company\nWallet-as-a-Service",
 };
 
@@ -126,7 +126,7 @@ const metaContainerStyle = {
   justifyContent: "center",
   minHeight: "100vh",
   backgroundColor: "#f5f5f5",
-  padding: "20px",
+  padding: "0px 20px",
 } as const;
 
 const containerStyle = {
@@ -166,7 +166,7 @@ const buttonBaseStyle = {
   width: "100%",
   marginBottom: "16px",
   cursor: "pointer",
-  transition: "all 0.2s ease-in-out",
+  transition: "all 0.1s ease-in-out",
   wordBreak: "break-all",
   flexWrap: "wrap",
   gap: "12px",
@@ -181,18 +181,20 @@ const languageSwitchStyle = {
 } as const;
 
 const languageButtonBaseStyle = {
-  padding: "6px 12px",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
   fontSize: "0.8rem",
   borderRadius: "20px",
   cursor: "pointer",
-  transition: "all 0.2s ease-in-out",
+  transition: "all 0.1s ease-in-out",
 } as const;
 
 const activeLanguageButtonStyle = {
   ...languageButtonBaseStyle,
-  backgroundColor: "#4285f4",
+  backgroundColor: "#5B00EF",
   color: "#ffffff",
-  border: "1px solid #4285f4",
+  border: "1px solid #5B00EF",
 } as const;
 
 const inactiveLanguageButtonStyle = {
@@ -603,50 +605,6 @@ export default function Login() {
   return (
     <div style={metaContainerStyle}>
       <div style={containerStyle}>
-        {/* Language Switch */}
-        <div style={languageSwitchStyle}>
-          <button
-            onClick={() => setLanguage("ko")}
-            style={
-              language === "ko"
-                ? activeLanguageButtonStyle
-                : inactiveLanguageButtonStyle
-            }
-            onMouseEnter={(event) => {
-              if (language !== "ko") {
-                event.currentTarget.style.backgroundColor = "#f7f7f7";
-              }
-            }}
-            onMouseLeave={(event) => {
-              if (language !== "ko") {
-                event.currentTarget.style.backgroundColor = "#ffffff";
-              }
-            }}
-          >
-            한국어
-          </button>
-          <button
-            onClick={() => setLanguage("en")}
-            style={
-              language === "en"
-                ? activeLanguageButtonStyle
-                : inactiveLanguageButtonStyle
-            }
-            onMouseEnter={(event) => {
-              if (language !== "en") {
-                event.currentTarget.style.backgroundColor = "#f7f7f7";
-              }
-            }}
-            onMouseLeave={(event) => {
-              if (language !== "en") {
-                event.currentTarget.style.backgroundColor = "#ffffff";
-              }
-            }}
-          >
-            English
-          </button>
-        </div>
-        {/*  */}
         <div style={titleContainerStyle}>
           <span
             style={{
@@ -729,6 +687,51 @@ export default function Login() {
                 {loginInfo.error.message}
               </span>
             )}
+          </div>
+          {/*  */}
+
+          {/* Language Switch */}
+          <div style={languageSwitchStyle}>
+            <button
+              onClick={() => setLanguage("ko")}
+              style={
+                language === "ko"
+                  ? activeLanguageButtonStyle
+                  : inactiveLanguageButtonStyle
+              }
+              onMouseEnter={(event) => {
+                if (language !== "ko") {
+                  event.currentTarget.style.backgroundColor = "#f7f7f7";
+                }
+              }}
+              onMouseLeave={(event) => {
+                if (language !== "ko") {
+                  event.currentTarget.style.backgroundColor = "#ffffff";
+                }
+              }}
+            >
+              한국어
+            </button>
+            <button
+              onClick={() => setLanguage("en")}
+              style={
+                language === "en"
+                  ? activeLanguageButtonStyle
+                  : inactiveLanguageButtonStyle
+              }
+              onMouseEnter={(event) => {
+                if (language !== "en") {
+                  event.currentTarget.style.backgroundColor = "#f7f7f7";
+                }
+              }}
+              onMouseLeave={(event) => {
+                if (language !== "en") {
+                  event.currentTarget.style.backgroundColor = "#ffffff";
+                }
+              }}
+            >
+              English
+            </button>
           </div>
           {/*  */}
 

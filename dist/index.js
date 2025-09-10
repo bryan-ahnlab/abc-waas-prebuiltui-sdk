@@ -392,7 +392,7 @@ var LOGIN_BUTTON_TEXT = {
   },
   naver: {
     ko: "\uB124\uC774\uBC84\uB85C \uACC4\uC18D\uD558\uAE30",
-    en: "Continue with Naver"
+    en: "Continue with NAVER"
   },
   kakao: {
     ko: "\uCE74\uCE74\uC624\uB85C \uACC4\uC18D\uD558\uAE30",
@@ -404,7 +404,7 @@ var LOGIN_BUTTON_TEXT = {
   }
 };
 var LOGIN_TITLE_TEXT = {
-  ko: "AhnLab Blockchain Company\nWallet-as-a-Service",
+  ko: "\uC548\uB7A9 \uBE14\uB85D\uCCB4\uC778 \uCEF4\uD37C\uB2C8\nWallet-as-a-Service",
   en: "AhnLab Blockchain Company\nWallet-as-a-Service"
 };
 var LOGIN_COPYRIGHT_TEXT = {
@@ -465,7 +465,7 @@ var metaContainerStyle = {
   justifyContent: "center",
   minHeight: "100vh",
   backgroundColor: "#f5f5f5",
-  padding: "20px"
+  padding: "0px 20px"
 };
 var containerStyle = {
   width: "100%",
@@ -501,7 +501,7 @@ var buttonBaseStyle = {
   width: "100%",
   marginBottom: "16px",
   cursor: "pointer",
-  transition: "all 0.2s ease-in-out",
+  transition: "all 0.1s ease-in-out",
   wordBreak: "break-all",
   flexWrap: "wrap",
   gap: "12px"
@@ -514,16 +514,18 @@ var languageSwitchStyle = {
   gap: "8px"
 };
 var languageButtonBaseStyle = {
-  padding: "6px 12px",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
   fontSize: "0.8rem",
   borderRadius: "20px",
   cursor: "pointer",
-  transition: "all 0.2s ease-in-out"
+  transition: "all 0.1s ease-in-out"
 };
 var activeLanguageButtonStyle = __spreadProps(__spreadValues({}, languageButtonBaseStyle), {
-  backgroundColor: "#4285f4",
+  backgroundColor: "#5B00EF",
   color: "#ffffff",
-  border: "1px solid #4285f4"
+  border: "1px solid #5B00EF"
 });
 var inactiveLanguageButtonStyle = __spreadProps(__spreadValues({}, languageButtonBaseStyle), {
   backgroundColor: "#ffffff",
@@ -825,44 +827,6 @@ function Login() {
     }
   }, [location.search, location.hash]);
   return /* @__PURE__ */ jsxRuntime.jsx("div", { style: metaContainerStyle, children: /* @__PURE__ */ jsxRuntime.jsxs("div", { style: containerStyle, children: [
-    /* @__PURE__ */ jsxRuntime.jsxs("div", { style: languageSwitchStyle, children: [
-      /* @__PURE__ */ jsxRuntime.jsx(
-        "button",
-        {
-          onClick: () => setLanguage("ko"),
-          style: language === "ko" ? activeLanguageButtonStyle : inactiveLanguageButtonStyle,
-          onMouseEnter: (event) => {
-            if (language !== "ko") {
-              event.currentTarget.style.backgroundColor = "#f7f7f7";
-            }
-          },
-          onMouseLeave: (event) => {
-            if (language !== "ko") {
-              event.currentTarget.style.backgroundColor = "#ffffff";
-            }
-          },
-          children: "\uD55C\uAD6D\uC5B4"
-        }
-      ),
-      /* @__PURE__ */ jsxRuntime.jsx(
-        "button",
-        {
-          onClick: () => setLanguage("en"),
-          style: language === "en" ? activeLanguageButtonStyle : inactiveLanguageButtonStyle,
-          onMouseEnter: (event) => {
-            if (language !== "en") {
-              event.currentTarget.style.backgroundColor = "#f7f7f7";
-            }
-          },
-          onMouseLeave: (event) => {
-            if (language !== "en") {
-              event.currentTarget.style.backgroundColor = "#ffffff";
-            }
-          },
-          children: "English"
-        }
-      )
-    ] }),
     /* @__PURE__ */ jsxRuntime.jsx("div", { style: titleContainerStyle, children: /* @__PURE__ */ jsxRuntime.jsx(
       "span",
       {
@@ -941,6 +905,44 @@ function Login() {
           )
         }
       ),
+      /* @__PURE__ */ jsxRuntime.jsxs("div", { style: languageSwitchStyle, children: [
+        /* @__PURE__ */ jsxRuntime.jsx(
+          "button",
+          {
+            onClick: () => setLanguage("ko"),
+            style: language === "ko" ? activeLanguageButtonStyle : inactiveLanguageButtonStyle,
+            onMouseEnter: (event) => {
+              if (language !== "ko") {
+                event.currentTarget.style.backgroundColor = "#f7f7f7";
+              }
+            },
+            onMouseLeave: (event) => {
+              if (language !== "ko") {
+                event.currentTarget.style.backgroundColor = "#ffffff";
+              }
+            },
+            children: "\uD55C\uAD6D\uC5B4"
+          }
+        ),
+        /* @__PURE__ */ jsxRuntime.jsx(
+          "button",
+          {
+            onClick: () => setLanguage("en"),
+            style: language === "en" ? activeLanguageButtonStyle : inactiveLanguageButtonStyle,
+            onMouseEnter: (event) => {
+              if (language !== "en") {
+                event.currentTarget.style.backgroundColor = "#f7f7f7";
+              }
+            },
+            onMouseLeave: (event) => {
+              if (language !== "en") {
+                event.currentTarget.style.backgroundColor = "#ffffff";
+              }
+            },
+            children: "English"
+          }
+        )
+      ] }),
       /* @__PURE__ */ jsxRuntime.jsx(
         "div",
         {
