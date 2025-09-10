@@ -8,7 +8,7 @@ const buttonBaseStyle = {
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-  padding: "12px 16px",
+  padding: "8px 16px",
   fontSize: "0.9rem",
   borderRadius: "30px",
   width: "100%",

@@ -160,7 +160,7 @@ const buttonBaseStyle = {
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-  padding: "12px 16px",
+  padding: "8px 16px",
   fontSize: "0.9rem",
   borderRadius: "30px",
   width: "100%",
@@ -184,6 +184,7 @@ const languageButtonBaseStyle = {
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
+  padding: "8px 16px",
   fontSize: "0.8rem",
   borderRadius: "20px",
   cursor: "pointer",
@@ -192,9 +193,9 @@ const languageButtonBaseStyle = {
 
 const activeLanguageButtonStyle = {
   ...languageButtonBaseStyle,
-  backgroundColor: "#5B00EF",
+  backgroundColor: "#3A49FD",
   color: "#ffffff",
-  border: "1px solid #5B00EF",
+  border: "1px solid #3A49FD",
 } as const;
 
 const inactiveLanguageButtonStyle = {
