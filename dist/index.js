@@ -524,9 +524,9 @@ var languageButtonBaseStyle = {
   transition: "all 0.1s ease-in-out"
 };
 var activeLanguageButtonStyle = __spreadProps(__spreadValues({}, languageButtonBaseStyle), {
-  backgroundColor: "#5B00EF",
+  backgroundColor: "#3A49FD",
   color: "#ffffff",
-  border: "1px solid #5B00EF"
+  border: "1px solid #3A49FD"
 });
 var inactiveLanguageButtonStyle = __spreadProps(__spreadValues({}, languageButtonBaseStyle), {
   backgroundColor: "#ffffff",
