@@ -1,6 +1,6 @@
 // src/components/Login.tsx
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect } from "react";
 
 import { useLogin } from "abc-waas-core-sdk";
 
@@ -139,10 +139,6 @@ const buttonBaseStyle = {
 } as const;
 
 export default function Login() {
-  const navigate = (path: string) => {
-    window.location.href = path;
-  };
-
   const location = {
     search: window.location.search,
     hash: window.location.hash,
@@ -151,7 +147,7 @@ export default function Login() {
 
   const { loginV2, loading, setLoading, error, setError, service } = useLogin();
 
-  const handleRedirect = (provider: Providers) => {
+  const handleRedirect = useCallback((provider: Providers) => {
     localStorage.setItem("provider", provider);
 
     if (provider === "google") {
@@ -273,7 +269,7 @@ export default function Login() {
 
       window.location.href = url.toString();
     }
-  };
+  }, []);
 
   const handleCallback = useCallback(
     async (provider: string, data: any) => {
@@ -458,7 +454,7 @@ export default function Login() {
         setLoading(false);
       }
     },
-    [loginV2, error, navigate]
+    [loginV2, error]
   );
 
   useEffect(() => {
