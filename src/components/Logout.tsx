@@ -29,6 +29,7 @@ const activeButtonStyle = {
   color: "#ffffff",
   border: "1px solid #3A49FD",
   cursor: "pointer",
+  wordBreak: "keep-all",
 } as const;
 
 const inactiveButtonStyle = {
@@ -37,6 +38,7 @@ const inactiveButtonStyle = {
   color: "#666666",
   border: "1px solid #dadce0",
   cursor: "not-allowed",
+  wordBreak: "keep-all",
 } as const;
 
 export default function Logout() {

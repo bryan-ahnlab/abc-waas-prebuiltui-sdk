@@ -510,7 +510,6 @@ var switchContainerStyle = {
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-  width: "100%",
   marginBottom: "16px",
   gap: "8px"
 };
@@ -518,13 +517,15 @@ var activeButtonStyle = __spreadProps(__spreadValues({}, buttonBaseStyle), {
   fontSize: "0.8rem",
   backgroundColor: "#3A49FD",
   color: "#ffffff",
-  border: "1px solid #3A49FD"
+  border: "1px solid #3A49FD",
+  wordBreak: "keep-all"
 });
 var inactiveButtonStyle = __spreadProps(__spreadValues({}, buttonBaseStyle), {
   fontSize: "0.8rem",
   backgroundColor: "#ffffff",
   color: "#666666",
-  border: "1px solid #dadce0"
+  border: "1px solid #dadce0",
+  wordBreak: "keep-all"
 });
 function Login() {
   var _a;
@@ -988,13 +989,15 @@ var activeButtonStyle2 = __spreadProps(__spreadValues({}, buttonBaseStyle2), {
   backgroundColor: "#3A49FD",
   color: "#ffffff",
   border: "1px solid #3A49FD",
-  cursor: "pointer"
+  cursor: "pointer",
+  wordBreak: "keep-all"
 });
 var inactiveButtonStyle2 = __spreadProps(__spreadValues({}, buttonBaseStyle2), {
   backgroundColor: "#ffffff",
   color: "#666666",
   border: "1px solid #dadce0",
-  cursor: "not-allowed"
+  cursor: "not-allowed",
+  wordBreak: "keep-all"
 });
 function Logout() {
   const [language, setLanguage] = react.useState(

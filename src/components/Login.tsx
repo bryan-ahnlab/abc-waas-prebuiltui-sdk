@@ -176,7 +176,6 @@ const switchContainerStyle = {
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-  width: "100%",
   marginBottom: "16px",
   gap: "8px",
 } as const;
@@ -187,6 +186,7 @@ const activeButtonStyle = {
   backgroundColor: "#3A49FD",
   color: "#ffffff",
   border: "1px solid #3A49FD",
+  wordBreak: "keep-all",
 } as const;
 
 const inactiveButtonStyle = {
@@ -195,6 +195,7 @@ const inactiveButtonStyle = {
   backgroundColor: "#ffffff",
   color: "#666666",
   border: "1px solid #dadce0",
+  wordBreak: "keep-all",
 } as const;
 
 export default function Login() {
