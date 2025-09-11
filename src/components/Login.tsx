@@ -119,6 +119,20 @@ const providers: {
   },
 ];
 
+const languages: {
+  label: string;
+  value: Language;
+}[] = [
+  {
+    label: "한국어",
+    value: "ko",
+  },
+  {
+    label: "English",
+    value: "en",
+  },
+];
+
 const metaContainerStyle = {
   display: "flex",
   flexDirection: "column",
@@ -199,7 +213,9 @@ const inactiveButtonStyle = {
 } as const;
 
 export default function Login() {
-  const [language, setLanguage] = useState<Language>("ko");
+  const [language, setLanguage] = useState<Language>(
+    (sessionStorage.getItem("language") as Language) || "ko"
+  );
 
   const location = {
     search: window.location.search,
@@ -686,48 +702,33 @@ export default function Login() {
 
           {/* Language Switch */}
           <div style={switchContainerStyle}>
-            <button
-              onClick={() => {
-                setLanguage("ko");
-                sessionStorage.setItem("language", "ko");
-              }}
-              style={
-                language === "ko" ? activeButtonStyle : inactiveButtonStyle
-              }
-              onMouseEnter={(event) => {
-                if (language !== "ko") {
-                  event.currentTarget.style.backgroundColor = "#f7f7f7";
-                }
-              }}
-              onMouseLeave={(event) => {
-                if (language !== "ko") {
-                  event.currentTarget.style.backgroundColor = "#ffffff";
-                }
-              }}
-            >
-              한국어
-            </button>
-            <button
-              onClick={() => {
-                setLanguage("en");
-                sessionStorage.setItem("language", "en");
-              }}
-              style={
-                language === "en" ? activeButtonStyle : inactiveButtonStyle
-              }
-              onMouseEnter={(event) => {
-                if (language !== "en") {
-                  event.currentTarget.style.backgroundColor = "#f7f7f7";
-                }
-              }}
-              onMouseLeave={(event) => {
-                if (language !== "en") {
-                  event.currentTarget.style.backgroundColor = "#ffffff";
-                }
-              }}
-            >
-              English
-            </button>
+            {languages.map((item) => {
+              return (
+                <button
+                  onClick={() => {
+                    setLanguage(item.value);
+                    sessionStorage.setItem("language", item.value);
+                  }}
+                  style={
+                    language === item.value
+                      ? activeButtonStyle
+                      : inactiveButtonStyle
+                  }
+                  onMouseEnter={(event) => {
+                    if (language !== item.value) {
+                      event.currentTarget.style.backgroundColor = "#f7f7f7";
+                    }
+                  }}
+                  onMouseLeave={(event) => {
+                    if (language !== item.value) {
+                      event.currentTarget.style.backgroundColor = "#ffffff";
+                    }
+                  }}
+                >
+                  {item.label}
+                </button>
+              );
+            })}
           </div>
           {/*  */}
 
@@ -752,6 +753,7 @@ export default function Login() {
               {LOGIN_COPYRIGHT_TEXT[language]}
             </span>
           </div>
+          {/*  */}
         </div>
       </div>
     </div>

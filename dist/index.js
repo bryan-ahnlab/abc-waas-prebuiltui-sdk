@@ -458,6 +458,16 @@ var providers = [
     border: "1px solid #03C75A"
   }
 ];
+var languages = [
+  {
+    label: "\uD55C\uAD6D\uC5B4",
+    value: "ko"
+  },
+  {
+    label: "English",
+    value: "en"
+  }
+];
 var metaContainerStyle = {
   display: "flex",
   flexDirection: "column",
@@ -529,7 +539,9 @@ var inactiveButtonStyle = __spreadProps(__spreadValues({}, buttonBaseStyle), {
 });
 function Login() {
   var _a;
-  const [language, setLanguage] = react.useState("ko");
+  const [language, setLanguage] = react.useState(
+    sessionStorage.getItem("language") || "ko"
+  );
   const location = {
     search: window.location.search,
     hash: window.location.hash};
@@ -900,50 +912,29 @@ function Login() {
           )
         }
       ),
-      /* @__PURE__ */ jsxRuntime.jsxs("div", { style: switchContainerStyle, children: [
-        /* @__PURE__ */ jsxRuntime.jsx(
+      /* @__PURE__ */ jsxRuntime.jsx("div", { style: switchContainerStyle, children: languages.map((item) => {
+        return /* @__PURE__ */ jsxRuntime.jsx(
           "button",
           {
             onClick: () => {
-              setLanguage("ko");
-              sessionStorage.setItem("language", "ko");
+              setLanguage(item.value);
+              sessionStorage.setItem("language", item.value);
             },
-            style: language === "ko" ? activeButtonStyle : inactiveButtonStyle,
+            style: language === item.value ? activeButtonStyle : inactiveButtonStyle,
             onMouseEnter: (event) => {
-              if (language !== "ko") {
+              if (language !== item.value) {
                 event.currentTarget.style.backgroundColor = "#f7f7f7";
               }
             },
             onMouseLeave: (event) => {
-              if (language !== "ko") {
+              if (language !== item.value) {
                 event.currentTarget.style.backgroundColor = "#ffffff";
               }
             },
-            children: "\uD55C\uAD6D\uC5B4"
+            children: item.label
           }
-        ),
-        /* @__PURE__ */ jsxRuntime.jsx(
-          "button",
-          {
-            onClick: () => {
-              setLanguage("en");
-              sessionStorage.setItem("language", "en");
-            },
-            style: language === "en" ? activeButtonStyle : inactiveButtonStyle,
-            onMouseEnter: (event) => {
-              if (language !== "en") {
-                event.currentTarget.style.backgroundColor = "#f7f7f7";
-              }
-            },
-            onMouseLeave: (event) => {
-              if (language !== "en") {
-                event.currentTarget.style.backgroundColor = "#ffffff";
-              }
-            },
-            children: "English"
-          }
-        )
-      ] }),
+        );
+      }) }),
       /* @__PURE__ */ jsxRuntime.jsx(
         "div",
         {
@@ -1032,16 +1023,6 @@ function Logout() {
       onClick: handleLogout,
       disabled: loginInfo.status !== "SUCCESS" || logoutInfo.loading,
       style: loginInfo.status === "SUCCESS" ? activeButtonStyle2 : inactiveButtonStyle2,
-      onMouseEnter: (event) => {
-        if (loginInfo.status === "SUCCESS" && !logoutInfo.loading) {
-          event.currentTarget.style.backgroundColor = "#f7f7f7";
-        }
-      },
-      onMouseLeave: (event) => {
-        if (loginInfo.status === "SUCCESS" && !logoutInfo.loading) {
-          event.currentTarget.style.backgroundColor = "#ffffff";
-        }
-      },
       children: logoutInfo.loading ? /* @__PURE__ */ jsxRuntime.jsx(
         "img",
         {

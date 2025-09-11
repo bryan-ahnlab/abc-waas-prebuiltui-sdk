@@ -80,16 +80,6 @@ export default function Logout() {
       style={
         loginInfo.status === "SUCCESS" ? activeButtonStyle : inactiveButtonStyle
       }
-      onMouseEnter={(event) => {
-        if (loginInfo.status === "SUCCESS" && !logoutInfo.loading) {
-          event.currentTarget.style.backgroundColor = "#f7f7f7";
-        }
-      }}
-      onMouseLeave={(event) => {
-        if (loginInfo.status === "SUCCESS" && !logoutInfo.loading) {
-          event.currentTarget.style.backgroundColor = "#ffffff";
-        }
-      }}
     >
       {logoutInfo.loading ? (
         <img
