@@ -26,6 +26,7 @@ var __spreadValues = (a, b) => {
 var __spreadProps = (a, b) => __defProps(a, __getOwnPropDescs(b));
 var LANGUAGE_STORAGE_KEY = "language";
 var DEFAULT_LANGUAGE = "ko";
+var LANGUAGE_CHANGE_EVENT = "languageChanged";
 var useLanguage = () => {
   const [language, setLanguageState] = react.useState(() => {
     if (typeof window !== "undefined") {
@@ -40,6 +41,11 @@ var useLanguage = () => {
     setLanguageState(newLanguage);
     if (typeof window !== "undefined") {
       localStorage.setItem(LANGUAGE_STORAGE_KEY, newLanguage);
+      window.dispatchEvent(
+        new CustomEvent(LANGUAGE_CHANGE_EVENT, {
+          detail: { language: newLanguage }
+        })
+      );
     }
   }, []);
   react.useEffect(() => {
@@ -48,8 +54,21 @@ var useLanguage = () => {
         setLanguageState(event.newValue);
       }
     };
+    const handleLanguageChange = (event) => {
+      setLanguageState(event.detail.language);
+    };
     window.addEventListener("storage", handleStorageChange);
-    return () => window.removeEventListener("storage", handleStorageChange);
+    window.addEventListener(
+      LANGUAGE_CHANGE_EVENT,
+      handleLanguageChange
+    );
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+      window.removeEventListener(
+        LANGUAGE_CHANGE_EVENT,
+        handleLanguageChange
+      );
+    };
   }, []);
   return {
     language,
