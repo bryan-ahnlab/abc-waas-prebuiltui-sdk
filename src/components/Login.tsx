@@ -164,7 +164,7 @@ const buttonBaseStyle = {
   fontSize: "0.9rem",
   borderRadius: "30px",
   width: "100%",
-  marginBottom: "16px",
+  marginBottom: "12px",
   cursor: "pointer",
   transition: "all 0.1s ease-in-out",
   wordBreak: "break-all",
@@ -172,34 +172,26 @@ const buttonBaseStyle = {
   gap: "12px",
 } as const;
 
-const languageSwitchStyle = {
+const switchContainerStyle = {
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-  marginBottom: "24px",
+  width: "100%",
+  marginBottom: "16px",
   gap: "8px",
 } as const;
 
-const languageButtonBaseStyle = {
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  padding: "8px 16px",
+const activeButtonStyle = {
+  ...buttonBaseStyle,
   fontSize: "0.8rem",
-  borderRadius: "20px",
-  cursor: "pointer",
-  transition: "all 0.1s ease-in-out",
-} as const;
-
-const activeLanguageButtonStyle = {
-  ...languageButtonBaseStyle,
   backgroundColor: "#3A49FD",
   color: "#ffffff",
   border: "1px solid #3A49FD",
 } as const;
 
-const inactiveLanguageButtonStyle = {
-  ...languageButtonBaseStyle,
+const inactiveButtonStyle = {
+  ...buttonBaseStyle,
+  fontSize: "0.8rem",
   backgroundColor: "#ffffff",
   color: "#666666",
   border: "1px solid #dadce0",
@@ -610,7 +602,7 @@ export default function Login() {
           <span
             style={{
               textAlign: "center",
-              marginBottom: "36px",
+              marginBottom: "24px",
               fontSize: "1rem",
               fontWeight: "bold",
               color: "#333333",
@@ -692,13 +684,14 @@ export default function Login() {
           {/*  */}
 
           {/* Language Switch */}
-          <div style={languageSwitchStyle}>
+          <div style={switchContainerStyle}>
             <button
-              onClick={() => setLanguage("ko")}
+              onClick={() => {
+                setLanguage("ko");
+                sessionStorage.setItem("language", "ko");
+              }}
               style={
-                language === "ko"
-                  ? activeLanguageButtonStyle
-                  : inactiveLanguageButtonStyle
+                language === "ko" ? activeButtonStyle : inactiveButtonStyle
               }
               onMouseEnter={(event) => {
                 if (language !== "ko") {
@@ -714,11 +707,12 @@ export default function Login() {
               한국어
             </button>
             <button
-              onClick={() => setLanguage("en")}
+              onClick={() => {
+                setLanguage("en");
+                sessionStorage.setItem("language", "en");
+              }}
               style={
-                language === "en"
-                  ? activeLanguageButtonStyle
-                  : inactiveLanguageButtonStyle
+                language === "en" ? activeButtonStyle : inactiveButtonStyle
               }
               onMouseEnter={(event) => {
                 if (language !== "en") {

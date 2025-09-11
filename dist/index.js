@@ -499,36 +499,29 @@ var buttonBaseStyle = {
   fontSize: "0.9rem",
   borderRadius: "30px",
   width: "100%",
-  marginBottom: "16px",
+  marginBottom: "12px",
   cursor: "pointer",
   transition: "all 0.1s ease-in-out",
   wordBreak: "break-all",
   flexWrap: "wrap",
   gap: "12px"
 };
-var languageSwitchStyle = {
+var switchContainerStyle = {
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-  marginBottom: "24px",
+  width: "100%",
+  marginBottom: "16px",
   gap: "8px"
 };
-var languageButtonBaseStyle = {
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  padding: "8px 16px",
+var activeButtonStyle = __spreadProps(__spreadValues({}, buttonBaseStyle), {
   fontSize: "0.8rem",
-  borderRadius: "20px",
-  cursor: "pointer",
-  transition: "all 0.1s ease-in-out"
-};
-var activeLanguageButtonStyle = __spreadProps(__spreadValues({}, languageButtonBaseStyle), {
   backgroundColor: "#3A49FD",
   color: "#ffffff",
   border: "1px solid #3A49FD"
 });
-var inactiveLanguageButtonStyle = __spreadProps(__spreadValues({}, languageButtonBaseStyle), {
+var inactiveButtonStyle = __spreadProps(__spreadValues({}, buttonBaseStyle), {
+  fontSize: "0.8rem",
   backgroundColor: "#ffffff",
   color: "#666666",
   border: "1px solid #dadce0"
@@ -833,7 +826,7 @@ function Login() {
       {
         style: {
           textAlign: "center",
-          marginBottom: "36px",
+          marginBottom: "24px",
           fontSize: "1rem",
           fontWeight: "bold",
           color: "#333333",
@@ -906,12 +899,15 @@ function Login() {
           )
         }
       ),
-      /* @__PURE__ */ jsxRuntime.jsxs("div", { style: languageSwitchStyle, children: [
+      /* @__PURE__ */ jsxRuntime.jsxs("div", { style: switchContainerStyle, children: [
         /* @__PURE__ */ jsxRuntime.jsx(
           "button",
           {
-            onClick: () => setLanguage("ko"),
-            style: language === "ko" ? activeLanguageButtonStyle : inactiveLanguageButtonStyle,
+            onClick: () => {
+              setLanguage("ko");
+              sessionStorage.setItem("language", "ko");
+            },
+            style: language === "ko" ? activeButtonStyle : inactiveButtonStyle,
             onMouseEnter: (event) => {
               if (language !== "ko") {
                 event.currentTarget.style.backgroundColor = "#f7f7f7";
@@ -928,8 +924,11 @@ function Login() {
         /* @__PURE__ */ jsxRuntime.jsx(
           "button",
           {
-            onClick: () => setLanguage("en"),
-            style: language === "en" ? activeLanguageButtonStyle : inactiveLanguageButtonStyle,
+            onClick: () => {
+              setLanguage("en");
+              sessionStorage.setItem("language", "en");
+            },
+            style: language === "en" ? activeButtonStyle : inactiveButtonStyle,
             onMouseEnter: (event) => {
               if (language !== "en") {
                 event.currentTarget.style.backgroundColor = "#f7f7f7";
@@ -979,25 +978,28 @@ var buttonBaseStyle2 = {
   fontSize: "0.9rem",
   borderRadius: "30px",
   width: "100%",
-  marginBottom: "16px",
   cursor: "pointer",
-  transition: "all 0.2s ease-in-out",
+  transition: "all 0.1s ease-in-out",
   wordBreak: "break-all",
   flexWrap: "wrap",
-  gap: "12px",
-  border: "1px solid #dadce0"
+  gap: "12px"
 };
-var activeButtonStyle = __spreadProps(__spreadValues({}, buttonBaseStyle2), {
-  backgroundColor: "#ffffff",
-  color: "#000000"
+var activeButtonStyle2 = __spreadProps(__spreadValues({}, buttonBaseStyle2), {
+  backgroundColor: "#3A49FD",
+  color: "#ffffff",
+  border: "1px solid #3A49FD",
+  cursor: "pointer"
 });
-var inactiveButtonStyle = __spreadProps(__spreadValues({}, buttonBaseStyle2), {
-  backgroundColor: "#f5f5f5",
-  color: "#999999",
-  cursor: "not-allowed",
-  border: "1px solid #e0e0e0"
+var inactiveButtonStyle2 = __spreadProps(__spreadValues({}, buttonBaseStyle2), {
+  backgroundColor: "#ffffff",
+  color: "#666666",
+  border: "1px solid #dadce0",
+  cursor: "not-allowed"
 });
 function Logout() {
+  const [language, setLanguage] = react.useState(
+    sessionStorage.getItem("language") || "ko"
+  );
   const { logoutV2, logoutInfo, setLogoutInfo } = abcWaasCoreSdk.useLogout();
   const { loginInfo } = abcWaasCoreSdk.useLogin();
   const handleLogout = async () => {
@@ -1017,13 +1019,16 @@ function Logout() {
       });
     }
   };
-  const LOGOUT_BUTTON_TEXT = "\uB85C\uADF8\uC544\uC6C3";
+  const LOGOUT_BUTTON_TEXT = {
+    ko: "\uB85C\uADF8\uC544\uC6C3",
+    en: "Logout"
+  };
   return /* @__PURE__ */ jsxRuntime.jsx(
     "button",
     {
       onClick: handleLogout,
       disabled: loginInfo.status !== "SUCCESS" || logoutInfo.loading,
-      style: loginInfo.status === "SUCCESS" ? activeButtonStyle : inactiveButtonStyle,
+      style: loginInfo.status === "SUCCESS" ? activeButtonStyle2 : inactiveButtonStyle2,
       onMouseEnter: (event) => {
         if (loginInfo.status === "SUCCESS" && !logoutInfo.loading) {
           event.currentTarget.style.backgroundColor = "#f7f7f7";
@@ -1041,7 +1046,7 @@ function Logout() {
           alt: "loading",
           style: { width: "24px", height: "24px" }
         }
-      ) : LOGOUT_BUTTON_TEXT
+      ) : LOGOUT_BUTTON_TEXT[language]
     }
   );
 }
