@@ -23,6 +23,38 @@ var __spreadValues = (a, b) => {
   return a;
 };
 var __spreadProps = (a, b) => __defProps(a, __getOwnPropDescs(b));
+var LANGUAGE_STORAGE_KEY = "language";
+var DEFAULT_LANGUAGE = "ko";
+var useLanguage = () => {
+  const [language, setLanguageState] = useState(() => {
+    if (typeof window !== "undefined") {
+      const currentLanguage = localStorage.getItem(
+        LANGUAGE_STORAGE_KEY
+      );
+      return currentLanguage || DEFAULT_LANGUAGE;
+    }
+    return DEFAULT_LANGUAGE;
+  });
+  const setLanguage = useCallback((newLanguage) => {
+    setLanguageState(newLanguage);
+    if (typeof window !== "undefined") {
+      localStorage.setItem(LANGUAGE_STORAGE_KEY, newLanguage);
+    }
+  }, []);
+  useEffect(() => {
+    const handleStorageChange = (event) => {
+      if (event.key === LANGUAGE_STORAGE_KEY && event.newValue) {
+        setLanguageState(event.newValue);
+      }
+    };
+    window.addEventListener("storage", handleStorageChange);
+    return () => window.removeEventListener("storage", handleStorageChange);
+  }, []);
+  return {
+    language,
+    setLanguage
+  };
+};
 
 // src/assets/icons/providers/icon_google.svg
 var icon_google_default = 'data:image/svg+xml,<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">%0A<path d="M20.64 12.2062C20.64 11.5687 20.5837 10.9537 20.475 10.365H12V13.8487H16.845C16.6312 14.97 15.9937 15.9187 15.0375 16.5562V18.825H17.9587C19.6575 17.2537 20.64 14.9437 20.64 12.2062Z" fill="%234285F4"/>%0A<path d="M12.0001 20.9999C14.4301 20.9999 16.4663 20.1974 17.9551 18.8249L15.0338 16.5599C14.2313 17.0999 13.2076 17.4262 12.0001 17.4262C9.66011 17.4262 7.67261 15.8474 6.96011 13.7212H3.96387V16.0462C5.44511 18.9787 8.48261 20.9999 12.0001 20.9999Z" fill="%2334A853"/>%0A<path d="M6.95999 13.7101C6.77999 13.1701 6.67499 12.5963 6.67499 12.0001C6.67499 11.4038 6.77999 10.8301 6.95999 10.2901V7.96509H3.96375C3.3525 9.17634 3 10.5451 3 12.0001C3 13.4551 3.3525 14.8238 3.96375 16.0351L6.29624 14.2201C6.29624 14.2163 6.95999 13.7101 6.95999 13.7101Z" fill="%23FBBC05"/>%0A<path d="M12.0001 6.58499C13.3238 6.58499 14.5051 7.04249 15.4463 7.92749L18.0226 5.35125C16.4588 3.8925 14.4301 3 12.0001 3C8.48261 3 5.44511 5.02125 3.96387 7.96499L6.96011 10.29C7.67261 8.16374 9.66011 6.58499 12.0001 6.58499Z" fill="%23EA4335"/>%0A</svg>%0A';
@@ -538,9 +570,7 @@ var inactiveButtonStyle = __spreadProps(__spreadValues({}, buttonBaseStyle), {
 });
 function Login() {
   var _a;
-  const [language, setLanguage] = useState(
-    sessionStorage.getItem("language") || "ko"
-  );
+  const { language, setLanguage } = useLanguage();
   const location = {
     search: window.location.search,
     hash: window.location.hash};
@@ -915,10 +945,7 @@ function Login() {
         return /* @__PURE__ */ jsx(
           "button",
           {
-            onClick: () => {
-              setLanguage(item.value);
-              sessionStorage.setItem("language", item.value);
-            },
+            onClick: () => setLanguage(item.value),
             style: language === item.value ? activeButtonStyle : inactiveButtonStyle,
             onMouseEnter: (event) => {
               if (language !== item.value) {
@@ -931,7 +958,8 @@ function Login() {
               }
             },
             children: item.label
-          }
+          },
+          item.value
         );
       }) }),
       /* @__PURE__ */ jsx(
@@ -990,9 +1018,7 @@ var inactiveButtonStyle2 = __spreadProps(__spreadValues({}, buttonBaseStyle2), {
   wordBreak: "keep-all"
 });
 function Logout() {
-  const [language, setLanguage] = useState(
-    sessionStorage.getItem("language") || "ko"
-  );
+  const { language } = useLanguage();
   const { logoutV2, logoutInfo, setLogoutInfo } = useLogout();
   const { loginInfo } = useLogin();
   const handleLogout = async () => {
@@ -1034,6 +1060,6 @@ function Logout() {
   );
 }
 
-export { Login, Logout };
+export { Login, Logout, useLanguage };
 //# sourceMappingURL=index.mjs.map
 //# sourceMappingURL=index.mjs.map

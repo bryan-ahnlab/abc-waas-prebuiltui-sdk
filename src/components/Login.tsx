@@ -1,6 +1,6 @@
 // src/components/Login.tsx
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect } from "react";
 
 import { useLogin } from "abc-waas-core-sdk";
 
@@ -26,9 +26,10 @@ import {
   verifyAppleToken,
 } from "@/utilities/apple";
 import { generateUUID } from "@/utilities/common";
+import { useLanguage } from "@/hooks/useLanguage";
+import { UseLanguageType } from "@/types/language";
 
-type Providers = "google" | "apple" | "kakao" | "naver" | "line";
-type Language = "ko" | "en";
+type ProviderType = "google" | "apple" | "kakao" | "naver" | "line";
 
 const LOGIN_BUTTON_TEXT = {
   google: {
@@ -64,7 +65,7 @@ const LOGIN_COPYRIGHT_TEXT = {
 };
 
 const providers: {
-  type: Providers;
+  type: ProviderType;
   label: any;
   icon: string;
   backgroundColor: string;
@@ -121,7 +122,7 @@ const providers: {
 
 const languages: {
   label: string;
-  value: Language;
+  value: UseLanguageType;
 }[] = [
   {
     label: "한국어",
@@ -213,9 +214,7 @@ const inactiveButtonStyle = {
 } as const;
 
 export default function Login() {
-  const [language, setLanguage] = useState<Language>(
-    (sessionStorage.getItem("language") as Language) || "ko"
-  );
+  const { language, setLanguage } = useLanguage();
 
   const location = {
     search: window.location.search,
@@ -225,7 +224,7 @@ export default function Login() {
 
   const { loginV2, loginInfo, setLoginInfo, service } = useLogin();
 
-  const handleRedirect = useCallback((provider: Providers) => {
+  const handleRedirect = useCallback((provider: ProviderType) => {
     localStorage.setItem("provider", provider);
 
     if (provider === "google") {
@@ -705,10 +704,8 @@ export default function Login() {
             {languages.map((item) => {
               return (
                 <button
-                  onClick={() => {
-                    setLanguage(item.value);
-                    sessionStorage.setItem("language", item.value);
-                  }}
+                  key={item.value}
+                  onClick={() => setLanguage(item.value)}
                   style={
                     language === item.value
                       ? activeButtonStyle

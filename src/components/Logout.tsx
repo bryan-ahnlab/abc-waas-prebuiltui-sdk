@@ -1,12 +1,9 @@
 // src/components/Logout.tsx
 
-import { useEffect, useState } from "react";
-
 import { useLogin, useLogout } from "abc-waas-core-sdk";
 
 import LoadingAnimation from "@/assets/animations/common/animation_loading.svg";
-
-type Language = "ko" | "en";
+import { useLanguage } from "@/hooks/useLanguage";
 
 const buttonBaseStyle = {
   display: "flex",
@@ -42,9 +39,7 @@ const inactiveButtonStyle = {
 } as const;
 
 export default function Logout() {
-  const [language, setLanguage] = useState<Language>(
-    (sessionStorage.getItem("language") as Language) || "ko"
-  );
+  const { language } = useLanguage();
 
   const { logoutV2, logoutInfo, setLogoutInfo } = useLogout();
   const { loginInfo } = useLogin();
