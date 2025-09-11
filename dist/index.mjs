@@ -989,6 +989,10 @@ function Login() {
     ] })
   ] }) });
 }
+var LOGOUT_BUTTON_TEXT = {
+  ko: "\uB85C\uADF8\uC544\uC6C3",
+  en: "Logout"
+};
 var buttonBaseStyle2 = {
   display: "flex",
   alignItems: "center",
@@ -1037,10 +1041,6 @@ function Logout() {
         status: "FAILURE"
       });
     }
-  };
-  const LOGOUT_BUTTON_TEXT = {
-    ko: "\uB85C\uADF8\uC544\uC6C3",
-    en: "Logout"
   };
   return /* @__PURE__ */ jsx(
     "button",

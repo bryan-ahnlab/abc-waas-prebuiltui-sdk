@@ -5,6 +5,11 @@ import { useLogin, useLogout } from "abc-waas-core-sdk";
 import LoadingAnimation from "@/assets/animations/common/animation_loading.svg";
 import { useLanguage } from "@/hooks/useLanguage";
 
+const LOGOUT_BUTTON_TEXT = {
+  ko: "로그아웃",
+  en: "Logout",
+};
+
 const buttonBaseStyle = {
   display: "flex",
   alignItems: "center",
@@ -61,11 +66,6 @@ export default function Logout() {
         status: "FAILURE",
       });
     }
-  };
-
-  const LOGOUT_BUTTON_TEXT = {
-    ko: "로그아웃",
-    en: "Logout",
   };
 
   return (
