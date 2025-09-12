@@ -16,9 +16,11 @@ ABC WaaS SDK를 위한 미리 만들어진 UI 컴포넌트 라이브러리입니
 - 🔧 **간편한 설정**: 환경 변수만으로 모든 기능 사용 가능
 - 📦 **번들 최적화**: Tree shaking과 코드 분할 지원
 - 🌐 **크로스 브라우저 호환성**: 모든 브라우저에서 안전하게 작동
-- 🔒 **보안 강화**: 암호학적으로 안전한 UUID 생성
+- 🔒 **보안 강화**: 암호학적으로 안전한 UUID 생성 및 JWT 토큰 검증
 - 🌍 **다국어 지원**: 한국어/영어 언어 전환 기능
 - 🎯 **커스텀 Hook**: 언어 관리를 위한 `useLanguage` Hook 제공
+- 🔄 **실시간 상태 관리**: 로그인/로그아웃 상태 실시간 추적
+- 🎭 **로딩 애니메이션**: 사용자 경험을 향상시키는 로딩 상태 표시
 
 ## 📋 목차
 
@@ -100,233 +102,61 @@ function UserProfile() {
 
 ## 📖 사용법
 
-### 기본 사용법
+### 기본 컴포넌트
+
+#### Login 컴포넌트
+
+로그인 페이지에서 사용할 수 있는 완성된 로그인 UI입니다.
 
 ```tsx
-import React from "react";
-import {
-  AbcWaasProvider,
-  Login,
-  Logout,
-  useLogin,
-  useLogout,
-  useLanguage,
-} from "abc-waas-prebuiltui-sdk";
+import { Login } from "abc-waas-prebuiltui-sdk";
 
-const config = {
-  API_WAAS_MYABCWALLET_URL:
-    process.env.REACT_APP_API_WAAS_MYABCWALLET_URI || "",
-  MW_MYABCWALLET_URL: process.env.REACT_APP_MW_MYABCWALLET_URI || "",
-  CLIENT_ID: process.env.REACT_APP_CLIENT_ID || "",
-  CLIENT_SECRET: process.env.REACT_APP_CLIENT_SECRET || "",
-};
-
-function App() {
+function LoginPage() {
   return (
-    <AbcWaasProvider config={config}>
-      <div className="App">
-        <Login />
-        <Logout />
-      </div>
-    </AbcWaasProvider>
+    <div>
+      <h1>로그인</h1>
+      <Login />
+    </div>
   );
 }
-
-export default App;
 ```
 
-### 로그인 상태 확인
+**특징:**
+
+- 5개 소셜 로그인 제공자 지원 (Google, Apple, Naver, Kakao, LINE)
+- 언어 전환 기능 (한국어/영어)
+- 로딩 상태 표시
+- 반응형 디자인
+- 브랜드 일관성 유지
+
+#### Logout 컴포넌트
+
+사용자 프로필이나 설정 페이지에서 사용할 수 있는 로그아웃 버튼입니다.
 
 ```tsx
-import { useLogin } from "abc-waas-prebuiltui-sdk";
+import { Logout } from "abc-waas-prebuiltui-sdk";
 
-function UserStatus() {
-  const { loginInfo } = useLogin();
-
-  if (loginInfo.loading) {
-    return <div>로그인 중...</div>;
-  }
-
-  if (loginInfo.status === "SUCCESS") {
-    return <div>로그인 성공!</div>;
-  }
-
-  if (loginInfo.error) {
-    return <div>오류: {loginInfo.error.message}</div>;
-  }
-
-  return <div>로그인이 필요합니다.</div>;
+function UserProfile() {
+  return (
+    <div>
+      <h2>사용자 정보</h2>
+      <Logout />
+    </div>
+  );
 }
 ```
 
-## 🔧 API Reference
+**특징:**
 
-### Components
-
-#### `<Login />`
-
-로그인 UI 컴포넌트입니다. 5개의 소셜 로그인 버튼과 언어 전환 기능을 제공합니다.
-
-**Props**: 없음
-
-**Features**:
-
-- Google, Apple, Naver, Kakao, LINE 소셜 로그인
-- 한국어/영어 언어 전환
-- 로딩 상태 표시
-- 에러 메시지 표시
-- 반응형 디자인
-
-#### `<Logout />`
-
-로그아웃 버튼 컴포넌트입니다.
-
-**Props**: 없음
-
-**Features**:
-
-- 로그인 상태에 따른 활성화/비활성화
+- 로그인 상태에 따른 버튼 활성화/비활성화
 - 로딩 상태 표시
 - 다국어 지원
 
-### Hooks
+### 커스텀 Hook
 
-#### `useLogin()`
+#### useLanguage Hook
 
-로그인 관련 상태와 함수를 제공합니다.
-
-**Returns**:
-
-```typescript
-{
-  loginV2: (email: string, token: string, provider: string) => Promise<void>;
-  loginInfo: {
-    loading: boolean;
-    error: Error | null;
-    status: 'IDLE' | 'SUCCESS' | 'FAILURE';
-  };
-  setLoginInfo: (info: LoginInfo) => void;
-  service: string;
-}
-```
-
-#### `useLogout()`
-
-로그아웃 관련 상태와 함수를 제공합니다.
-
-**Returns**:
-
-```typescript
-{
-  logoutV2: () => Promise<void>;
-  logoutInfo: {
-    loading: boolean;
-    error: Error | null;
-    status: 'IDLE' | 'SUCCESS' | 'FAILURE';
-  };
-  setLogoutInfo: (info: LogoutInfo) => void;
-}
-```
-
-#### `useLanguage()`
-
-언어 관리 Hook입니다.
-
-**Returns**:
-
-```typescript
-{
-  language: 'ko' | 'en';
-  setLanguage: (language: 'ko' | 'en') => void;
-}
-```
-
-**Features**:
-
-- localStorage를 통한 언어 설정 저장
-- 다른 탭 간 언어 설정 동기화
-- 기본값: 'ko' (한국어)
-
-## ⚙️ 환경 변수 설정
-
-### Google OAuth
-
-```env
-REACT_APP_GOOGLE_CLIENT_ID=your_google_client_id
-REACT_APP_GOOGLE_CLIENT_SECRET=your_google_client_secret
-REACT_APP_GOOGLE_REDIRECT_URI=http://localhost:3000/auth/google/callback
-```
-
-### Apple OAuth
-
-```env
-REACT_APP_APPLE_CLIENT_ID=your_apple_client_id
-REACT_APP_APPLE_REDIRECT_URI=http://localhost:3000/auth/apple/callback
-REACT_APP_APPLE_TEAM_ID=your_apple_team_id
-REACT_APP_APPLE_KEY_ID=your_apple_key_id
-REACT_APP_APPLE_PRIVATE_KEY=your_apple_private_key
-```
-
-### Naver OAuth
-
-```env
-REACT_APP_NAVER_CLIENT_ID=your_naver_client_id
-REACT_APP_NAVER_CLIENT_SECRET=your_naver_client_secret
-REACT_APP_NAVER_REDIRECT_URI=http://localhost:3000/auth/naver/callback
-```
-
-### Kakao OAuth
-
-```env
-REACT_APP_KAKAO_REST_API_KEY=your_kakao_rest_api_key
-REACT_APP_KAKAO_REDIRECT_URI=http://localhost:3000/auth/kakao/callback
-```
-
-### LINE OAuth
-
-```env
-REACT_APP_LINE_CLIENT_ID=your_line_client_id
-REACT_APP_LINE_CLIENT_SECRET=your_line_client_secret
-REACT_APP_LINE_REDIRECT_URI=http://localhost:3000/auth/line/callback
-```
-
-## 🌐 지원하는 소셜 서비스
-
-### Google
-
-- **스코프**: `https://www.googleapis.com/auth/userinfo.email`
-- **인증 방식**: OAuth 2.0 Authorization Code Flow
-- **토큰 타입**: ID Token
-
-### Apple
-
-- **스코프**: `name email`
-- **인증 방식**: OAuth 2.0 with PKCE
-- **토큰 타입**: ID Token + Authorization Code
-
-### Naver
-
-- **스코프**: 기본 (이메일 정보)
-- **인증 방식**: OAuth 2.0 Authorization Code Flow
-- **토큰 타입**: Access Token
-
-### Kakao
-
-- **스코프**: `account_email openid`
-- **인증 방식**: OAuth 2.0 Authorization Code Flow
-- **토큰 타입**: ID Token + Access Token
-
-### LINE
-
-- **스코프**: `profile openid email`
-- **인증 방식**: OAuth 2.0 Authorization Code Flow
-- **토큰 타입**: ID Token
-
-## 🎯 커스텀 Hook
-
-### useLanguage Hook
-
-언어 관리를 위한 커스텀 Hook입니다.
+언어 설정을 관리하는 Hook입니다.
 
 ```tsx
 import { useLanguage } from "abc-waas-prebuiltui-sdk";
@@ -336,7 +166,7 @@ function LanguageSelector() {
 
   return (
     <div>
-      <p>현재 언어: {language === "ko" ? "한국어" : "English"}</p>
+      <p>현재 언어: {language}</p>
       <button onClick={() => setLanguage("ko")}>한국어</button>
       <button onClick={() => setLanguage("en")}>English</button>
     </div>
@@ -344,11 +174,122 @@ function LanguageSelector() {
 }
 ```
 
-**특징**:
+**기능:**
 
+- 현재 언어 상태 관리
+- 언어 변경 함수 제공
 - localStorage를 통한 언어 설정 영구 저장
-- 다른 탭에서 언어 변경 시 자동 동기화
-- SSR 안전성 보장 (window 객체 체크)
+- 브라우저 간 언어 설정 동기화
+
+## 🔧 API Reference
+
+### 컴포넌트
+
+#### `<Login />`
+
+로그인 UI 컴포넌트
+
+**Props:** 없음 (환경 변수로 설정)
+
+**환경 변수:**
+
+- `REACT_APP_GOOGLE_CLIENT_ID`: Google OAuth 클라이언트 ID
+- `REACT_APP_GOOGLE_REDIRECT_URI`: Google OAuth 리다이렉트 URI
+- `REACT_APP_APPLE_CLIENT_ID`: Apple OAuth 클라이언트 ID
+- `REACT_APP_APPLE_REDIRECT_URI`: Apple OAuth 리다이렉트 URI
+- `REACT_APP_NAVER_CLIENT_ID`: Naver OAuth 클라이언트 ID
+- `REACT_APP_NAVER_REDIRECT_URI`: Naver OAuth 리다이렉트 URI
+- `REACT_APP_KAKAO_CLIENT_ID`: Kakao OAuth 클라이언트 ID
+- `REACT_APP_KAKAO_REDIRECT_URI`: Kakao OAuth 리다이렉트 URI
+- `REACT_APP_LINE_CLIENT_ID`: LINE OAuth 클라이언트 ID
+- `REACT_APP_LINE_REDIRECT_URI`: LINE OAuth 리다이렉트 URI
+
+#### `<Logout />`
+
+로그아웃 버튼 컴포넌트
+
+**Props:** 없음
+
+### Hook
+
+#### `useLanguage()`
+
+언어 설정을 관리하는 Hook
+
+**반환값:**
+
+```typescript
+{
+  language: "ko" | "en";
+  setLanguage: (language: "ko" | "en") => void;
+}
+```
+
+### 타입
+
+#### `UseLanguageType`
+
+```typescript
+type UseLanguageType = "ko" | "en";
+```
+
+## 🌍 환경 변수 설정
+
+프로젝트 루트에 `.env` 파일을 생성하고 다음 환경 변수들을 설정하세요:
+
+```env
+# Google OAuth
+REACT_APP_GOOGLE_CLIENT_ID=your_google_client_id
+REACT_APP_GOOGLE_REDIRECT_URI=http://localhost:3000/auth/google/callback
+
+# Apple OAuth
+REACT_APP_APPLE_CLIENT_ID=your_apple_client_id
+REACT_APP_APPLE_REDIRECT_URI=http://localhost:3000/auth/apple/callback
+
+# Naver OAuth
+REACT_APP_NAVER_CLIENT_ID=your_naver_client_id
+REACT_APP_NAVER_REDIRECT_URI=http://localhost:3000/auth/naver/callback
+
+# Kakao OAuth
+REACT_APP_KAKAO_CLIENT_ID=your_kakao_client_id
+REACT_APP_KAKAO_REDIRECT_URI=http://localhost:3000/auth/kakao/callback
+
+# LINE OAuth
+REACT_APP_LINE_CLIENT_ID=your_line_client_id
+REACT_APP_LINE_REDIRECT_URI=http://localhost:3000/auth/line/callback
+```
+
+## 🔐 지원하는 소셜 서비스
+
+### Google
+
+- **OAuth 2.0** 기반 인증
+- **이메일 정보** 수집
+- **토큰 검증** 및 사용자 정보 조회
+
+### Apple
+
+- **Sign in with Apple** 지원
+- **JWT 토큰 검증**
+- **프라이버시 보호** 이메일 지원
+
+### Naver
+
+- **네이버 아이디로 로그인** 지원
+- **OAuth 2.0** 기반 인증
+- **사용자 프로필** 정보 수집
+
+### Kakao
+
+- **카카오 로그인** 지원
+- **JWT 토큰 검증**
+- **사용자 정보** 및 **이메일** 수집
+
+### LINE
+
+- **LINE 로그인** 지원
+- **OAuth 2.0** 기반 인증
+- **프로필 정보** 수집
 
 ## 🏗️ 아키텍처
 
@@ -360,117 +301,128 @@ src/
 │   ├── Login.tsx       # 로그인 컴포넌트
 │   └── Logout.tsx      # 로그아웃 컴포넌트
 ├── hooks/              # 커스텀 Hook
-│   ├── useLanguage.ts  # 언어 관리 Hook
-│   └── index.ts        # Hook 내보내기
-├── utilities/          # 유틸리티 함수
-│   ├── common.ts       # 공통 함수 (UUID 생성 등)
-│   ├── google.ts       # Google OAuth 처리
-│   ├── apple.ts        # Apple OAuth 처리
-│   ├── naver.ts        # Naver OAuth 처리
-│   ├── kakao.ts        # Kakao OAuth 처리
-│   └── line.ts         # LINE OAuth 처리
-├── types/              # 타입 정의
+│   └── useLanguage.ts  # 언어 관리 Hook
+├── types/              # TypeScript 타입 정의
 │   ├── language.ts     # 언어 타입
 │   └── svg.d.ts        # SVG 모듈 타입
+├── utilities/          # 유틸리티 함수
+│   ├── common.ts       # 공통 유틸리티
+│   ├── google.ts       # Google OAuth 유틸리티
+│   ├── apple.ts        # Apple OAuth 유틸리티
+│   ├── naver.ts        # Naver OAuth 유틸리티
+│   ├── kakao.ts        # Kakao OAuth 유틸리티
+│   └── line.ts         # LINE OAuth 유틸리티
 ├── assets/             # 정적 자산
 │   ├── icons/          # 아이콘 파일
 │   └── animations/     # 애니메이션 파일
-└── index.ts            # 메인 내보내기
+└── index.ts            # 메인 진입점
 ```
 
-### 빌드 설정
+### 핵심 기능
 
-- **번들러**: tsup
-- **형식**: ESM + CJS
-- **타입**: TypeScript 선언 파일 자동 생성
-- **최적화**: Tree shaking, 코드 분할
-- **외부 의존성**: React, React-DOM
+1. **OAuth 2.0 플로우**: 각 소셜 서비스의 OAuth 2.0 인증 플로우 구현
+2. **JWT 토큰 검증**: Apple, Kakao 등에서 제공하는 JWT 토큰 검증
+3. **상태 관리**: 로그인/로그아웃 상태 실시간 관리
+4. **다국어 지원**: 한국어/영어 언어 전환 기능
+5. **보안**: 암호학적으로 안전한 UUID 생성 및 토큰 검증
 
-### 보안 기능
+### 의존성
 
-- **UUID 생성**: 크로스 브라우저 호환 UUID v4 생성
-- **OAuth 상태 검증**: CSRF 공격 방지
-- **토큰 검증**: 각 소셜 서비스별 토큰 검증
-- **환경 변수**: 민감한 정보 환경 변수로 관리
+- **abc-waas-core-sdk**: 핵심 WaaS 기능
+- **jose**: JWT 토큰 검증
+- **react**: UI 프레임워크
+- **typescript**: 타입 안전성
 
 ## 🛠️ 개발 가이드
 
-### 로컬 개발 환경 설정
+### 빌드 설정
 
-1. **저장소 클론**
+이 프로젝트는 `tsup`을 사용하여 빌드됩니다:
 
 ```bash
-git clone https://github.com/your-org/abc-waas-prebuiltui-sdk.git
-cd abc-waas-prebuiltui-sdk
+npm run build
 ```
 
-2. **의존성 설치**
+**빌드 옵션:**
+
+- **ESM/CJS** 양쪽 형식 지원
+- **TypeScript 선언 파일** 자동 생성
+- **Tree shaking** 최적화
+- **소스맵** 생성
+- **SVG 파일** 데이터 URL로 변환
+
+### 개발 환경 설정
+
+1. **의존성 설치**:
 
 ```bash
 npm install
 ```
 
-3. **빌드**
+2. **환경 변수 설정**:
+   `.env` 파일에 필요한 OAuth 설정 추가
+
+3. **개발 서버 실행**:
 
 ```bash
-npm run build
+npm start
 ```
 
-### 새로운 소셜 서비스 추가
+### 코드 스타일
 
-1. `src/utilities/` 디렉토리에 새로운 OAuth 처리 파일 생성
-2. `src/components/Login.tsx`에 새로운 프로바이더 추가
-3. 환경 변수 설정 가이드 업데이트
+- **TypeScript** 엄격 모드 사용
+- **함수형 컴포넌트** 및 **Hook** 사용
+- **인라인 스타일** 사용 (CSS-in-JS)
+- **명확한 타입 정의** 및 **JSDoc** 주석
 
-### 스타일 커스터마이징
-
-현재 컴포넌트는 인라인 스타일을 사용합니다. 커스터마이징이 필요한 경우:
-
-1. CSS-in-JS 라이브러리 사용
-2. CSS 모듈 사용
-3. styled-components 사용
-
-## 🐛 문제 해결
+## 🔍 문제 해결
 
 ### 자주 발생하는 문제
 
-#### 1. 환경 변수가 인식되지 않는 경우
+#### 1. OAuth 리다이렉트 오류
 
-```bash
-# .env 파일이 프로젝트 루트에 있는지 확인
-# 환경 변수명이 REACT_APP_ 접두사로 시작하는지 확인
-REACT_APP_GOOGLE_CLIENT_ID=your_client_id
-```
+**문제**: OAuth 인증 후 리다이렉트가 실패합니다.
 
-#### 2. OAuth 리다이렉트 URI 오류
+**해결책**:
 
-```bash
-# 각 소셜 서비스의 개발자 콘솔에서 리다이렉트 URI가 정확히 설정되었는지 확인
-# 로컬 개발: http://localhost:3000/auth/[provider]/callback
-# 프로덕션: https://yourdomain.com/auth/[provider]/callback
-```
+- 환경 변수의 리다이렉트 URI가 OAuth 앱 설정과 일치하는지 확인
+- HTTPS 사용 (프로덕션 환경)
+- 도메인 설정 확인
 
-#### 3. CORS 오류
+#### 2. CORS 오류
 
-```bash
-# 백엔드 서버에서 CORS 설정 확인
-# 프론트엔드 도메인이 허용 목록에 포함되어 있는지 확인
-```
+**문제**: 브라우저에서 CORS 오류가 발생합니다.
 
-#### 4. TypeScript 타입 오류
+**해결책**:
 
-```bash
-# 타입 정의 파일이 올바르게 생성되었는지 확인
-npm run build
-# dist/index.d.ts 파일 확인
-```
+- 백엔드 서버에서 CORS 설정 확인
+- 프록시 서버 사용 고려
+
+#### 3. 토큰 검증 실패
+
+**문제**: JWT 토큰 검증이 실패합니다.
+
+**해결책**:
+
+- 클라이언트 ID/시크릿 확인
+- 토큰 만료 시간 확인
+- 서명 검증 설정 확인
+
+#### 4. 언어 설정이 저장되지 않음
+
+**문제**: 언어 설정이 새로고침 후 초기화됩니다.
+
+**해결책**:
+
+- 브라우저의 localStorage 지원 확인
+- 프라이빗 모드에서의 제한 확인
 
 ### 디버깅 팁
 
-1. **브라우저 개발자 도구**에서 네트워크 탭 확인
-2. **콘솔 로그**에서 에러 메시지 확인
-3. **localStorage**에서 저장된 상태 확인
-4. **환경 변수**가 올바르게 로드되었는지 확인
+1. **브라우저 개발자 도구** 활용
+2. **네트워크 탭**에서 OAuth 요청 확인
+3. **콘솔 로그** 확인
+4. **환경 변수** 설정 확인
 
 ## 📄 라이선스
 
@@ -507,9 +459,9 @@ SOFTWARE.
 ## 📞 지원
 
 - **이메일**: dev.pyoungwoo@gmail.com
+- **문서**: [공식 문서](https://github.com/your-org/abc-waas-prebuiltui-sdk)
 - **이슈**: [GitHub Issues](https://github.com/your-org/abc-waas-prebuiltui-sdk/issues)
-- **문서**: [API Documentation](https://docs.example.com)
 
 ---
 
-**ABC WaaS Prebuilt UI SDK** - 안전하고 간편한 소셜 로그인 솔루션
+**ABC WaaS Prebuilt UI SDK**로 빠르고 안전한 소셜 로그인을 구현해보세요! 🚀
